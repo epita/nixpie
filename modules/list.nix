@@ -1,4 +1,6 @@
 [
+  ./config/krb5.nix
+
   ./programs/yubikey.nix
 
   ./services/admin/salt/minion.nix
