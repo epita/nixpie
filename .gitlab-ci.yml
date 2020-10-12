@@ -1,0 +1,81 @@
+default:
+  image: nixpkgs/nix-flakes
+
+stages:
+  - build
+  - qa
+  - deploy
+
+before_script:
+  - mkdir -p /etc/nix
+  - cat "${NIX_CONF}" > /etc/nix/nix.conf
+  - mkdir -p ~/.aws
+  - echo "[default]" > ~/.aws/config
+
+
+# Jobs templates
+
+.build-image-job: &build-image-job
+  stage: build
+  needs: []
+  script:
+    - cat "${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - export buildExpression=".#nixosConfigurations.${IMAGE_NAME}.config.system.build.toplevel"
+    - nix -L build "$buildExpression"
+    - nix sign-paths --recursive --key-file "${NIX_CACHE_PRIV_KEY_FILE}" --all
+    - nix copy --to "s3://${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=${AWS_NIX_CACHE_ENDPOINT}" --all
+
+.deploy-image-job: &deploy-image-job
+  stage: deploy
+  needs:
+    - qa
+  script:
+    - cat "${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - export buildExpression=".#nixosConfigurations.${IMAGE_NAME}.config.system.build.toplevel-netboot"
+    - nix -L build "$buildExpression"
+    - nix profile install 'nixpkgs#awscli'
+    - aws s3 --endpoint-url "${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "$(readlink -f ./result)" "s3://${AWS_PXE_IMAGES_BUCKET}"
+  when: manual
+
+
+# Lint
+
+lint:
+  stage: qa
+  needs: []
+  script:
+    - nix profile install 'nixpkgs#nix-linter' 'nixpkgs#findutils'
+    - nix-linter -WBetaReduction -WEmptyVariadicParamSet -WUnneededAntiquote $(find -name \*.nix)
+
+fmt:
+  stage: qa
+  needs: []
+  script:
+    - nix profile install 'nixpkgs#nixpkgs-fmt' 'nixpkgs#findutils'
+    - nixpkgs-fmt --check $(find -name \*.nix)
+  after_script:
+    - nixpkgs-fmt $(find -name \*.nix)
+    - git diff | tee nixpkgs-fmt.diff
+  artifacts:
+    when: on_failure
+    expose_as: "nixpkgs-fmt diff"
+    paths:
+      - nixpkgs-fmt.diff
+
+
+# Builds
+
+nixos-pie-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-pie
+
+
+# Deploys
+
+nixos-pie-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-pie-build
+  variables:
+    IMAGE_NAME: nixos-pie
