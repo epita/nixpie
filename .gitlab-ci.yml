@@ -70,6 +70,11 @@ nixos-pie-build:
   variables:
     IMAGE_NAME: nixos-pie
 
+nixos-exec-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-exec
+
 
 # Deploys
 
@@ -79,3 +84,10 @@ nixos-pie-deploy:
     - nixos-pie-build
   variables:
     IMAGE_NAME: nixos-pie
+
+nixos-exec-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-exec-build
+  variables:
+    IMAGE_NAME: nixos-exec

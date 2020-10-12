@@ -69,6 +69,7 @@ let
 
   hosts = lib.genAttrs [
     "nixos-pie"
+    "nixos-exec"
   ]
     config;
 in
