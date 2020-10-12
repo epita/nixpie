@@ -67,7 +67,9 @@ let
         lib.concat flakeModules [ core global local overrides ];
     };
 
-  hosts = lib.genAttrs [ ]
+  hosts = lib.genAttrs [
+    "nixos-pie"
+  ]
     config;
 in
 hosts
