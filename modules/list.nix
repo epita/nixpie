@@ -3,6 +3,7 @@
   ./config/ldap.nix
   ./config/users-groups.nix
 
+  ./programs/programs.nix
   ./programs/yubikey.nix
 
   ./services/admin/salt/minion.nix
