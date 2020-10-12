@@ -1,6 +1,7 @@
 [
   ./programs/yubikey.nix
 
+  ./services/admin/salt/minion.nix
   ./services/audio/alsa.nix
   ./services/hardware/bluetooth.nix
   ./services/networking/aria2.nix
