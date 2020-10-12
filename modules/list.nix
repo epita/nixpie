@@ -12,6 +12,7 @@
   ./services/networking/aria2.nix
   ./services/networking/sshd/sshd.nix
   ./services/x11/display-managers/sddm.nix
+  ./services/x11/window-managers/i3.nix
 
   ./system/boot/netboot.nix
 ]
