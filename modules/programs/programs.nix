@@ -12,6 +12,7 @@ let
     );
   availablePrograms = pathsToImportedAttrs [
     ./programs-lists/core.nix
+    ./programs-lists/fuse.nix
   ];
 in
 {
