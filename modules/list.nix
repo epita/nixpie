@@ -1,6 +1,7 @@
 [
   ./config/krb5.nix
   ./config/ldap.nix
+  ./config/users-groups.nix
 
   ./programs/yubikey.nix
 
