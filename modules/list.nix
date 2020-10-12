@@ -8,6 +8,7 @@
   ./services/admin/salt/minion.nix
   ./services/audio/alsa.nix
   ./services/hardware/bluetooth.nix
+  ./services/network-filesystems/openafs/client.nix
   ./services/networking/aria2.nix
   ./services/networking/sshd/sshd.nix
 
