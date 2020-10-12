@@ -11,6 +11,7 @@
   ./services/network-filesystems/openafs/client.nix
   ./services/networking/aria2.nix
   ./services/networking/sshd/sshd.nix
+  ./services/x11/desktop-managers/xfce.nix
   ./services/x11/display-managers/sddm.nix
   ./services/x11/window-managers/i3.nix
 
