@@ -1,1 +1,3 @@
-[ ]
+[
+  ./system/boot/netboot.nix
+]
