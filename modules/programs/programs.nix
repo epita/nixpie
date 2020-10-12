@@ -10,7 +10,9 @@ let
         value = import path { inherit pkgs; };
       }
     );
-  availablePrograms = pathsToImportedAttrs [ ];
+  availablePrograms = pathsToImportedAttrs [
+    ./programs-lists/core.nix
+  ];
 in
 {
   options = {
