@@ -111,6 +111,11 @@ in
       };
     };
 
+    environment.extraInit = ''
+      # Needed for afs/.confs/install.sh
+      export AFS_DIR=$HOME/afs
+    '';
+
     # Otherwise the configuration refuses to evaluate when cri.afs is disabled
     # because of pam_epita.
     services.openafsClient.packages.programs = mkDefault (getBin pkgs.openafs_1_8);
