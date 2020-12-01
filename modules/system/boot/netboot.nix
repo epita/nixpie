@@ -136,6 +136,8 @@ with lib;
         "af_packet"
         "xennet"
         "e1000e"
+        "pcnet32"
+        "pcnet_cs"
       ];
       kernelModules = [
         "loop"
