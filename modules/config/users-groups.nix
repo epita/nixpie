@@ -57,40 +57,33 @@ in
         description = "Whether to create `epita` user (no password).";
       };
     };
-
-    # As services are submodules, this is a little trick to change the default
-    # of an option of those submodules.
-    security.pam.services = mkOption {
-      type = with types; attrsOf (submodule {
-        config = {
-          makeHomeDir = mkDefault true;
-        };
-      });
-    };
   };
 
   config = mkIf config.cri.users.enable {
     security = {
       sudo.wheelNeedsPassword = false;
+      pam = {
+        modules.makeHomeDir.enable = true;
+      };
       # Currently, NixOS does not allow for adding extra stuff to pam. Here are
       # the relevant issues and merge requests:
       # https://github.com/NixOS/nixpkgs/issues/90640
       # https://github.com/NixOS/nixpkgs/issues/90488
       # https://github.com/NixOS/nixpkgs/pull/90490
-      pam.services = {
+      /*pam.services = {
         login.text = ''
+          # Account management.
+          account   required  ${pkgs.pam_krb5}/lib/security/pam_krb5.so
+          account   required  pam_unix.so
+          account   optional  pam_permit.so
+          account   required  pam_time.so
+
           # Authentication management.
           auth  [default=ignore success=1]  pam_succeed_if.so   quiet uid <= 1000
           auth  sufficient                  pam_exec.so         quiet expose_authtok ${pam_epita}
           auth  required                    pam_unix.so         try_first_pass nullok
           auth  optional                    pam_permit.so
           auth  required                    pam_env.so          conffile=${config.system.build.pamEnvironment} readenv=0
-
-          # Account management.
-          account   required  ${pkgs.pam_krb5}/lib/security/pam_krb5.so
-          account   required  pam_unix.so
-          account   optional  pam_permit.so
-          account   required  pam_time.so
 
           # Password management.
           password  sufficient  ${pkgs.pam_krb5}/lib/security/pam_krb5.so
@@ -108,7 +101,7 @@ in
           session   required                    pam_env.so                                  conffile=${config.system.build.pamEnvironment} readenv=0
         '';
         sddm.text = config.security.pam.services.login.text;
-      };
+      };*/
     };
 
     environment.extraInit = ''

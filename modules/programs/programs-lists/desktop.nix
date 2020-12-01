@@ -11,7 +11,7 @@ with pkgs;
   claws-mail
   irssi
   msmtp
-  thunderbird
+  #thunderbird
   weechat
 
   # editors
