@@ -17,4 +17,8 @@ stdenv.mkDerivation rec {
     substituteInPlace $out/bin/term_size \
       --replace printf ${coreutils}/bin/printf
   '';
+
+  meta = with stdenv.lib; {
+    platforms = platforms.unix;
+  };
 }

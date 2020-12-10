@@ -66,7 +66,7 @@
             ];
           };
 
-          packages = {
+          packages = lib.filterAttrs (n: v: lib.any (p: p == system) v.meta.platforms) {
             inherit (pkgset.nixos)
               i3lock
               sddm-epita-themes

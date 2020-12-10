@@ -20,4 +20,8 @@ stdenv.mkDerivation {
       $out/share/sddm/themes/epita-simplyblack
     echo "${extraThemeConfig}" >> $out/share/sddm/themes/epita-simplyblack/theme.conf
   '';
+
+  meta = with stdenv.lib; {
+    platforms = platforms.unix;
+  };
 }

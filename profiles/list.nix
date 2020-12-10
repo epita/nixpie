@@ -1,4 +1,4 @@
-[
-  ./core
-  ./graphical
-]
+{
+  core = ./core;
+  graphical = ./graphical;
+}
