@@ -63,7 +63,6 @@
             nativeBuildInputs = with pkgset.nixpkgs; [
               git
               nixpkgs-fmt
-              nix-linter
             ];
           };
 

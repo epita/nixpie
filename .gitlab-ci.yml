@@ -40,13 +40,6 @@ before_script:
 
 # Lint
 
-lint:
-  stage: qa
-  needs: []
-  script:
-    - nix profile install 'nixpkgs#nix-linter' 'nixpkgs#findutils'
-    - nix-linter -WBetaReduction -WEmptyVariadicParamSet -WUnneededAntiquote $(find -name \*.nix)
-
 fmt:
   stage: qa
   needs: []
