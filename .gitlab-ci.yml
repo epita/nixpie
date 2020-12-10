@@ -40,6 +40,13 @@ before_script:
 
 # Lint
 
+check:
+  stage: qa
+  needs: []
+  script:
+    - nix flake show
+    - nix flake check
+
 fmt:
   stage: qa
   needs: []
