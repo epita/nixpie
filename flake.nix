@@ -1,81 +1,79 @@
 {
   # name = "nixpie";
-
   description = ''
     nixpie: collection of Nix packages, NixOS modules and configurations used
     at EPITA's PIE
   '';
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
+    nixos.url = "nixpkgs/nixos-20.09";
+    nixpkgs.url = "nixpkgs/master";
+    futils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs } @ inputs:
+  outputs = { self, nixos, nixpkgs, futils } @ inputs:
     let
-      inherit (builtins) attrNames attrValues readDir;
-      inherit (nixpkgs) lib;
-      inherit (lib) hasSuffix removeSuffix recursiveUpdate genAttrs filterAttrs;
-      inherit (self.lib.utils) pathsToImportedAttrs;
+      inherit (nixos) lib;
+      inherit (lib) attrValues genAttrs recursiveUpdate;
+      inherit (futils.lib) defaultSystems eachDefaultSystem;
 
-      system = "x86_64-linux";
-
-      pkgs = import nixpkgs {
+      nixpkgsFor = pkgs: system: import pkgs {
         inherit system;
         overlays = attrValues self.overlays;
         config = { allowUnfree = true; };
       };
 
+      pkgsetFor = genAttrs defaultSystems (system: {
+        nixos = nixpkgsFor nixos system;
+        nixpkgs = nixpkgsFor nixpkgs system;
+      });
     in
-    {
-      devShell."${system}" = pkgs.mkShell {
-        name = "nixpie";
-        nativeBuildInputs = with pkgs; [
-          git
-          nixpkgs-fmt
-          nix-linter
-        ];
-      };
+    recursiveUpdate
 
-      lib.utils = import ./lib/utils.nix { inherit lib; };
+      {
+        lib = import ./lib { inherit lib; };
 
-      overlay = import ./pkgs;
+        overlays = import ./overlays;
 
-      overlays =
+        overlay = self.overlays.packages;
+
+        nixosModules = (import ./modules) // {
+          profiles = import ./profiles;
+          nixpie = import ./modules/nixpie.nix;
+        };
+
+        nixosConfigurations =
+          let
+            system = "x86_64-linux";
+            pkgset' = pkgsetFor.${system};
+          in
+          import ./hosts (inputs // {
+            inherit lib system;
+            pkgset = pkgset';
+          });
+      }
+
+      (eachDefaultSystem (system:
         let
-          overlayDir = ./overlays;
-          fullPath = name: overlayDir + "/${name}";
-          overlayPaths = map fullPath (attrNames (filterAttrs (n: _: hasSuffix ".nix" n) (readDir overlayDir)));
+          pkgset = pkgsetFor.${system};
         in
-        pathsToImportedAttrs overlayPaths;
+        {
+          devShell = pkgset.nixpkgs.mkShell {
+            name = "nixpie";
+            nativeBuildInputs = with pkgset.nixpkgs; [
+              git
+              nixpkgs-fmt
+              nix-linter
+            ];
+          };
 
-      packages.${system} =
-        let
-          packages = self.overlay pkgs pkgs;
-          overlays = lib.filterAttrs (n: _: n != "pkgs") self.overlays;
-          overlayPkgs =
-            genAttrs
-              (attrNames overlays)
-              (name: (overlays."${name}" pkgs pkgs)."${name}");
-        in
-        recursiveUpdate packages overlayPkgs;
-
-      nixosModules =
-        let
-          # modules
-          modulesList = import ./modules/list.nix;
-          modulesAttrs = pathsToImportedAttrs modulesList;
-
-          # profiles
-          profilesList = import ./profiles/list.nix;
-          profilesAttrs = { profiles = pathsToImportedAttrs profilesList; };
-        in
-        recursiveUpdate modulesAttrs profilesAttrs;
-
-      nixosConfigurations =
-        import ./hosts (
-          lib.recursiveUpdate inputs {
-            inherit pkgs lib system;
-          }
-        );
-    };
+          packages = {
+            inherit (pkgset.nixos)
+              i3lock
+              sddm-epita-themes
+              term_size
+              ;
+          };
+        }
+      ));
 }

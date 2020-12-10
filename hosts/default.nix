@@ -1,20 +1,20 @@
 { lib
-, pkgs
 , system
+, pkgset
 , self
+, nixos
 , nixpkgs
-, ...
+, futils
 }:
 let
-  inherit (builtins) attrValues removeAttrs;
-
   config = imageName:
     lib.nixosSystem {
       inherit system;
 
       specialArgs = {
-        inherit imageName;
+        inherit (pkgset) nixpkgs;
         nixpie = self;
+        inherit imageName;
       };
 
       modules =
@@ -29,15 +29,16 @@ let
                 path = toString ../.;
               in
               [
+                "nixos=${nixos}"
                 "nixpkgs=${nixpkgs}"
-                "nixos=${nixpkgs}"
+                "nixpkgs-overlays=${path}/overlays"
                 "nixpie=${path}"
               ];
 
-            nixpkgs = { inherit pkgs; };
+            nixpkgs = { pkgs = pkgset.nixos; };
 
             nix.registry = {
-              nixos.flake = nixpkgs;
+              nixos.flake = nixos;
               nixpkgs.flake = nixpkgs;
               nixpie.flake = self;
             };
@@ -49,7 +50,7 @@ let
           overrides = {
             nixpkgs.overlays =
               let
-                override = import ../pkgs/override.nix pkgs;
+                override = import ../pkgs/override.nix pkgset.nixpkgs;
 
                 overlay = pkg: _: _: {
                   "${pkg.pname}" = pkg;
@@ -61,7 +62,7 @@ let
           local = import "${toString ./.}/${imageName}.nix";
 
           flakeModules =
-            attrValues (removeAttrs self.nixosModules [ "profiles" ]);
+            builtins.attrValues (removeAttrs self.nixosModules [ "profiles" "nixpie" ]);
 
         in
         lib.concat flakeModules [ core global local overrides ];
