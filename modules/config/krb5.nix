@@ -1,10 +1,6 @@
 { config, lib, ... }:
 
 with lib;
-let
-  default_realm = "CRI.EPITA.NET";
-  kdc = "auth.pie.cri.epita.net";
-in
 {
 
   options = {
@@ -17,15 +13,17 @@ in
     krb5 = {
       enable = true;
       libdefaults = {
-        inherit default_realm;
+        default_realm = "CRI.EPITA.FR";
+        dns_fallback = true;
+        dns_canonicalize_hostname = false;
+        rnds = false;
+        forwardable = true;
       };
-      realms."${default_realm}" = {
-        inherit kdc;
-        admin_server = kdc;
-      };
-      domain_realm = {
-        "cri.epita.net" = default_realm;
-        ".cri.epita.net" = default_realm;
+
+      realms = {
+        "CRI.EPITA.FR" = {
+          admin_server = "kerberos.pie.cri.epita.fr";
+        };
       };
     };
   };
