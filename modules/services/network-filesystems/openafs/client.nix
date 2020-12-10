@@ -14,7 +14,7 @@ with lib;
 
     services.openafsClient = {
       enable = true;
-      cellName = "cri.epita.net";
+      cellName = "cri.epita.fr";
       cellServDB = [
         { ip = "10.224.4.105"; dnsname = "storage-1.pie.cri.epita.net"; }
         { ip = "10.224.4.106"; dnsname = "storage-2.pie.cri.epita.net"; }
