@@ -59,7 +59,7 @@ let
               map overlay override;
           };
 
-          local = import "${toString ./.}/${imageName}.nix";
+          local = import "${toString ./.}/${imageName}/configuration.nix";
 
           flakeModules =
             builtins.attrValues (removeAttrs self.nixosModules [ "profiles" "nixpie" ]);
