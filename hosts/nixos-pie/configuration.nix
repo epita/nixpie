@@ -1,6 +1,8 @@
+{ nixpie, ... }:
+
 {
   imports = [
-    ../profiles/graphical
+    nixpie.nixosModules.profiles.graphical
   ];
 
   netboot.enable = true;
