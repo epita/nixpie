@@ -3,7 +3,7 @@
   ldap = ./config/ldap.nix;
   users = ./config/users-groups.nix;
 
-  programs = ./programs/programs.nix;
+  packages = ./programs/packages.nix;
   yubikey = ./programs/yubikey.nix;
 
   salt = ./services/admin/salt/minion.nix;
