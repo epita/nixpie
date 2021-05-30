@@ -1,5 +1,5 @@
 { lib }:
 
 {
-  utils = import ./utils.nix { inherit lib; };
+  overlaysToPkgs = import ./overlays-to-pkgs.nix { inherit lib; };
 }

@@ -21,7 +21,7 @@ final: prev: {
 
     makeFlags = [ ''CPPFLAGS+="-U_FORTIFY_SOURCE"'' ];
 
-    meta = with final.stdenv.lib; {
+    meta = with final.lib; {
       platforms = platforms.linux;
     };
   });

@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, extraThemeConfig ? "" }:
+{ lib, stdenv, fetchurl, extraThemeConfig ? "" }:
 
 stdenv.mkDerivation {
   pname = "sddm-epita-themes";
@@ -21,7 +21,7 @@ stdenv.mkDerivation {
     echo "${extraThemeConfig}" >> $out/share/sddm/themes/epita-simplyblack/theme.conf
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     platforms = platforms.unix;
   };
 }

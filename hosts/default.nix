@@ -1,20 +1,21 @@
 { lib
-, system
+, nixpkgs
+, nixpkgsMaster
+, nixpkgsUnstable
 , pkgset
 , self
-, nixos
-, nixpkgs
-, futils
-}:
+, system
+, ...
+}@inputs:
 let
-  config = imageName:
+  nixosSystem = imageName:
     lib.nixosSystem {
       inherit system;
 
       specialArgs = {
-        inherit (pkgset) nixpkgs;
-        nixpie = self;
+        inherit nixpkgsUnstable nixpkgsMaster;
         inherit imageName;
+        nixpie = self;
       };
 
       modules =
@@ -24,39 +25,27 @@ let
           global = {
             system.name = imageName;
             networking.hostName = ""; # Use the DHCP provided hostname
-            nix.nixPath =
-              let
-                path = toString ../.;
-              in
-              [
-                "nixos=${nixos}"
-                "nixpkgs=${nixpkgs}"
-                "nixpkgs-overlays=${path}/overlays"
-                "nixpie=${path}"
-              ];
+            nix.nixPath = [
+              "nixpkgs=${nixpkgs}"
+              "nixpkgs-unstable=${nixpkgsUnstable}"
+              "nixpkgs-master=${nixpkgsMaster}"
+              "nixpie=${self}"
+            ];
 
-            nixpkgs = { pkgs = pkgset.nixos; };
+            nixpkgs = {
+              inherit (pkgset) pkgs;
+              overlays = [ self.overlay self.overrides.${system} ];
+            };
 
             nix.registry = {
-              nixos.flake = nixos;
               nixpkgs.flake = nixpkgs;
+              nixpkgsUnstable.flake = nixpkgsUnstable;
+              nixpkgsMaster.flake = nixpkgsMaster;
               nixpie.flake = self;
             };
 
             # TODO: correctly set config.system.nixos.label
             system.configurationRevision = lib.mkIf (self ? rev) self.rev;
-          };
-
-          overrides = {
-            nixpkgs.overlays =
-              let
-                override = import ../pkgs/override.nix pkgset.nixpkgs;
-
-                overlay = pkg: _: _: {
-                  "${pkg.pname}" = pkg;
-                };
-              in
-              map overlay override;
           };
 
           local = import "${toString ./.}/${imageName}.nix";
@@ -65,13 +54,13 @@ let
             builtins.attrValues (removeAttrs self.nixosModules [ "profiles" "nixpie" ]);
 
         in
-        lib.concat flakeModules [ core global local overrides ];
+        lib.concat flakeModules [ core global local ];
     };
 
   hosts = lib.genAttrs [
     "nixos-pie"
     "nixos-exec"
   ]
-    config;
+    nixosSystem;
 in
 hosts

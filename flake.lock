@@ -15,41 +15,60 @@
         "type": "github"
       }
     },
-    "nixos": {
-      "locked": {
-        "lastModified": 1607543509,
-        "narHash": "sha256-jofrEbhSfROEt6UXyjpdXrRWieqjQoOfJVptlEClHXI=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "65c9cc79f1d179713c227bf447fb0dac384cdcda",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "ref": "nixos-20.09",
-        "type": "indirect"
-      }
-    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1607636129,
-        "narHash": "sha256-K1pgLYQPw6MXlTNyiQws2vYgegNpdVMIYeUwIEfl1K8=",
+        "lastModified": 1622392324,
+        "narHash": "sha256-wpsX8p8w5OALlx7nZMXPmYHRgIgfxWGKxCffo/SOrwo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a0aba95515a22a985857ea967035e29d80e2dd53",
+        "rev": "0e2b7ebddee97505939c5adb4fed232ec42f9fe5",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
+        "owner": "NixOS",
+        "ref": "release-21.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgsMaster": {
+      "locked": {
+        "lastModified": 1622394678,
+        "narHash": "sha256-CVfHMpYtQFJXEeDlx3aJnOqSlkviibR4nzu/I+ANWQU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "1788d3d01509a7c943d093661f11a904ff8db2b9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
         "ref": "master",
-        "type": "indirect"
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgsUnstable": {
+      "locked": {
+        "lastModified": 1622059058,
+        "narHash": "sha256-t1/ZMtyxClVSfcV4Pt5C1YpkeJ/UwFF3oitLD7Ch/UA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "84aa23742f6c72501f9cc209f29c438766f5352d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
       "inputs": {
         "futils": "futils",
-        "nixos": "nixos",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "nixpkgsMaster": "nixpkgsMaster",
+        "nixpkgsUnstable": "nixpkgsUnstable"
       }
     }
   },

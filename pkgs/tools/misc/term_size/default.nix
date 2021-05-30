@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, coreutils }:
+{ lib, stdenv, fetchFromGitHub, coreutils }:
 
 stdenv.mkDerivation rec {
   pname = "term_size";
@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
       --replace printf ${coreutils}/bin/printf
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     platforms = platforms.unix;
   };
 }

@@ -1,40 +1,50 @@
 {
   # name = "nixpie";
   description = ''
-    nixpie: collection of Nix packages, NixOS modules and configurations used
-    at EPITA's PIE
+    collection of Nix packages, NixOS modules and configurations used at
+    EPITA's PIE
   '';
 
   inputs = {
-    nixos.url = "nixpkgs/nixos-20.09";
-    nixpkgs.url = "nixpkgs/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-21.05";
+    nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
     futils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixos, nixpkgs, futils } @ inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , nixpkgsUnstable
+    , nixpkgsMaster
+    , futils
+    } @ inputs:
     let
-      inherit (nixos) lib;
-      inherit (lib) attrValues genAttrs recursiveUpdate;
-      inherit (futils.lib) defaultSystems eachDefaultSystem;
+      inherit (nixpkgs) lib;
+      inherit (lib) attrValues optional recursiveUpdate;
+      inherit (futils.lib) eachDefaultSystem;
 
-      nixpkgsFor = pkgs: system: import pkgs {
-        inherit system;
-        overlays = attrValues self.overlays;
-        config = { allowUnfree = true; };
+      pkgImport = pkgs: system:
+        import pkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+          };
+          overlays = (attrValues self.overlays) ++ [ self.overrides.${system} ];
+        };
+
+      pkgset = system: {
+        pkgs = pkgImport nixpkgs system;
+        pkgsUnstable = pkgImport nixpkgsUnstable system;
+        pkgsMaster = pkgImport nixpkgsMaster system;
       };
 
-      pkgsetFor = genAttrs defaultSystems (system: {
-        nixos = nixpkgsFor nixos system;
-        nixpkgs = nixpkgsFor nixpkgs system;
-      });
-    in
-    recursiveUpdate
-
-      {
+      anySystemOutputs = {
         lib = import ./lib { inherit lib; };
 
-        overlays = import ./overlays;
-
+        overlays = (import ./overlays) // {
+          packages = import ./pkgs;
+        };
         overlay = self.overlays.packages;
 
         nixosModules = (import ./modules) // {
@@ -45,34 +55,34 @@
         nixosConfigurations =
           let
             system = "x86_64-linux";
-            pkgset' = pkgsetFor.${system};
           in
-          import ./hosts (inputs // {
-            inherit lib system;
-            pkgset = pkgset';
-          });
-      }
+          import ./hosts (
+            recursiveUpdate inputs {
+              inherit lib system;
+              pkgset = pkgset system;
+            }
+          );
+      };
 
-      (eachDefaultSystem (system:
+      multiSystemOutputs = eachDefaultSystem (system:
         let
-          pkgset = pkgsetFor.${system};
+          inherit (pkgset system) pkgs pkgsUnstable pkgsMaster;
         in
         {
-          devShell = pkgset.nixpkgs.mkShell {
+          devShell = pkgs.mkShell {
             name = "nixpie";
-            nativeBuildInputs = with pkgset.nixpkgs; [
+            buildInputs = with pkgs; [
+              awscli
               git
               nixpkgs-fmt
+              pre-commit
             ];
           };
 
-          packages = lib.filterAttrs (n: v: lib.any (p: p == system) v.meta.platforms) {
-            inherit (pkgset.nixos)
-              i3lock
-              sddm-epita-themes
-              term_size
-              ;
-          };
-        }
-      ));
+          overrides = import ./overlays/overrides.nix { inherit pkgsUnstable pkgsMaster; };
+
+          packages = self.lib.overlaysToPkgs self.overlays pkgs;
+        });
+    in
+    recursiveUpdate multiSystemOutputs anySystemOutputs;
 }
