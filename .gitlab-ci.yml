@@ -22,7 +22,7 @@ before_script:
     - cat "${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
     - export buildExpression=".#nixosConfigurations.${IMAGE_NAME}.config.system.build.toplevel"
     - nix -L build "$buildExpression"
-    - nix sign-paths --recursive --key-file "${NIX_CACHE_PRIV_KEY_FILE}" --all
+    - nix store sign --recursive --key-file "${NIX_CACHE_PRIV_KEY_FILE}" --all
     - nix copy --to "s3://${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=${AWS_NIX_CACHE_ENDPOINT}" --all
 
 .deploy-image-job: &deploy-image-job
