@@ -24,19 +24,19 @@
       inherit (lib) attrValues optional recursiveUpdate;
       inherit (futils.lib) eachDefaultSystem;
 
-      pkgImport = pkgs: system:
+      pkgImport = pkgs: system: withOverrides:
         import pkgs {
           inherit system;
           config = {
             allowUnfree = true;
           };
-          overlays = (attrValues self.overlays) ++ [ self.overrides.${system} ];
+          overlays = (attrValues self.overlays) ++ (optional withOverrides self.overrides.${system});
         };
 
       pkgset = system: {
-        pkgs = pkgImport nixpkgs system;
-        pkgsUnstable = pkgImport nixpkgsUnstable system;
-        pkgsMaster = pkgImport nixpkgsMaster system;
+        pkgs = pkgImport nixpkgs system true;
+        pkgsUnstable = pkgImport nixpkgsUnstable system false;
+        pkgsMaster = pkgImport nixpkgsMaster system false;
       };
 
       anySystemOutputs = {

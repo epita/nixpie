@@ -1,3 +1,10 @@
 { pkgsUnstable, pkgsMaster }:
 
-final: prev: { }
+final: prev: {
+  inherit (pkgsUnstable)
+    chromium
+    discord
+    firefox
+    teams
+    ;
+}
