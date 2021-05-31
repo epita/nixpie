@@ -1,7 +1,7 @@
 {
   # name = "nixpie";
   description = ''
-    collection of Nix packages, NixOS modules and configurations used at
+    collection of Nix packages, NixOS modules and configurations used on
     EPITA's PIE
   '';
 
