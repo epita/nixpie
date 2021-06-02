@@ -56,7 +56,7 @@
           let
             system = "x86_64-linux";
           in
-          import ./hosts (
+          import ./images (
             recursiveUpdate inputs {
               inherit lib system;
               pkgset = pkgset system;
