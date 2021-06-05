@@ -65,18 +65,30 @@ fmt:
 
 # Builds
 
-nixos-pie-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-pie
-
 nixos-exec-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-exec
 
+nixos-pie-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-pie
+
+nixos-test-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-test
+
 
 # Deploys
+
+nixos-exec-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-exec-build
+  variables:
+    IMAGE_NAME: nixos-exec
 
 nixos-pie-deploy:
   <<: *deploy-image-job
@@ -85,9 +97,9 @@ nixos-pie-deploy:
   variables:
     IMAGE_NAME: nixos-pie
 
-nixos-exec-deploy:
+nixos-test-deploy:
   <<: *deploy-image-job
   needs:
-    - nixos-exec-build
+    - nixos-test-build
   variables:
-    IMAGE_NAME: nixos-exec
+    IMAGE_NAME: nixos-test

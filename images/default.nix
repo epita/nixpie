@@ -58,8 +58,9 @@ let
     };
 
   hosts = lib.genAttrs [
-    "nixos-pie"
     "nixos-exec"
+    "nixos-pie"
+    "nixos-test"
   ]
     nixosSystem;
 in
