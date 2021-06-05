@@ -24,6 +24,9 @@
     extraOptions = ''
       experimental-features = nix-command flakes ca-references
     '';
+
+    binaryCaches = [ "https://cache.nix.cri.epita.fr" ];
+    binaryCachePublicKeys = [ "cache.nix.cri.epita.fr:qDIfJpZWGBWaGXKO3wZL1zmC+DikhMwFRO4RVE6VVeo=" ];
   };
 
   networking = {
