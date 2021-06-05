@@ -63,4 +63,11 @@ with lib;
     doc.enable = true;
     dev.enable = true;
   };
+
+  programs.ssh = {
+    startAgent = true;
+    extraConfig = ''
+      AddKeysToAgent yes
+    '';
+  };
 }
