@@ -57,7 +57,7 @@ with lib;
   environment.systemPackages =
     flatten (
       attrValues {
-        inherit (config.cri.programs)
+        inherit (config.cri.packages)
           core
           fuse
           ;
