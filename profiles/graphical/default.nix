@@ -1,4 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, config, lib, ... }:
+
+with lib;
 let
   Xresources = pkgs.writeText "Xresources" ''
     *.scrollBar       : false
@@ -16,11 +18,19 @@ in
   cri = {
     bluetooth.enable = true;
     i3.enable = true;
-    packages = [ "desktop" ];
     redshift.enable = true;
     sddm.enable = true;
     sound.enable = true;
   };
+
+  environment.systemPackages =
+    flatten (
+      attrValues {
+        inherit (config.cri.programs)
+          desktop
+          ;
+      }
+    );
 
   services.xserver = {
     enable = true;

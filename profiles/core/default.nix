@@ -1,5 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, config, lib, ... }:
 
+with lib;
 {
   i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "Europe/Paris";
@@ -46,13 +47,22 @@
 
   cri = {
     aria2.enable = true;
-    packages = [ "core" "fuse" ];
     salt.enable = true;
     sshd.enable = true;
     users.enable = true;
     yubikey.enable = true;
   };
   programs.vim.defaultEditor = true;
+
+  environment.systemPackages =
+    flatten (
+      attrValues {
+        inherit (config.cri.programs)
+          core
+          fuse
+          ;
+      }
+    );
 
   documentation = {
     enable = true;

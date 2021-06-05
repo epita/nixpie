@@ -18,10 +18,6 @@ let
 in
 {
   options = {
-    cri.packages = mkOption {
-      type = with types; listOf str;
-    };
-
     cri.programs = mkOption {
       type = with types; attrsOf (listOf package);
       description = "Set of package bundles";
@@ -29,15 +25,6 @@ in
   };
 
   config = {
-    environment.systemPackages =
-      flatten (
-        attrValues (
-          filterAttrs
-            (
-              n: _: (any (p: p == n) config.cri.packages)
-            )
-            availablePrograms
-        )
-      );
+    cri.programs = availablePrograms;
   };
 }
