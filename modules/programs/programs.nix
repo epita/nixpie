@@ -21,6 +21,11 @@ in
     cri.packages = mkOption {
       type = with types; listOf str;
     };
+
+    cri.programs = mkOption {
+      type = with types; attrsOf (listOf package);
+      description = "Set of package bundles";
+    };
   };
 
   config = {
