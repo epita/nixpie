@@ -54,15 +54,7 @@ with lib;
   };
   programs.vim.defaultEditor = true;
 
-  environment.systemPackages =
-    flatten (
-      attrValues {
-        inherit (config.cri.packages)
-          core
-          fuse
-          ;
-      }
-    );
+  environment.systemPackages = with config.cri.packages; core ++ fuse;
 
   documentation = {
     enable = true;

@@ -23,14 +23,7 @@ in
     sound.enable = true;
   };
 
-  environment.systemPackages =
-    flatten (
-      attrValues {
-        inherit (config.cri.packages)
-          desktop
-          ;
-      }
-    );
+  environment.systemPackages = with config.cri.packages; desktop;
 
   services.xserver = {
     enable = true;
