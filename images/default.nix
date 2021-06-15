@@ -60,6 +60,7 @@ let
   hosts = lib.genAttrs [
     "nixos-exec"
     "nixos-pie"
+    "nixos-sup"
     "nixos-test"
   ]
     nixosSystem;

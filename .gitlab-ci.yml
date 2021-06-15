@@ -75,6 +75,11 @@ nixos-pie-build:
   variables:
     IMAGE_NAME: nixos-pie
 
+nixos-sup-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-sup
+
 nixos-test-build:
   <<: *build-image-job
   variables:
@@ -96,6 +101,13 @@ nixos-pie-deploy:
     - nixos-pie-build
   variables:
     IMAGE_NAME: nixos-pie
+
+nixos-sup-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-sup-build
+  variables:
+    IMAGE_NAME: nixos-sup
 
 nixos-test-deploy:
   <<: *deploy-image-job
