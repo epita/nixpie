@@ -16,6 +16,7 @@ with lib;
     ./dev-asm.nix
     ./dev-csharp.nix
     ./dev-ocaml.nix
+    ./dev-rust.nix
     ./dev-sql.nix
     ./fuse.nix
   ];
