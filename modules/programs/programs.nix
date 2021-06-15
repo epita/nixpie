@@ -13,6 +13,7 @@ with lib;
     ./core.nix
     ./desktop.nix
     ./dev.nix
+    ./dev-csharp.nix
     ./dev-sql.nix
     ./fuse.nix
   ];
