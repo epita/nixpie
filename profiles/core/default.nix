@@ -58,10 +58,14 @@ with lib;
 
   documentation = {
     enable = true;
-    man.enable = true;
-    info.enable = true;
-    doc.enable = true;
     dev.enable = true;
+    doc.enable = true;
+    info.enable = true;
+    man = {
+      enable = true;
+      generateCaches = true;
+    };
+    nixos.enable = true;
   };
 
   programs.ssh = {
