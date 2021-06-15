@@ -26,6 +26,7 @@
     flex
     gdb
     lcov
+    libfff
     ltrace
     rr
     shellcheck
