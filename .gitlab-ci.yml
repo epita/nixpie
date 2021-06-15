@@ -80,6 +80,11 @@ nixos-sup-build:
   variables:
     IMAGE_NAME: nixos-sup
 
+nixos-spe-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-spe
+
 nixos-test-build:
   <<: *build-image-job
   variables:
@@ -108,6 +113,13 @@ nixos-sup-deploy:
     - nixos-sup-build
   variables:
     IMAGE_NAME: nixos-sup
+
+nixos-spe-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-spe-build
+  variables:
+    IMAGE_NAME: nixos-spe
 
 nixos-test-deploy:
   <<: *deploy-image-job
