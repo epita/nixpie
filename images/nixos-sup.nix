@@ -11,8 +11,12 @@ in
     ../profiles/graphical
   ];
 
-  environment.systemPackages = with config.cri.programs; devOcaml ++ devCsharp ++ nixosSupPkgs;
-
   netboot.enable = true;
   cri.sddm.title = "NixOS SUP";
+
+  environment.systemPackages = with config.cri.programs;
+    dev ++
+    devOcaml ++
+    devCsharp ++
+    nixosSupPkgs;
 }
