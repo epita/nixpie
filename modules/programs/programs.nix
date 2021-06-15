@@ -14,6 +14,7 @@ with lib;
     ./desktop.nix
     ./dev.nix
     ./dev-csharp.nix
+    ./dev-ocaml.nix
     ./dev-sql.nix
     ./fuse.nix
   ];
