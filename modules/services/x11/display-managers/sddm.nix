@@ -25,7 +25,7 @@ with lib;
   config = mkIf config.cri.sddm.enable {
     environment.systemPackages = with pkgs; [
       (
-        sddm-epita-themes.override {
+        sddmEpitaThemes.override {
           extraThemeConfig = ''
             logo=epita.png
             title="-- ${config.cri.sddm.title} --"
