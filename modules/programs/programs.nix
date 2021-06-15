@@ -3,7 +3,7 @@
 with lib;
 {
   options = {
-    cri.packages = mkOption {
+    cri.programs = mkOption {
       type = with types; attrsOf (listOf package);
       description = "Set of package bundles";
     };

@@ -23,7 +23,7 @@ in
     sound.enable = true;
   };
 
-  environment.systemPackages = with config.cri.packages; desktop;
+  environment.systemPackages = with config.cri.programs; desktop;
 
   services.xserver = {
     enable = true;

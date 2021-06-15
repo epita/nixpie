@@ -1,15 +1,17 @@
 { pkgs, ... }:
 
 {
-  cri.packages.core = with pkgs; [
+  cri.programs.core = with pkgs; [
     git
     htop
     iproute
     lsof
+    man-pages
+    man-pages-posix
+    pipenv
     psmisc
     python3
     python3Packages.pip
-    pipenv
     python3Packages.virtualenv
     rsync
     screen

@@ -54,7 +54,7 @@ with lib;
   };
   programs.vim.defaultEditor = true;
 
-  environment.systemPackages = with config.cri.packages; core ++ fuse;
+  environment.systemPackages = with config.cri.programs; core ++ fuse;
 
   documentation = {
     enable = true;
