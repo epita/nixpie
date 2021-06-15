@@ -12,6 +12,7 @@ with lib;
   imports = [
     ./core.nix
     ./desktop.nix
+    ./dev.nix
     ./fuse.nix
   ];
 }
