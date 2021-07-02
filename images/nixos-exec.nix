@@ -1,5 +1,8 @@
 {
-  netboot.enable = true;
+  netboot = {
+    enable = true;
+    bootcache.enable = false;
+  };
 
   cri = {
     afs.enable = false;
