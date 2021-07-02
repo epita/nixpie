@@ -34,10 +34,13 @@ with lib;
           };
         };
       };
-      bootcache.partition = mkOption {
-        type = types.str;
-        default = "/dev/disk/by-partlabel/bootcache";
-        description = "Path to the bootcache partition to use.";
+      bootcache = {
+        enable = mkEnableOption "bootcache partition mounting" // { default = true; };
+        partition = mkOption {
+          type = types.str;
+          default = "/dev/disk/by-partlabel/bootcache";
+          description = "Path to the bootcache partition to use.";
+        };
       };
     };
   };
@@ -81,7 +84,7 @@ with lib;
         ];
       };
 
-      "${config.netboot.torrent.mountPoint}" = {
+      "${config.netboot.torrent.mountPoint}" = mkIf config.netboot.bootcache.enable {
         fsType = "ext4";
         device = config.netboot.bootcache.partition;
         options = [ "nofail" "x-systemd.device-timeout=15s" ];
@@ -177,6 +180,9 @@ with lib;
       mount -o bind,ro $torrentDir $targetTorrentDir
 
       bootcachePartition="${config.netboot.bootcache.partition}"
+      ${optionalString (!config.netboot.bootcache.enable) ''
+        bootcachePartition="/dev/invalid"
+      ''}
 
       if [[ -e $bootcachePartition ]]; then
         if ! mount -t ext4 $bootcachePartition $torrentDir; then
