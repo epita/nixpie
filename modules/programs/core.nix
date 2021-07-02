@@ -13,7 +13,7 @@
     rsync
     screen
     tcpdump
-    termSize
+    term_size
     tmux
     tree
     udevil
