@@ -1,10 +1,11 @@
 { lib
 , stdenv
-, util-linux
-, gnugrep
 , coreutils
-, gptfdisk
 , e2fsprogs
+, gnugrep
+, gptfdisk
+, htop
+, util-linux
 }:
 
 stdenv.mkDerivation {
@@ -17,8 +18,11 @@ stdenv.mkDerivation {
   src = ./.;
 
   installPhase = ''
-    install -Dm755 $src/set_bootcache.sh $out/bin/set_bootcache.sh
+    install -Dm755 $src/htop.sh $out/bin/htop.sh
+    substituteInPlace $out/bin/htop.sh \
+      --subst-var-by htop_bin ${htop}/bin/htop
 
+    install -Dm755 $src/set_bootcache.sh $out/bin/set_bootcache.sh
     substituteInPlace $out/bin/set_bootcache.sh \
       --subst-var-by lsblk_bin ${util-linux}/bin/lsblk \
       --subst-var-by grep_bin ${gnugrep}/bin/grep \
