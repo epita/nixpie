@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  cri.programs.fuse = with pkgs; [
+  cri.programs.packageBundles.fuse = with pkgs; [
     fuse
     fuse3
     fuseiso

@@ -8,5 +8,5 @@
   netboot.enable = true;
   cri.sddm.title = "NixOS Test.";
 
-  environment.systemPackages = with config.cri.programs; dev;
+  cri.programs.packages = with config.cri.programs.packageBundles; [ dev ];
 }

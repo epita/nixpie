@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  cri.programs.desktop = with pkgs; [
+  cri.programs.packageBundles.desktop = with pkgs; [
     # browsers
     chromium
     firefox

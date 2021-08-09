@@ -8,9 +8,10 @@
   netboot.enable = true;
   cri.sddm.title = "NixOS SPE";
 
-  environment.systemPackages = with config.cri.programs;
-    dev ++
-    devAsm ++
-    devSdl ++
-    devRust;
+  cri.programs.packages = with config.cri.programs.packageBundles; [
+    dev
+    devAsm
+    devSdl
+    devRust
+  ];
 }

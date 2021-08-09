@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  cri.programs.core = with pkgs; [
+  cri.programs.packageBundles.core = with pkgs; [
     git
     htop
     iproute
@@ -10,9 +10,6 @@
     man-pages-posix
     pipenv
     psmisc
-    python3
-    python3Packages.pip
-    python3Packages.virtualenv
     rsync
     screen
     tcpdump
@@ -23,5 +20,10 @@
     unzip
     wget
     zip
+  ];
+
+  cri.programs.pythonPackageBundles.core = pythonPackages: with pythonPackages; [
+    pip
+    virtualenv
   ];
 }

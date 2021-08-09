@@ -14,9 +14,10 @@ in
   netboot.enable = true;
   cri.sddm.title = "NixOS SUP";
 
-  environment.systemPackages = with config.cri.programs;
-    dev ++
-    devOcaml ++
-    devCsharp ++
-    nixosSupPkgs;
+  cri.programs.packages = with config.cri.programs.packageBundles; [
+    dev
+    devOcaml
+    devCsharp
+    nixosSupPkgs
+  ];
 }

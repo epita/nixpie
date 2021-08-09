@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  cri.programs.devSdl = with pkgs; [
+  cri.programs.packageBundles.devSdl = with pkgs; [
     # v1
     SDL
     SDL_Pango

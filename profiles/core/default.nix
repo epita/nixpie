@@ -54,7 +54,8 @@ with lib;
   };
   programs.vim.defaultEditor = true;
 
-  environment.systemPackages = with config.cri.programs; core ++ fuse;
+  cri.programs.packages = with config.cri.programs.packageBundles; [ core fuse ];
+  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ core ];
 
   documentation = {
     enable = true;

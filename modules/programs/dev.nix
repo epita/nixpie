@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  cri.programs.dev = with pkgs; [
+  cri.programs.packageBundles.dev = with pkgs; [
     # build systems
     autoconf
     autoconf-archive

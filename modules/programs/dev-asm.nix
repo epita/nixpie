@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  cri.programs.devAsm = with pkgs; [
+  cri.programs.packageBundles.devAsm = with pkgs; [
     dosbox
     nasm
   ];

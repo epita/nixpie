@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  cri.programs.devSQL = with pkgs; [
+  cri.programs.packageBundles.devSQL = with pkgs; [
     dbeaver
     pgadmin
     postgresql
