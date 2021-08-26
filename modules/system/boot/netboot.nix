@@ -191,10 +191,11 @@ with lib;
       rngd >&2
 
       aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"
+      aria2_tracker="--bt-tracker-connect-timeout=20 --bt-tracker-timeout=20"
       aria2_summary="--summary-interval=60"
       aria2_nodht="--enable-dht=false --enable-dht6=false"
       aria2_noseed="--seed-time=0 --seed-ratio=0"
-      aria2_opts="$aria2_base $aria2_summary $aria2_nodht $aria2_noseed"
+      aria2_opts="$aria2_base $aria2_tracker $aria2_summary $aria2_nodht $aria2_noseed"
 
       cp /${config.system.build.torrent.name} $torrentDir/$torrentFile
 
