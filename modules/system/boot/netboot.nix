@@ -190,7 +190,7 @@ with lib;
 
       rngd >&2
 
-      aria2_base="-V --file-allocation=prealloc --enable-mmap=true"
+      aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"
       aria2_summary="--summary-interval=60"
       aria2_nodht="--enable-dht=false --enable-dht6=false"
       aria2_noseed="--seed-time=0 --seed-ratio=0"
