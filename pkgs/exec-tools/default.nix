@@ -31,6 +31,10 @@ stdenv.mkDerivation {
       --subst-var-by sgdisk_bin ${gptfdisk}/bin/sgdisk \
       --subst-var-by partx_bin ${util-linux}/bin/partx \
       --subst-var-by mkfs.ext4_bin ${e2fsprogs}/bin/mkfs.ext4
+
+    install -Dm755 $src/clear_bootcache.sh $out/bin/clear_bootcache.sh
+    substituteInPlace $out/bin/clear_bootcache.sh \
+      --subst-var-by mkfs.ext4_bin ${e2fsprogs}/bin/mkfs.ext4
   '';
 
   meta = with lib; {
