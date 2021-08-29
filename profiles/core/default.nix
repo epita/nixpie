@@ -69,6 +69,12 @@ with lib;
     nixos.enable = true;
   };
 
+  # HACK: this is needed to be able to compile with external libs such as
+  # criterion
+  environment.pathsToLink = [ "/include" ];
+  environment.extraOutputsToInstall = [ "out" "lib" "bin" "dev" ];
+  environment.variables.NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu = "-I/run/current-system/sw/include";
+
   programs.ssh = {
     startAgent = true;
     extraConfig = ''
