@@ -13,7 +13,7 @@ let
       inherit system;
 
       specialArgs = {
-        inherit nixpkgsUnstable nixpkgsMaster;
+        inherit inputs;
         inherit imageName;
         nixpie = self;
       };
