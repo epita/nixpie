@@ -4,16 +4,6 @@ with lib;
 let
   pam_epita = pkgs.writeShellScript "pam_epita" ''
     export PATH="${pkgs.coreutils}/bin:/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
-    echo "$PATH" >> /tmp/pam_epita
-
-    if [ "$PAM_TYPE" = "auth" ]; then
-      login=$(echo "$PAM_USER" | ${pkgs.gnused}/bin/sed 's/\./_/g')
-      if [ $(id -u) -eq 0 ]; then
-        su - "$PAM_USER" -c "${config.krb5.kerberos}/bin/kinit $login" <&0 || exit 1
-      else
-        ${config.krb5.kerberos}/bin/kinit $login <&0 || exit 1
-      fi
-    fi
 
     if [ "$PAM_TYPE" = "open_session" ]; then
       l1=$(expr substr $PAM_USER 1 1)
@@ -21,24 +11,15 @@ let
       afs_u="${config.services.openafsClient.mountPoint}/${config.services.openafsClient.cellName}/user/$l1/$l2/$PAM_USER/u"
 
       if [ $(id -u) -eq 0 ]; then
-        su - "$PAM_USER" -c ${config.services.openafsClient.packages.programs}/bin/aklog
         su - "$PAM_USER" -c "[ -e \$HOME/afs ] || ${pkgs.coreutils}/bin/ln -s $afs_u \$HOME/afs"
-        su - "$PAM_USER" -c "[ -x \$HOME/afs/.confs/install.sh ] && AFS_DIR=\$HOME/afs \$HOME/afs/.confs/install.sh"
+        su - "$PAM_USER" -c "[ -x \$HOME/afs/.confs/install.sh ] && AFS_DIR=\$HOME/afs \$HOME/afs/.confs/install.sh || true"
       else
-        ${config.services.openafsClient.packages.programs}/bin/aklog
         [ -e $HOME/afs ] || ln -s $afs_u $HOME/afs
-        [ -x $HOME/afs/.confs/install.sh ] && AFS_DIR=$HOME/afs $HOME/afs/.confs/install.sh
+        [ -x $HOME/afs/.confs/install.sh ] && AFS_DIR=$HOME/afs $HOME/afs/.confs/install.sh || true
       fi
     fi
 
     if [ "$PAM_TYPE" = "close_session" ]; then
-      if [ $(id -u) -eq 0 ]; then
-        su - "$PAM_USER" -c ${config.services.openafsClient.packages.programs}/bin/unlog
-        su - "$PAM_USER" -c ${config.krb5.kerberos}/bin/kdestroy
-      else
-        ${config.services.openafsClient.packages.programs}/bin/unlog
-        ${config.krb5.kerberos}/bin/kdestroy
-      fi
       if [ $(id -u) -ne 0 ]; then
         ${pkgs.procps}/bin/pkill -9 -u "$PAM_USER"
       fi
@@ -80,33 +61,38 @@ in
       pam.services = {
         login.text = ''
           # Authentication management.
-          auth  [default=ignore success=1]  pam_succeed_if.so   quiet uid <= 1000
-          auth  sufficient                  pam_exec.so         quiet expose_authtok ${pam_epita}
-          auth  required                    pam_unix.so         try_first_pass nullok
+          auth  [default=ignore success=1]  pam_succeed_if.so                                         quiet uid <= 1000
+          auth  sufficient                  ${pkgs.pam_krb5}/lib/security/pam_krb5.so                 minimum_uid=1000
+          auth  optional                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   program=${config.services.openafsClient.packages.programs}/bin/aklog
+          auth  required                    pam_unix.so                                               try_first_pass nullok
           auth  optional                    pam_permit.so
-          auth  required                    pam_env.so          conffile=${config.system.build.pamEnvironment} readenv=0
+          auth  required                    pam_env.so                                                conffile=${config.system.build.pamEnvironment} readenv=0
 
           # Account management.
-          account   required  ${pkgs.pam_krb5}/lib/security/pam_krb5.so
-          account   required  pam_unix.so
-          account   optional  pam_permit.so
-          account   required  pam_time.so
+          account   sufficient  ${pkgs.pam_krb5}/lib/security/pam_krb5.so
+          account   required    pam_unix.so
+          account   optional    pam_permit.so
+          account   required    pam_time.so
 
           # Password management.
           password  sufficient  ${pkgs.pam_krb5}/lib/security/pam_krb5.so
-          password  sufficient  pam_unix.so                           try_first_pass nullok sha512 shadow
+          password  required    pam_unix.so                           try_first_pass nullok sha512 shadow
           password  optional    pam_permit.so
 
           # Session management.
-          session   [default=ignore success=3]  pam_succeed_if.so                           uid < 1000
-          session   required                    ${pkgs.pam}/lib/security/pam_mkhomedir.so   silent skel=${config.security.pam.makeHomeDir.skelDirectory} umask=0077
-          session   [default=ignore success=1]  pam_succeed_if.so                           uid <= 1000
+          session   [default=ignore success=5]  pam_succeed_if.so                                         uid < 1000
+          session   required                    ${pkgs.pam}/lib/security/pam_mkhomedir.so                 silent skel=${config.security.pam.makeHomeDir.skelDirectory} umask=0077
+          session   [default=ignore success=3]  pam_succeed_if.so                                         uid <= 1000
+          session   required                    ${pkgs.pam_krb5}/lib/security/pam_krb5.so
+          session   required                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   afs_cells=cri.epita.fr always_aklog minimum_uid=1000 program=${config.services.openafsClient.packages.programs}/bin/aklog
           session   required                    pam_exec.so                                 ${pam_epita}
           session   optional                    ${pkgs.systemd}/lib/security/pam_systemd.so
           session   required                    pam_unix.so
           session   optional                    pam_permit.so
-          session   required                    pam_env.so                                  conffile=${config.system.build.pamEnvironment} readenv=0
+          session   required                    pam_env.so                                                conffile=${config.system.build.pamEnvironment} readenv=0
         '';
+
+        i3lock.text = config.security.pam.services.login.text;
         sddm.text = config.security.pam.services.login.text;
       };
     };
@@ -118,7 +104,7 @@ in
 
     # Otherwise the configuration refuses to evaluate when cri.afs is disabled
     # because of pam_epita.
-    services.openafsClient.packages.programs = mkDefault (getBin pkgs.openafs_1_8);
+    services.openafsClient.packages.programs = mkDefault (getBin pkgs.openafs);
 
     cri = {
       afs.enable = mkDefault true;

@@ -46,7 +46,7 @@ with lib;
         enable = true;
         base = "dc=cri,dc=epita,dc=fr";
         server = "ldaps://ldap.pie.cri.epita.fr";
-        daemon.enable = true;
+        nsswitch = false;
       };
     };
   };
