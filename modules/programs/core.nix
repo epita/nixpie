@@ -2,6 +2,7 @@
 
 {
   cri.programs.packageBundles.core = with pkgs; [
+    file
     git
     htop
     iproute
@@ -13,6 +14,7 @@
     rsync
     screen
     tcpdump
+    telnet
     term_size
     tmux
     tree
