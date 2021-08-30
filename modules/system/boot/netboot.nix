@@ -164,8 +164,8 @@ with lib;
     boot.initrd.postDeviceCommands = ''
       if ! [ -f /etc/resolv.conf ]; then
         # In case we didn't receive a nameserver from our DHCP
-        echo "nameserver 10.224.4.2" >> /etc/resolv.conf
-        # Backup in case 10.224.4.2 is not available
+        echo "nameserver 10.224.21.53" >> /etc/resolv.conf
+        # Backup in case 10.224.21.53 is not available
         echo "nameserver 1.1.1.1" >> /etc/resolv.conf
       fi
 

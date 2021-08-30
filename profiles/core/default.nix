@@ -31,7 +31,7 @@ with lib;
   };
 
   networking = {
-    nameservers = [ "10.224.4.2" ];
+    nameservers = [ "10.224.21.53" ];
     timeServers = [
       "ntp.pie.cri.epita.fr"
       "0.nixos.pool.ntp.org"
