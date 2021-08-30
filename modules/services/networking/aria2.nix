@@ -15,6 +15,7 @@ with lib;
 
   config = mkIf config.cri.aria2.enable {
     networking.firewall = {
+      allowedTCPPortRanges = [{ from = 6881; to = 6999; }];
       allowedUDPPortRanges = [{ from = 6881; to = 6999; }];
     };
 
