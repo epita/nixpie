@@ -90,6 +90,11 @@ nixos-test-build:
   variables:
     IMAGE_NAME: nixos-test
 
+exam-pie-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: exam-pie
+
 
 # Deploys
 
@@ -127,3 +132,10 @@ nixos-test-deploy:
     - nixos-test-build
   variables:
     IMAGE_NAME: nixos-test
+
+exam-pie-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-test-build
+  variables:
+    IMAGE_NAME: exam-pie

@@ -2,7 +2,7 @@
 
 with lib;
 let
-  pam_epita = pkgs.writeShellScript "pam_epita" ''
+  pam_epita = pkgs.writeShellScript "pam_epita" (if config.cri.afs.enable then ''
     export PATH="${pkgs.coreutils}/bin:/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
 
     if [ "$PAM_TYPE" = "open_session" ]; then
@@ -26,7 +26,7 @@ let
     fi
 
     exit 0
-  '';
+  '' else "exit 0");
 in
 {
   options = {
@@ -85,7 +85,7 @@ in
           session   [default=ignore success=3]  pam_succeed_if.so                                         uid <= 1000
           session   required                    ${pkgs.pam_krb5}/lib/security/pam_krb5.so
           session   required                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   afs_cells=cri.epita.fr always_aklog minimum_uid=1000 program=${config.services.openafsClient.packages.programs}/bin/aklog
-          session   required                    pam_exec.so                                 ${pam_epita}
+          session   required                    pam_exec.so                                               ${pam_epita}
           session   optional                    ${pkgs.systemd}/lib/security/pam_systemd.so
           session   required                    pam_unix.so
           session   optional                    pam_permit.so

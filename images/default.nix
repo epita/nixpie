@@ -63,6 +63,8 @@ let
     "nixos-sup"
     "nixos-spe"
     "nixos-test"
+
+    "exam-pie"
   ]
     nixosSystem;
 in
