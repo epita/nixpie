@@ -27,6 +27,9 @@ with lib;
       enable = true;
       cellName = "cri.epita.fr";
       cellServDB = [
+        { ip = "10.224.21.100"; dnsname = "afs-0.pie.cri.epita.fr"; }
+        { ip = "10.224.21.101"; dnsname = "afs-1.pie.cri.epita.fr"; }
+        { ip = "10.224.21.102"; dnsname = "afs-2.pie.cri.epita.fr"; }
         { ip = "10.224.4.107"; dnsname = "storage-3.pie.cri.epita.fr"; }
       ];
       cache = {
