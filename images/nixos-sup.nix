@@ -13,6 +13,7 @@ in
 
   netboot.enable = true;
   cri.sddm.title = "NixOS SUP";
+  cri.xfce.enable = true;
 
   cri.programs.packages = with config.cri.programs.packageBundles; [
     dev
