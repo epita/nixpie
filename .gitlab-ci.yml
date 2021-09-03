@@ -45,7 +45,7 @@ check:
   needs: []
   script:
     - nix flake show
-    - nix flake check
+    # - nix flake check
 
 fmt:
   stage: qa
