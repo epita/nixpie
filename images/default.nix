@@ -44,7 +44,6 @@ let
               nixpie.flake = self;
             };
 
-            # TODO: correctly set config.system.nixos.label
             system.configurationRevision = lib.mkIf (self ? rev) self.rev;
           };
 
