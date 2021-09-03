@@ -23,7 +23,7 @@ with lib;
 
         [domain/LDAP]
         cache_credentials = true
-        enumerate = true
+        enumerate = false
 
         id_provider = ldap
         auth_provider = ldap
