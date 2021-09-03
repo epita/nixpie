@@ -79,6 +79,14 @@ with lib;
     startAgent = true;
     extraConfig = ''
       AddKeysToAgent yes
+
+      Host exam.pie.cri.epita.fr
+        GSSAPIAuthentication yes
+      Host git.cri.epita.fr
+        GSSAPIAuthentication yes
+      Host ssh.cri.epita.fr
+        GSSAPIAuthentication yes
+        GSSAPIDelegateCredentials yes
     '';
   };
 }
