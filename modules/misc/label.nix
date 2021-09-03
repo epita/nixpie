@@ -11,7 +11,7 @@ let
       nixpkgs
       nixpkgsUnstable
       nixpkgsMaster
-    ;
+      ;
     nixpie = inputs.self;
   };
   flakesVersions = mapAttrsToList (name: flake: "${name}-${mkFlakeVersion flake}") flakes;
@@ -21,7 +21,7 @@ in
     system.nixos = {
       labels = mkOption {
         type = with types; listOf str;
-        default = [];
+        default = [ ];
       };
     };
   };
