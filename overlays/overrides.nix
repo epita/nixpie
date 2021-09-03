@@ -5,6 +5,8 @@ final: prev: {
     chromium
     discord
     firefox
+    firefox-unwrapped
     teams
+    wrapFirefox
     ;
 }

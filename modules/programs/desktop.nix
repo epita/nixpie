@@ -4,7 +4,11 @@
   cri.programs.packageBundles.desktop = with pkgs; [
     # browsers
     chromium
-    firefox
+    (wrapFirefox firefox-unwrapped {
+      extraPrefs = ''
+        pref("network.negotiate-auth.trusted-uris", "cri.epita.fr,.cri.epita.fr");
+      '';
+    })
 
     # communication
     claws-mail
