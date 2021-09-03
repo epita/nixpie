@@ -11,6 +11,7 @@ before_script:
   - cat "${NIX_CONF}" > /etc/nix/nix.conf
   - mkdir -p ~/.aws
   - echo "[default]" > ~/.aws/config
+  - git switch $CI_COMMIT_REF_NAME
 
 
 # Jobs templates
