@@ -3,6 +3,8 @@
   ldap = ./config/ldap.nix;
   users = ./config/users-groups.nix;
 
+  label = ./misc/label.nix;
+
   programs = ./programs/programs.nix;
   yubikey = ./programs/yubikey.nix;
 
