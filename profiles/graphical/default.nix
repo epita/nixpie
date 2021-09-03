@@ -53,4 +53,8 @@ in
       hinting.enable = true;
     };
   };
+
+  environment.etc."chromium/policies/recommended/spnego.json".text = builtins.toJSON {
+    AuthServerWhitelist = "cri.epita.fr";
+  };
 }
