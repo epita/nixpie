@@ -29,7 +29,7 @@ with lib;
           };
           url = mkOption {
             type = types.str;
-            default = "https://ipxe.pie.cri.epita.fr/";
+            default = "https://s3.cri.epita.fr/cri-pxe-images.s3.cri.epita.fr/";
             description = "Webseed URL";
           };
         };
