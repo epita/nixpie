@@ -48,6 +48,7 @@ with lib;
   config = mkIf config.netboot.enable {
     # Don't build the GRUB menu builder script, since we don't need it
     # here and it causes a cyclic dependency.
+    boot.kernelParams = [ "boot.shell_on_fail" ];
     boot.loader.grub.enable = false;
 
     # !!! Hack - attributes expected by other modules.
@@ -151,6 +152,26 @@ with lib;
       extraUtilsCommands = ''
         copy_bin_and_libs ${pkgs.aria2}/bin/aria2c
         copy_bin_and_libs ${pkgs.rng-tools}/bin/rngd
+        # TODO: make a list out of this
+        copy_bin_and_libs ${config.nix.package}/bin/nix
+        copy_bin_and_libs ${config.nix.package}/bin/nix-build
+        copy_bin_and_libs ${config.nix.package}/bin/nix-channel
+        copy_bin_and_libs ${config.nix.package}/bin/nix-collect-garbage
+        copy_bin_and_libs ${config.nix.package}/bin/nix-copy-closure
+        copy_bin_and_libs ${config.nix.package}/bin/nix-daemon
+        copy_bin_and_libs ${config.nix.package}/bin/nix-env
+        copy_bin_and_libs ${config.nix.package}/bin/nix-hash
+        copy_bin_and_libs ${config.nix.package}/bin/nix-instantiate
+        copy_bin_and_libs ${config.nix.package}/bin/nix-prefetch-url
+        copy_bin_and_libs ${config.nix.package}/bin/nix-shell
+        copy_bin_and_libs ${config.nix.package}/bin/nix-store
+        copy_bin_and_libs ${pkgs.ldns}/bin/drill
+        copy_bin_and_libs ${pkgs.host}/bin/host
+        copy_bin_and_libs ${pkgs.curl}/bin/curl
+        copy_bin_and_libs ${pkgs.strace}/bin/strace
+
+        cp -pv ${pkgs.glibc}/lib/libresolv.so.2 $out/lib
+        cp -pv ${pkgs.glibc}/lib/libnss_dns.so.2 $out/lib
       '';
     };
 
@@ -158,6 +179,11 @@ with lib;
     ### Commands to execute on boot to download the system and configure it
     ### properly.
     ###
+
+    # TODO: put this elsewhere
+    system.build.earlyMountScript = pkgs.writeText "early-mount.sh" ''
+      export USER=root
+    '';
 
     # Network is done in preLVMCommands, which means it is already set up when
     # we get to postDeviceCommands
@@ -280,10 +306,28 @@ with lib;
       inherit (config.boot.initrd) compressor;
 
       contents = [
-        {
+        /*{
           # Include the torrent in the image to download the squashfs.
           object = config.system.build.torrent;
           symlink = "/${config.system.build.torrent.name}";
+          }*/
+        {
+          object = pkgs.writeText "nix.conf" ''
+            build-users-group =
+            substituters = https://cache.nixos.org/
+            trusted-substituters =
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
+            require-sigs = true
+            trusted-users = root
+            experimental-features = nix-command flakes ca-references
+          '';
+          symlink = "/etc/nix/nix.conf";
+        }
+        {
+          object = pkgs.writeText "passwd" ''
+            root:x:0:0:System administrator:/root:/bin/sh
+          '';
+          symlink = "/etc/passwd";
         }
         {
           # Required by aria2.
@@ -306,8 +350,9 @@ with lib;
       mkdir -p $out
       cp ${config.system.build.kernel}/bzImage $out/${imageName}_bzImage
       cp ${config.system.build.initrd} $out/${imageName}_initrd
-      cp ${config.system.build.torrent} $out/${imageName}.torrent
-      cp ${config.system.build.squashfs}/${config.system.build.squashfs.name} $out/${imageName}.squashfs
     '';
+    /*cp ${config.system.build.torrent} $out/${imageName}.torrent
+      cp ${config.system.build.squashfs}/${config.system.build.squashfs.name} $out/${imageName}.squashfs
+      '';*/
   };
 }
