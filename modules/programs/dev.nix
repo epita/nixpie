@@ -15,6 +15,7 @@
     llvm
 
     # misc
+    bintools
     capstone
     check
     checkbashisms
