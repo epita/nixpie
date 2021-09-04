@@ -18,7 +18,9 @@
     weechat
 
     # editors
-    emacs
+    (emacs.pkgs.withPackages (epkgs: (with epkgs.melpaStablePackages; [
+      tuareg
+    ])))
 
     # images
     feh
