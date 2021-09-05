@@ -22,6 +22,8 @@ in
     nixosSupPkgs
   ];
 
-  environment.variables.OCAMLPATH = with pkgs; with ocamlPackages; "${graphics}/lib/ocaml/${ocaml.version}/site-lib/";
-  environment.variables.CAML_LD_LIBRARY_PATH = with pkgs; with ocamlPackages; "${graphics}/lib/ocaml/${ocaml.version}/site-lib/stublibs";
+  environment.variables = with pkgs; with ocamlPackages; {
+    OCAMLPATH = "${graphics}/lib/ocaml/${ocaml.version}/site-lib/";
+    CAML_LD_LIBRARY_PATH = "${graphics}/lib/ocaml/${ocaml.version}/site-lib/stublibs";
+  };
 }
