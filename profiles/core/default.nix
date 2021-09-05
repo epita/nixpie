@@ -55,6 +55,7 @@ with lib;
   cri = {
     aria2.enable = true;
     machine-state.enable = true;
+    nuc-led-setter.enable = true;
     salt.enable = true;
     sshd.enable = true;
     users.enable = true;

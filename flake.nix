@@ -16,6 +16,12 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+    nuc-led-setter = {
+      url = "git+https://gitlab.cri.epita.fr/cri/packages/nuc-led-setter.git";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
 
     futils.url = "github:numtide/flake-utils";
   };
@@ -28,6 +34,7 @@
     , nixpkgsMaster
 
     , machine-state
+    , nuc-led-setter
 
     , futils
     } @ inputs:
