@@ -9,14 +9,26 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
+
+    machine-state = {
+      url = "git+https://gitlab.cri.epita.fr/cri/packages/machine-state.git";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+
     futils.url = "github:numtide/flake-utils";
   };
 
   outputs =
     { self
+
     , nixpkgs
     , nixpkgsUnstable
     , nixpkgsMaster
+
+    , machine-state
+
     , futils
     } @ inputs:
     let

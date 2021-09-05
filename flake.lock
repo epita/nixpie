@@ -15,6 +15,42 @@
         "type": "github"
       }
     },
+    "futils_2": {
+      "locked": {
+        "lastModified": 1629481132,
+        "narHash": "sha256-JHgasjPR0/J1J3DRm4KxM4zTyAj4IOJY8vIl75v/kPI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "997f7efcb746a9c140ce1f13c72263189225f482",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "machine-state": {
+      "inputs": {
+        "futils": "futils_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1630863454,
+        "narHash": "sha256-pfmcAC3Vn8X2buDmMkTZ9EMHnW1B3lDOUPRTEzkIx50=",
+        "ref": "master",
+        "rev": "07ce976c610053485884a81e48ee647d68708616",
+        "revCount": 71,
+        "type": "git",
+        "url": "https://gitlab.cri.epita.fr/cri/packages/machine-state.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.cri.epita.fr/cri/packages/machine-state.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1630481079,
@@ -66,6 +102,7 @@
     "root": {
       "inputs": {
         "futils": "futils",
+        "machine-state": "machine-state",
         "nixpkgs": "nixpkgs",
         "nixpkgsMaster": "nixpkgsMaster",
         "nixpkgsUnstable": "nixpkgsUnstable"

@@ -8,6 +8,7 @@
   programs = ./programs/programs.nix;
   yubikey = ./programs/yubikey.nix;
 
+  machine-state = ./services/admin/machine-state.nix;
   salt = ./services/admin/salt/minion.nix;
   audio = ./services/audio/alsa.nix;
   bluetooth = ./services/hardware/bluetooth.nix;
