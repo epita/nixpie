@@ -89,7 +89,14 @@ with lib;
         device = config.netboot.bootcache.partition;
         options = [ "nofail" "x-systemd.device-timeout=15s" ];
       };
+
+      "/home" = {
+        fsType = "ext4";
+        device = "/dev/disk/by-partlabel/home";
+        options = [ "nofail" "x-systemd.device-timeout=15s" ];
+      };
     };
+    swapDevices = [{ label = "swap"; }];
 
     networking.useDHCP = mkForce true;
     boot.initrd = {
