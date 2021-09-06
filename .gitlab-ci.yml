@@ -96,6 +96,11 @@ exam-pie-build:
   variables:
     IMAGE_NAME: exam-pie
 
+nixos-pie-vm-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-pie-vm
+
 
 # Deploys
 
@@ -137,6 +142,13 @@ nixos-test-deploy:
 exam-pie-deploy:
   <<: *deploy-image-job
   needs:
-    - nixos-test-build
+    - exam-pie-build
   variables:
     IMAGE_NAME: exam-pie
+
+nixos-pie-vm-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-pie-vm-build
+  variables:
+    IMAGE_NAME: nixos-pie-vm

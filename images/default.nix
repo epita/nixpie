@@ -64,6 +64,8 @@ let
     "nixos-test"
 
     "exam-pie"
+
+    "nixos-pie-vm"
   ]
     nixosSystem;
 in
