@@ -46,5 +46,9 @@ with lib;
         theme = "epita-simplyblack";
       };
     };
+
+    systemd.services.display-manager = {
+      after = [ "network-online.target" ];
+    };
   };
 }
