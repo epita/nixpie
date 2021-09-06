@@ -10,7 +10,7 @@ let
       ${pkgs.exec-tools}/bin/''${EXEC_URL}
     else
       ${pkgs.wget}/bin/wget "''${EXEC_URL}" -O /tmp/script.sh
-      chmod -x /tmp/script.sh
+      chmod +x /tmp/script.sh
       /tmp/script.sh
     fi
 
