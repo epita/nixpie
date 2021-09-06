@@ -66,21 +66,14 @@ fmt:
 
 # Builds
 
-nixos-exec-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-exec
-
 nixos-pie-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-pie
-
 nixos-sup-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-sup
-
 nixos-spe-build:
   <<: *build-image-job
   variables:
@@ -90,6 +83,10 @@ nixos-test-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-test
+nixos-exec-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-exec
 
 exam-pie-build:
   <<: *build-image-job
@@ -100,16 +97,22 @@ nixos-pie-vm-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-pie-vm
+nixos-sup-vm-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-sup-vm
+nixos-spe-vm-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-spe-vm
+
+nixos-test-vm-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-test-vm
 
 
 # Deploys
-
-nixos-exec-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-exec-build
-  variables:
-    IMAGE_NAME: nixos-exec
 
 nixos-pie-deploy:
   <<: *deploy-image-job
@@ -117,14 +120,12 @@ nixos-pie-deploy:
     - nixos-pie-build
   variables:
     IMAGE_NAME: nixos-pie
-
 nixos-sup-deploy:
   <<: *deploy-image-job
   needs:
     - nixos-sup-build
   variables:
     IMAGE_NAME: nixos-sup
-
 nixos-spe-deploy:
   <<: *deploy-image-job
   needs:
@@ -132,6 +133,12 @@ nixos-spe-deploy:
   variables:
     IMAGE_NAME: nixos-spe
 
+nixos-exec-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-exec-build
+  variables:
+    IMAGE_NAME: nixos-exec
 nixos-test-deploy:
   <<: *deploy-image-job
   needs:
@@ -152,3 +159,22 @@ nixos-pie-vm-deploy:
     - nixos-pie-vm-build
   variables:
     IMAGE_NAME: nixos-pie-vm
+nixos-sup-vm-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-sup-vm-build
+  variables:
+    IMAGE_NAME: nixos-sup-vm
+nixos-spe-vm-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-spe-vm-build
+  variables:
+    IMAGE_NAME: nixos-spe-vm
+
+nixos-test-vm-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-test-vm-build
+  variables:
+    IMAGE_NAME: nixos-test-vm
