@@ -38,7 +38,7 @@ with lib;
 
     systemd.services.salt-minion = {
       after = [ "network-online.target" ];
-      path = with pkgs; [ coreutils gnugrep gawk gnused iproute ];
+      path = [ "/run/current-system/sw" ];
 
       preStart = ''
         while true; do
