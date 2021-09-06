@@ -8,7 +8,10 @@
 , ...
 }@inputs:
 let
-  nixosSystem = imageName:
+  nixosSystem = _imageName: { isVM ? false }:
+    let
+      imageName = if isVM then lib.removeSuffix "-vm" _imageName else _imageName;
+    in
     lib.nixosSystem {
       inherit system;
 
@@ -53,20 +56,22 @@ let
             builtins.attrValues (removeAttrs self.nixosModules [ "profiles" "nixpie" ]);
 
         in
-        lib.concat flakeModules [ core global local ];
+        flakeModules ++ [ core global local ] ++ (lib.optional isVM ../profiles/vm);
     };
 
-  hosts = lib.genAttrs [
-    "nixos-exec"
-    "nixos-pie"
-    "nixos-sup"
-    "nixos-spe"
-    "nixos-test"
+  hosts = lib.mapAttrs nixosSystem {
+    "nixos-exec" = { };
+    "nixos-pie" = { };
+    "nixos-sup" = { };
+    "nixos-spe" = { };
+    "nixos-test" = { };
 
-    "exam-pie"
+    "exam-pie" = { };
 
-    "nixos-pie-vm"
-  ]
-    nixosSystem;
+    "nixos-pie-vm" = { isVM = true; };
+    "nixos-sup-vm" = { isVM = true; };
+    "nixos-spe-vm" = { isVM = true; };
+    "nixos-test-vm" = { isVM = true; };
+  };
 in
 hosts
