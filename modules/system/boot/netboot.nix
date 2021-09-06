@@ -42,6 +42,8 @@ with lib;
           description = "Path to the bootcache partition to use.";
         };
       };
+      home.enable = mkEnableOption "home partition mounting";
+      swap.enable = mkEnableOption "home partition mounting";
     };
   };
 
@@ -90,13 +92,13 @@ with lib;
         options = [ "nofail" "x-systemd.device-timeout=15s" ];
       };
 
-      "/home" = {
+      "/home" = mkIf config.netboot.home.enable {
         fsType = "ext4";
         device = "/dev/disk/by-partlabel/home";
         options = [ "nofail" "x-systemd.device-timeout=15s" ];
       };
     };
-    swapDevices = [{ label = "swap"; }];
+    swapDevices = mkIf config.netboot.swap.enable [{ label = "swap"; }];
 
     networking.useDHCP = mkForce true;
     boot.initrd = {
