@@ -53,11 +53,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1630863454,
-        "narHash": "sha256-pfmcAC3Vn8X2buDmMkTZ9EMHnW1B3lDOUPRTEzkIx50=",
+        "lastModified": 1630892765,
+        "narHash": "sha256-1yg8GsuQ4sd8V2q3TWUagBbPfTc6fbXXi8IVQm4huJQ=",
         "ref": "master",
-        "rev": "07ce976c610053485884a81e48ee647d68708616",
-        "revCount": 71,
+        "rev": "d6d658e10965ce85c394d1ca33bcb6a540239a7a",
+        "revCount": 72,
         "type": "git",
         "url": "https://gitlab.cri.epita.fr/cri/packages/machine-state.git"
       },
@@ -122,11 +122,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1630887762,
-        "narHash": "sha256-PAzni0aRlu2pXUKS18WSlSxW/ifp4u492vXEcncX7k0=",
+        "lastModified": 1630892898,
+        "narHash": "sha256-Gm2t7T6BI4qxqARWqGyPH9FMtFA3tKXV92MHqcXY2M0=",
         "ref": "master",
-        "rev": "cbca1d2915904f1284cc1eb81b35d0254f716a9f",
-        "revCount": 54,
+        "rev": "92c5f675c72569a28b47adbf04790864f2cb191c",
+        "revCount": 56,
         "type": "git",
         "url": "https://gitlab.cri.epita.fr/cri/packages/nuc-led-setter.git"
       },

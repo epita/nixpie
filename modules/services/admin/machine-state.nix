@@ -40,10 +40,6 @@ in
         export MACHINE_STATE_IP="$(ip a | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | sed 's#/.*$##')"
         ${machine-state}/bin/machine-state
       '';
-
-      postStop = ''
-        ${machine-state}/bin/reset_led_on_poweroff.sh
-      '';
     };
   };
 }

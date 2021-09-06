@@ -29,7 +29,7 @@ in
         ${nuc-led-setter}/bin/nuc-led-setter
       '';
       postStop = ''
-        modprobe -r nuc_led
+        ${nuc-led-setter}/bin/reset_led_on_poweroff.sh
       '';
     };
   };
