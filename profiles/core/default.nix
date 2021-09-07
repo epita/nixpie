@@ -33,7 +33,7 @@ with lib;
   networking = {
     useDHCP = true;
     dhcpcd = {
-      wait = "if-carrier-up"; # make sure we get an IP before marking the service as up
+      wait = "any"; # make sure we get an IP before marking the service as up
       extraConfig = ''
         noipv4ll
       '';
