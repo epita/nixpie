@@ -8,9 +8,9 @@
 , ...
 }@inputs:
 let
-  nixosSystem = _imageName: { isVM ? false }:
+  nixosSystem = imageName: { isVM ? false }:
     let
-      imageName = if isVM then lib.removeSuffix "-vm" _imageName else _imageName;
+      _imageName = if isVM then lib.removeSuffix "-vm" imageName else imageName;
     in
     lib.nixosSystem {
       inherit system;
@@ -50,7 +50,7 @@ let
             system.configurationRevision = lib.mkIf (self ? rev) self.rev;
           };
 
-          local = import "${toString ./.}/${imageName}.nix";
+          local = import "${toString ./.}/${_imageName}.nix";
 
           flakeModules =
             builtins.attrValues (removeAttrs self.nixosModules [ "profiles" "nixpie" ]);
