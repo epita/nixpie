@@ -78,6 +78,10 @@ nixos-spe-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-spe
+nixos-nlp-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-nlp
 
 nixos-test-build:
   <<: *build-image-job
@@ -132,6 +136,12 @@ nixos-spe-deploy:
     - nixos-spe-build
   variables:
     IMAGE_NAME: nixos-spe
+nixos-nlp-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-nlp-build
+  variables:
+    IMAGE_NAME: nixos-nlp
 
 nixos-exec-deploy:
   <<: *deploy-image-job

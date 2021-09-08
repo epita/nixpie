@@ -61,6 +61,7 @@ let
 
   hosts = lib.mapAttrs nixosSystem {
     "nixos-exec" = { };
+    "nixos-nlp" = { };
     "nixos-pie" = { };
     "nixos-sup" = { };
     "nixos-spe" = { };
