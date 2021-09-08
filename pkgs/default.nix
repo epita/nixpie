@@ -1,6 +1,9 @@
 final: prev:
 
 {
+  # Commented for now. We are hitting https://github.com/pytorch/text/issues/1342
+  # torchtext = final.python3Packages.callPackage ./development/python-modules/torchtext { };
+
   exec-tools = final.callPackage ./exec-tools { };
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
   libfff = final.callPackage ./development/libraries/libfff { };
