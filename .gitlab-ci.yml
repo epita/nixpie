@@ -12,6 +12,7 @@ before_script:
   - mkdir -p ~/.aws
   - echo "[default]" > ~/.aws/config
   - git switch $CI_COMMIT_REF_NAME
+  - git reset --hard $CI_COMMIT_SHA
 
 
 # Jobs templates
