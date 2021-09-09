@@ -22,6 +22,7 @@
       fasttext
       gensim
       pytorch
+      datasets
     ])
   ];
 }
