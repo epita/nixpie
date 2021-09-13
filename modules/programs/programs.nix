@@ -40,6 +40,7 @@ in
     ./dev.nix
     ./dev-asm.nix
     ./dev-csharp.nix
+    ./dev-gtk.nix
     ./dev-ocaml.nix
     ./dev-rust.nix
     ./dev-sdl.nix
