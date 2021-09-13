@@ -29,6 +29,7 @@
     lcov
     libfff
     ltrace
+    pkg-config
     rr
     shellcheck
     strace

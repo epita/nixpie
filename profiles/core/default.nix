@@ -82,7 +82,10 @@ with lib;
   # criterion
   environment.pathsToLink = [ "/include" ];
   environment.extraOutputsToInstall = [ "out" "lib" "bin" "dev" ];
-  environment.variables.NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu = "-I/run/current-system/sw/include";
+  environment.variables = {
+    NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu = "-I/run/current-system/sw/include";
+    PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig";
+  };
 
   programs.ssh = {
     startAgent = true;
