@@ -11,6 +11,7 @@
   cri.programs.packages = with config.cri.programs.packageBundles; [
     dev
     devAsm
+    devGtk
     devSdl
     devRust
   ];
