@@ -10,7 +10,8 @@
 
   cri.programs.packages = with config.cri.programs.packageBundles; [ dev ];
 
-  cri.programs.pythonPackages = [
+  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [
+    dev
     (ps: with ps; [
       nltk
       spacy

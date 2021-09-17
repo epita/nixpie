@@ -15,4 +15,5 @@
     devSdl
     devRust
   ];
+  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
 }

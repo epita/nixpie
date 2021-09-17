@@ -21,6 +21,7 @@ in
     devCsharp
     nixosSupPkgs
   ];
+  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
 
   environment.variables = with pkgs; with ocamlPackages; {
     OCAMLPATH = "${graphics}/lib/ocaml/${ocaml.version}/site-lib/";
