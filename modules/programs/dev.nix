@@ -46,4 +46,8 @@
     subversion
     tig
   ];
+
+  cri.programs.pythonPackageBundles.dev = pythonPackages: with pythonPackages; [
+    pytest
+  ];
 }
