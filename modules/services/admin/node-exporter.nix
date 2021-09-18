@@ -12,7 +12,7 @@ in
       pushGateway = {
         enable = mkEnableOption "push gateway" // { default = true; };
         address = mkOption {
-          default = "http://seedbox.pie.cri.epita.fr:9091";
+          default = "https://pushgateway.pie.cri.epita.fr";
           type = types.str;
         };
         interval = mkOption {
@@ -45,13 +45,18 @@ in
       path = with pkgs; [ curl gnugrep inetutils ];
 
       # grep allows us to avoid conflicting with the pushgateway's own metrics
-      script = ''
-        curl -s http://localhost:9100/metrics | \
-        grep -v "\(\(^\| \)go_\|http_request\|http_requests\|http_response\|process_\)" | \
-        curl --data-binary @- "${cfg.pushGateway.address}/metrics/job/node/instance/$(hostname -f)"
+      script =
+        let
+          versions = concatStringsSep ", " (mapAttrsToList (flake: version: ''${flake}="${version}"'') config.system.nixos.versions);
+        in
+        ''
+          curl -s http://localhost:9100/metrics | \
+            grep -v "\(\(^\| \)go_\|http_request\|http_requests\|http_response\|process_\)" | \
+            curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/node/instance/$(hostname -f)"
 
-        echo "${imageName}" | curl --data-binary @- "${cfg.pushGateway.address}/metrics/job/image/instance/$(hostname -f)"
-      '';
+          echo 'nixpie_image{name="${imageName}", ${versions}} 1' | \
+            curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/image/instance/$(hostname -f)"
+        '';
     };
 
     systemd.timers.node-exporter-pushgateway = mkIf cfg.pushGateway.enable {
