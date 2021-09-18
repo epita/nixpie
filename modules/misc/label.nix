@@ -14,7 +14,6 @@ let
       ;
     nixpie = inputs.self;
   };
-  flakesVersions = mapAttrsToList (name: flake: "${name}-${mkFlakeVersion flake}") flakes;
 in
 {
   options = {
@@ -23,14 +22,19 @@ in
         type = with types; listOf str;
         default = [ ];
       };
+      versions = mkOption {
+        type = with types; attrsOf str;
+      };
     };
   };
 
   config = {
+    system.nixos.versions = mapAttrs (_: flake: mkFlakeVersion flake) flakes;
+
     system.nixos.label = concatStringsSep "_" cfg.labels;
 
     system.nixos.labels = [
       (concatStringsSep "-" (sort (x: y: x < y) cfg.tags))
-    ] ++ flakesVersions;
+    ] ++ (mapAttrsToList (flake: version: "${flake}-${version}") cfg.versions);
   };
 }
