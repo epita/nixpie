@@ -9,8 +9,10 @@
   yubikey = ./programs/yubikey.nix;
 
   machine-state = ./services/admin/machine-state.nix;
+  node-exporter = ./services/admin/node-exporter.nix;
   nuc-led-setter = ./services/admin/nuc-led-setter.nix;
   salt = ./services/admin/salt/minion.nix;
+
   audio = ./services/audio/alsa.nix;
   bluetooth = ./services/hardware/bluetooth.nix;
   afs = ./services/network-filesystems/openafs/client.nix;
