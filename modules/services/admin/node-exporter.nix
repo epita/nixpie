@@ -42,7 +42,7 @@ in
       description = "Push node-exporter metrics to Prometheus PushGateway";
       requires = [ "network-online.target" ];
 
-      path = with pkgs; [ curl gnugrep inetutils ];
+      path = with pkgs; [ curl gnugrep gnused inetutils ];
 
       # grep allows us to avoid conflicting with the pushgateway's own metrics
       script =
@@ -52,7 +52,8 @@ in
         ''
           curl -s http://localhost:9100/metrics | \
             grep -v "\(\(^\| \)go_\|http_request\|http_requests\|http_response\|process_\)" | \
-            curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/node/instance/$(hostname -f)"
+            sed 's/^node_/pie_node_/g' | \
+            curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/pie_node/instance/$(hostname -f)"
 
           echo 'nixpie_image{name="${imageName}", ${versions}} 1' | \
             curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/image/instance/$(hostname -f)"
