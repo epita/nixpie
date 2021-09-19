@@ -42,7 +42,17 @@ in
       description = "Push node-exporter metrics to Prometheus PushGateway";
       requires = [ "network-online.target" ];
 
-      path = with pkgs; [ curl gnugrep gnused inetutils ];
+      path = with pkgs; [ coreutils curl gnugrep gnused gawk gnused iproute ];
+
+      preStart = ''
+        while true; do
+          ip="$(ip a | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | sed 's#/.*$##')"
+          if [ -n "$ip" ] ; then
+            break
+          fi
+          sleep 2
+        done
+      '';
 
       # grep allows us to avoid conflicting with the pushgateway's own metrics
       script =
@@ -50,13 +60,15 @@ in
           versions = concatStringsSep ", " (mapAttrsToList (flake: version: ''${flake}="${version}"'') config.system.nixos.versions);
         in
         ''
+          ip="$(ip a | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | sed 's#/.*$##')"
+
           curl -s http://localhost:9100/metrics | \
             grep -v "\(\(^\| \)go_\|http_request\|http_requests\|http_response\|process_\)" | \
             sed 's/^node_/pie_node_/g' | \
-            curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/pie_node/instance/$(hostname -f)"
+            curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/pie_node/instance/''${ip}"
 
           echo 'nixpie_image{image="${imageName}", ${versions}} 1' | \
-            curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/image/instance/$(hostname -f)"
+            curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/image/instance/''${ip}"
         '';
     };
 
