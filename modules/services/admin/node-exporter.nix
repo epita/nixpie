@@ -16,7 +16,7 @@ in
           type = types.str;
         };
         interval = mkOption {
-          default = "30s";
+          default = "*:*:0/30";
           type = types.str;
           description = ''
             Systemd calendar expression when to push metrics. See
@@ -65,6 +65,9 @@ in
       wantedBy = [ "timers.target" ];
       timerConfig = {
         OnCalendar = cfg.pushGateway.interval;
+        AccuracySec = "30";
+        RandomizedDelaySec = "30";
+        FixedRandomDelay = true;
         Unit = "node-exporter-pushgateway.service";
         Persistent = "yes";
       };
