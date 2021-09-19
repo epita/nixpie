@@ -55,7 +55,7 @@ in
             sed 's/^node_/pie_node_/g' | \
             curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/pie_node/instance/$(hostname -f)"
 
-          echo 'nixpie_image{name="${imageName}", ${versions}} 1' | \
+          echo 'nixpie_image{image="${imageName}", ${versions}} 1' | \
             curl -s --data-binary @- "${cfg.pushGateway.address}/metrics/job/image/instance/$(hostname -f)"
         '';
     };
