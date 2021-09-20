@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -16,4 +16,8 @@
     devRust
   ];
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
+
+  environment.systemPackages = with pkgs; [
+    graphviz
+  ];
 }
