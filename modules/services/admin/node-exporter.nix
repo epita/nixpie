@@ -62,9 +62,6 @@ in
         ''
           ip="$(ip a | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | sed 's#/.*$##')"
 
-          curl -s -X DELETE "${cfg.pushGateway.address}/metrics/job/pie_node/instance/''${ip}"
-          curl -s -X DELETE "${cfg.pushGateway.address}/metrics/job/image/instance/''${ip}"
-
           curl -s http://localhost:9100/metrics | \
             grep -v "\(\(^\| \)go_\|http_request\|http_requests\|http_response\|process_\)" | \
             sed 's/^node_/pie_node_/g' | \
