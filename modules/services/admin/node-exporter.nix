@@ -20,6 +20,17 @@ in
         "logind"
         "systemd"
       ];
+      extraFlags = [
+        "--collector.textfile.directory=/etc/prometheus-node-exporter-textfile"
+      ];
     };
+
+    environment.etc."prometheus-node-exporter-textfile/nixpie.prom".text =
+      let
+        versions = concatStringsSep ", " (mapAttrsToList (flake: version: ''${flake}="${version}"'') config.system.nixos.versions);
+      in
+      ''
+        nixpie_image{image="${imageName}", ${versions}} 1
+      '';
   };
 }
