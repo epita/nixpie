@@ -15,7 +15,12 @@
     devSdl
     devRust
   ];
-  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
+  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [
+    dev
+    (ps: with ps; [
+      graphviz
+    ])
+  ];
 
   environment.systemPackages = with pkgs; [
     graphviz
