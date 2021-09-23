@@ -8,17 +8,15 @@
 , ...
 }@inputs:
 let
+
   nixosSystem = imageName: { isVM ? false }:
     let
       _imageName = if isVM then lib.removeSuffix "-vm" imageName else imageName;
-    in
-    lib.nixosSystem {
-      inherit system;
 
       specialArgs = {
         inherit inputs;
-        inherit imageName;
         nixpie = self;
+        inherit imageName;
       };
 
       modules =
@@ -57,6 +55,24 @@ let
 
         in
         flakeModules ++ [ core global local ] ++ (lib.optional isVM ../profiles/vm);
+    in
+    lib.nixosSystem {
+      inherit system specialArgs;
+
+
+      modules = modules ++ [
+        ({ lib, modulesPath, ... }: {
+          system.build.vm = (import "${modulesPath}/../lib/eval-config.nix" {
+            inherit system specialArgs;
+            modules = modules ++ [
+              "${modulesPath}/virtualisation/qemu-vm.nix"
+              {
+                netboot.enable = lib.mkVMOverride false;
+              }
+            ];
+          }).config.system.build.vm;
+        })
+      ];
     };
 
   hosts = lib.mapAttrs nixosSystem {
