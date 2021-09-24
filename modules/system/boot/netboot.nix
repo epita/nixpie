@@ -42,6 +42,11 @@ with lib;
           description = "Path to the bootcache partition to use.";
         };
       };
+      fallbackNameservers = mkOption {
+        type = types.listOf types.str;
+        default = [ "10.224.21.53" "1.1.1.1" ];
+        description = "List of backup nameservers to use.";
+      };
       home.enable = mkEnableOption "home partition mounting";
       swap.enable = mkEnableOption "home partition mounting";
     };
@@ -170,68 +175,72 @@ with lib;
 
     # Network is done in preLVMCommands, which means it is already set up when
     # we get to postDeviceCommands
-    boot.initrd.postDeviceCommands = ''
-      if ! [ -f /etc/resolv.conf ]; then
-        # In case we didn't receive a nameserver from our DHCP
-        echo "nameserver 10.224.21.53" >> /etc/resolv.conf
-        # Backup in case 10.224.21.53 is not available
-        echo "nameserver 1.1.1.1" >> /etc/resolv.conf
-      fi
+    boot.initrd.postDeviceCommands =
+      let
+        nameservers = (concatMapStrings
+          (ns: ''echo "${ns}" >> /etc/resolv.conf\n'')
+          config.netboot.fallbackNameservers);
+      in
+      ''
+        if ! [ -f /etc/resolv.conf ]; then
+          # In case we didn't receive a nameserver from our DHCP
+          ${nameservers}
+        fi
 
-      imageName="${imageName}"
-      torrentFile="$imageName.torrent"
-      squashfsName="$imageName.squashfs"
+        imageName="${imageName}"
+        torrentFile="$imageName.torrent"
+        squashfsName="$imageName.squashfs"
 
-      torrentDir=${config.netboot.torrent.mountPoint}
-      targetTorrentDir=$targetRoot/$torrentDir
-      mkdir -p $torrentDir $targetRoot $targetTorrentDir
+        torrentDir=${config.netboot.torrent.mountPoint}
+        targetTorrentDir=$targetRoot/$torrentDir
+        mkdir -p $torrentDir $targetRoot $targetTorrentDir
 
-      mount -o bind,ro $torrentDir $targetTorrentDir
+        mount -o bind,ro $torrentDir $targetTorrentDir
 
-      bootcachePartition="${config.netboot.bootcache.partition}"
-      ${optionalString (!config.netboot.bootcache.enable) ''
-        bootcachePartition="/dev/invalid"
-      ''}
+        bootcachePartition="${config.netboot.bootcache.partition}"
+        ${optionalString (!config.netboot.bootcache.enable) ''
+          bootcachePartition="/dev/invalid"
+        ''}
 
-      if [[ -e $bootcachePartition ]]; then
-        if ! mount -t ext4 $bootcachePartition $torrentDir; then
-          echo "Failed to mount bootcache, falling back to tmpfs..."
+        if [[ -e $bootcachePartition ]]; then
+          if ! mount -t ext4 $bootcachePartition $torrentDir; then
+            echo "Failed to mount bootcache, falling back to tmpfs..."
+            mount -t tmpfs tmpfs $torrentDir
+          fi
+        else
+          echo "No bootcache partition found, falling back to tmpfs..."
           mount -t tmpfs tmpfs $torrentDir
         fi
-      else
-        echo "No bootcache partition found, falling back to tmpfs..."
-        mount -t tmpfs tmpfs $torrentDir
-      fi
 
-      rngd >&2
+        rngd >&2
 
-      aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"
-      aria2_tracker="--bt-tracker-connect-timeout=20 --bt-tracker-timeout=20"
-      aria2_summary="--summary-interval=60"
-      aria2_nodht="--enable-dht=false --enable-dht6=false"
-      aria2_noseed="--seed-time=0 --seed-ratio=0"
-      aria2_opts="$aria2_base $aria2_tracker $aria2_summary $aria2_nodht $aria2_noseed"
+        aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"
+        aria2_tracker="--bt-tracker-connect-timeout=20 --bt-tracker-timeout=20"
+        aria2_summary="--summary-interval=60"
+        aria2_nodht="--enable-dht=false --enable-dht6=false"
+        aria2_noseed="--seed-time=0 --seed-ratio=0"
+        aria2_opts="$aria2_base $aria2_tracker $aria2_summary $aria2_nodht $aria2_noseed"
 
-      cp /${config.system.build.torrent.name} $torrentDir/$torrentFile
+        cp /${config.system.build.torrent.name} $torrentDir/$torrentFile
 
-      aria2c $aria2_opts --dir="$torrentDir" --index-out=1="$squashfsName" $torrentDir/$torrentFile > /dev/console
+        aria2c $aria2_opts --dir="$torrentDir" --index-out=1="$squashfsName" $torrentDir/$torrentFile > /dev/console
 
-      if ! [ -f "$torrentDir/$squashfsName" ]; then
-        ls -la $torrentDir
-        echo "Torrent download of '$squashfsName' failed!"
-        fail
-      fi
+        if ! [ -f "$torrentDir/$squashfsName" ]; then
+          ls -la $torrentDir
+          echo "Torrent download of '$squashfsName' failed!"
+          fail
+        fi
 
-      kill -9 $(pidof rngd)
+        kill -9 $(pidof rngd)
 
-      for torrent in $(ls $torrentDir/*.torrent); do
-        torrentname=''${torrent##*/}
-        echo $torrent
-        echo " index-out=1=''${torrentname%.torrent}.squashfs"
-        echo " dir=$torrentDir"
-        echo " check-integrity=true"
-      done > "$torrentDir/aria2_seedlist.txt"
-    '';
+        for torrent in $(ls $torrentDir/*.torrent); do
+          torrentname=''${torrent##*/}
+          echo $torrent
+          echo " index-out=1=''${torrentname%.torrent}.squashfs"
+          echo " dir=$torrentDir"
+          echo " check-integrity=true"
+        done > "$torrentDir/aria2_seedlist.txt"
+      '';
 
     # Usually, stage2Init is passed using the init kernel command line argument
     # but it would be inconvenient to manually change it to the right Nix store
