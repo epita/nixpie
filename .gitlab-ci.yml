@@ -126,6 +126,10 @@ nixos-spe-vm-build:
   variables:
     IMAGE_NAME: nixos-spe-vm
 
+nixos-exec-vm-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-exec-vm
 nixos-test-vm-build:
   <<: *build-image-job
   variables:
@@ -198,6 +202,12 @@ nixos-spe-vm-deploy:
   variables:
     IMAGE_NAME: nixos-spe-vm
 
+nixos-exec-vm-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-exec-vm-build
+  variables:
+    IMAGE_NAME: nixos-exec-vm
 nixos-test-vm-deploy:
   <<: *deploy-image-job
   needs:
