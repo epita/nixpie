@@ -100,7 +100,7 @@
 
           overrides = import ./overlays/overrides.nix { inherit pkgsUnstable pkgsMaster; };
 
-          packages = self.lib.overlaysToPkgs self.overlays pkgs;
+          packages = (self.lib.overlaysToPkgs self.overlays pkgs) // (import ./images/docker.nix (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }));
         });
     in
     recursiveUpdate multiSystemOutputs anySystemOutputs;

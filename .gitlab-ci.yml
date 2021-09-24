@@ -5,14 +5,18 @@ stages:
   - build
   - qa
   - deploy
+  - docker
 
 before_script:
   - mkdir -p /etc/nix
   - cat "${NIX_CONF}" > /etc/nix/nix.conf
   - mkdir -p ~/.aws
   - echo "[default]" > ~/.aws/config
+  # Fix nix errors about dirty tree
   - git switch $CI_COMMIT_REF_NAME
   - git reset --hard $CI_COMMIT_SHA
+  # Fix for skopeo
+  - mkdir -p /var/tmp
 
 
 # Jobs templates
@@ -39,6 +43,17 @@ before_script:
     - aws s3 --endpoint-url "${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "$(readlink -f ./result)" "s3://${AWS_PXE_IMAGES_BUCKET}"
   when: manual
 
+.deploy-docker-image-job: &deploy-docker-image-job
+  stage: docker
+  needs: []
+  script:
+    - export buildExpression=".#${IMAGE_NAME}-docker"
+    - nix -L build "$buildExpression"
+    - nix profile install 'nixpkgs#skopeo'
+    - skopeo login registry.cri.epita.fr --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD}
+    - skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHA
+    - skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE_NAME:latest
+  when: manual
 
 # Lint
 
@@ -189,3 +204,24 @@ nixos-test-vm-deploy:
     - nixos-test-vm-build
   variables:
     IMAGE_NAME: nixos-test-vm
+
+# Docker
+
+nixos-pie-docker:
+  <<: *deploy-docker-image-job
+  needs:
+    - nixos-pie-build
+  variables:
+    IMAGE_NAME: nixos-pie
+nixos-sup-docker:
+  <<: *deploy-docker-image-job
+  needs:
+    - nixos-sup-build
+  variables:
+    IMAGE_NAME: nixos-sup
+nixos-spe-docker:
+  <<: *deploy-docker-image-job
+  needs:
+    - nixos-spe-build
+  variables:
+    IMAGE_NAME: nixos-spe
