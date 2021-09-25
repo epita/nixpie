@@ -53,11 +53,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1630935952,
-        "narHash": "sha256-QW5J5wT7RD9OkGY7SvRgaGQNGtYfQLTwmAQcsGF1IAA=",
+        "lastModified": 1632530275,
+        "narHash": "sha256-NiixL57fYoTNPSOzyeGRPNu7WcZuLlqix6QSzuwBskQ=",
         "ref": "master",
-        "rev": "80ed0d86c2ccc9d4739f3e65b3c9dd96f436751f",
-        "revCount": 73,
+        "rev": "31c2f19f88619fecf2e7d7555b4cd18af4a88e27",
+        "revCount": 74,
         "type": "git",
         "url": "https://gitlab.cri.epita.fr/cri/packages/machine-state.git"
       },
