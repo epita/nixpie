@@ -23,7 +23,7 @@ in
       path = with pkgs; [ coreutils gnugrep gawk gnused iproute ];
 
       environment = {
-        MACHINE_STATE_ENDPOINT = "https://machine-state.pie.cri.epita.fr/session/ping";
+        MACHINE_STATE_ENDPOINT = "https://fleet.pie.cri.epita.fr/api/sessions/ping";
       };
 
       preStart = ''
