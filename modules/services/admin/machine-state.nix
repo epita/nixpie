@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ imageName, config, pkgs, lib, inputs, ... }:
 
 with lib;
 
@@ -24,6 +24,7 @@ in
 
       environment = {
         MACHINE_STATE_ENDPOINT = "https://fleet.pie.cri.epita.fr/api/sessions/ping";
+        IMAGE = imageName;
       };
 
       preStart = ''
