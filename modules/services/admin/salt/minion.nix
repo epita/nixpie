@@ -41,13 +41,7 @@ with lib;
       path = [ "/run/current-system/sw" ];
 
       preStart = ''
-        while true; do
-          ip="$(ip a | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | sed 's#/.*$##')"
-          if [ -n "$ip" ] ; then
-            break
-          fi
-          sleep 2
-        done
+        ip="$(${pkgs.nixpie-utils}/bin/get_ip.sh)"
 
         id="${config.cri.salt.id}-''${ip}"
         sed -i '/^id:/d' /etc/salt/minion

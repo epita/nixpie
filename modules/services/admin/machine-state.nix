@@ -20,7 +20,6 @@ in
       description = "DBus object representing current machine state";
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
-      path = with pkgs; [ coreutils gnugrep gawk gnused iproute ];
 
       environment = {
         MACHINE_STATE_ENDPOINT = "https://fleet.pie.cri.epita.fr/api/sessions/ping";
@@ -28,17 +27,13 @@ in
       };
 
       preStart = ''
-        while true; do
-          ip="$(ip a | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | sed 's#/.*$##')"
-          if [ -n "$ip" ] ; then
-            break
-          fi
-          sleep 2
-        done
+        # We're just waiting for an IP to appear, we don't actually care about
+        # it here
+        ${pkgs.nixpie-utils}/bin/get_ip.sh
       '';
 
       script = ''
-        export MACHINE_STATE_IP="$(ip a | grep 'inet ' | grep -v '127.0.0.1' | head -n1 | awk '{print $2}' | sed 's#/.*$##')"
+        export MACHINE_STATE_IP="$(${pkgs.nixpie-utils}/bin/get_ip.sh)"
         ${machine-state}/bin/machine-state
       '';
     };
