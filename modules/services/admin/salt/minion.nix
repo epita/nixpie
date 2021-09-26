@@ -40,6 +40,10 @@ with lib;
       after = [ "network-online.target" ];
       path = [ "/run/current-system/sw" ];
 
+      serviceConfig = {
+        Restart = "always";
+      };
+
       preStart = ''
         ip="$(${pkgs.nixpie-utils}/bin/get_ip.sh)"
 
