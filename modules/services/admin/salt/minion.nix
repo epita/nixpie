@@ -47,6 +47,10 @@ with lib;
         sed -i '/^id:/d' /etc/salt/minion
         echo -e "\nid: $id" >> /etc/salt/minion
         echo "$id" > /etc/salt/minion_id
+
+        echo "image: ${imageName}" >> /etc/salt/grains
+        echo "room: $(${pkgs.nixpie-utils}/bin/get_room_name.sh)" >> /etc/salt/grains
+        echo "site: $(${pkgs.nixpie-utils}/bin/get_site_name.sh)" >> /etc/salt/grains
       '';
     };
   };
