@@ -4,6 +4,7 @@
 , coreutils
 , gawk
 , gnugrep
+, gnused
 , inetutils
 , iproute2
 }:
@@ -11,7 +12,7 @@
 let
   wait_for_hostname = ''
     n=0
-    until [ "''${n}" -ge 15 ] || [ "${inetutils}/bin/hostname" != "localhost" ]; do
+    until [ "''${n}" -ge 15 ] || ${gnugrep}/bin/grep domain /etc/resolv.conf 2>&1 >/dev/null; do
       n="$(( ''${n} + 1 ))"
       sleep 2
     done
@@ -34,11 +35,15 @@ let
   '';
   get_room_name = writeShellScriptBin "get_room_name.sh" ''
     ${wait_for_hostname}
-    hostname -f | sed 's/.sm.cri.epita.fr//' | cut -d. -f2
+    ${gnugrep}/bin/grep domain /etc/resolv.conf \
+      | ${gawk}/bin/awk '{ print $2 }' \
+      | ${gnused}/bin/sed 's/.sm.cri.epita.fr//' | cut -d. -f1
   '';
   get_site_name = writeShellScriptBin "get_site_name.sh" ''
     ${wait_for_hostname}
-    hostname -f | sed 's/.sm.cri.epita.fr//' | cut -d. -f3
+    ${gnugrep}/bin/grep domain /etc/resolv.conf \
+      | ${gawk}/bin/awk '{ print $2 }' \
+      | ${gnused}/bin/sed 's/.sm.cri.epita.fr//' | cut -d. -f2
   '';
 in
 symlinkJoin {
