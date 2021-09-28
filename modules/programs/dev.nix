@@ -29,6 +29,7 @@
     lcov
     libfff
     ltrace
+    pharaoh
     pkg-config
     rr
     shellcheck
