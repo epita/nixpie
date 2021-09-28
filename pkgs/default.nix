@@ -10,6 +10,7 @@ final: prev:
   m68k = final.qt5.callPackage ./development/tools/m68k { };
   nixpie-utils = final.callPackage ./nixpie-utils { };
   pam_afs_session = final.callPackage ./os-specific/linux/pam_afs_session { };
+  pharaoh = final.callPackage ./development/tools/pharaoh { };
   term_size = final.callPackage ./tools/misc/term_size { };
   sddm-epita-themes = final.callPackage ./applications/display-managers/sddm/sddm-epita-themes.nix { };
 }
