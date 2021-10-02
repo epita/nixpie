@@ -1,9 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   cri.afs.enable = false;
 
   networking.firewall.enable = false;
+
+  services.xserver.windowManager.i3 = {
+    extraSessionCommands = lib.mkAfter ''
+      ${pkgs.rxvt-unicode}/bin/urxvt -e ${pkgs.exam-start}/bin/exam-start &
+    '';
+  };
+
+  environment.systemPackages = with pkgs; [
+    exam-start
+  ];
 
   # Warning: do not use domain names in these rules, at the risk of the
   # firewall starting before a nameserver could be fetched from the DHCP
