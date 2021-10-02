@@ -1,0 +1,279 @@
+#!/usr/bin/env python3
+import sh
+import json
+
+from getpass import getuser
+from termcolor import colored
+from sys import argv, exit, stdout, stderr
+from pathlib import Path
+from datetime import datetime
+from requests import Session
+from requests_gssapi import HTTPSPNEGOAuth, exceptions as spnego_exceptions
+
+EXAM_GIT_SERVER = "exam.pie.cri.epita.fr"
+EXAM_GIT_REMOTE = f"{{login}}@{EXAM_GIT_SERVER}:submissions/{{token}}/{{login}}"
+EXAM_API_BASE = 'https://exam.pie.cri.epita.fr/api'
+
+
+class User:
+    class AuthFailed(RuntimeError):
+        pass
+
+    ATTR_MAP = {
+        'firstname': 'first_name',
+        'lastname': 'last_name',
+        'email': 'email',
+    }
+
+    PHOTO_URL = 'https://photos.cri.epita.fr/square/{login}'
+    USERINFO_ENDPOINT = 'https://cri.epita.fr/api/v2/users/me/'
+
+    def __init__(self, login, session):
+        self.login = login
+        try:
+            r = session.get(self.USERINFO_ENDPOINT)
+        except spnego_exceptions.SPNEGOExchangeError as e:
+            raise self.AuthFailed(str(e))
+
+        if r.status_code != 200:
+            raise self.AuthFailed("status_code={r.status_code}: {r.text}")
+
+        data = r.json()
+
+        if data.get("login") != login:
+            raise self.AuthFailed(f"login mismatch: expected '{login}' got '{data.get('login')}'")
+
+        for attr, key in self.ATTR_MAP.items():
+            setattr(self, attr, data.get(key))
+
+    def __str__(self):
+        return self.login
+
+    def get_full_name(self):
+        return f'{self.firstname} {self.lastname}'
+
+    def set_background(self):
+        try:
+            sh.wget(
+                self.PHOTO_URL.format(login=self.login),
+                '--timeout=5',
+                '-qO',
+                '/tmp/photo',
+            )
+            sh.feh('--bg-center', '/tmp/photo')
+        except sh.ErrorReturnCode:
+            pass
+
+    def configure_git(self):
+        try:
+            sh.git('config', '--global', 'user.email', self.email)
+            sh.git('config', '--global', 'user.name', self.get_full_name())
+            sh.git('config', '--global', 'push.default', 'simple')
+        except sh.ErrorReturnCode:
+            print(
+                colored(
+                    'Error while configuring git',
+                    'red',
+                    attr=['bold'],
+                ),
+            )
+
+    def data(self):
+        return '\n'.join(
+            (
+                f'login : {self.login}',
+                f'firstname: {self.firstname}',
+                f'lastname: {self.lastname}',
+                f'email: {self.email}',
+            ),
+        )
+
+
+class Exam:
+    class CloneError(RuntimeError):
+        pass
+
+    class CannotFetchArchive(RuntimeError):
+        pass
+
+    class UnexpectedResponse(RuntimeError):
+        pass
+
+    class InvalidToken(ValueError):
+        pass
+
+    SUBJECT_PATH = Path('~/subject/').expanduser()
+    SUBMISSION_PATH = Path('~/submission/').expanduser()
+    ARCHIVE_PATH = Path('~/.archive.zip').expanduser()
+    CONTENT_PATH = Path('~/.exam/').expanduser()
+    ALLOW_SUBMISSION_PATH = Path('~/.allow_submission').expanduser()
+    SSH_KNOWN_HOSTS_PATH = Path('~/.ssh/known_hosts').expanduser()
+
+    def __init__(self, token, login, session):
+        self.token = token
+        self.login = login
+        self._data = {}
+        self._http = session
+
+        r = self._http.post(f'{EXAM_API_BASE}/exams/{self.token}/start_time/')
+        if r.status_code == 201:
+            self._data = r.json()
+        elif r.status_code == 404:
+            raise self.InvalidToken
+        else:
+            raise self.UnexpectedResponse(r.status_code)
+
+    @property
+    def allow_submission(self):
+        return self._data.get('exam', {}).get('allow_submission', False)
+
+    def clone_repo(self):
+        try:
+            self.SSH_KNOWN_HOSTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.SSH_KNOWN_HOSTS_PATH, 'w+') as f:
+                sh.Command('ssh-keyscan')(EXAM_GIT_SERVER, _out=f)
+            sh.git(
+                'clone',
+                EXAM_GIT_REMOTE.format(token=self.token, login=self.login),
+                self.SUBMISSION_PATH,
+                _out=stdout,
+                _err=stderr,
+            )
+        except sh.ErrorReturnCode:
+            raise self.CloneError
+
+    def get_archive(self):
+        r = self._http.get(f'{EXAM_API_BASE}/exams/{self.token}/get_archive/')
+        if r.status_code == 403:
+            try:
+                message = ', '.join(r.json().get('errors', ['no reason given by the server']))
+            except json.decoder.JSONDecodeError:
+                message = f'invalid response: {r.text}'
+            raise self.CannotFetchArchive(message)
+        if r.status_code != 200:
+            raise self.UnexpectedResponse(r.status_code)
+        with open(self.ARCHIVE_PATH, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=128):
+                f.write(chunk)
+        sh.unzip(
+            self.ARCHIVE_PATH,
+            '-d', self.CONTENT_PATH,
+            _out=stdout,
+        )
+        self.SUBJECT_PATH.symlink_to(self.CONTENT_PATH / 'subject')
+
+    def make_skel(self):
+        if not sh.ls(self.SUBMISSION_PATH):
+            if (self.CONTENT_PATH / 'skel').exists():
+                skel_path = self.CONTENT_PATH / 'skel'
+                sh.rsync(
+                    '-r',
+                    '--no-perms',
+                    f'{skel_path}/',
+                    Path(self.SUBMISSION_PATH),
+                )
+                sh.git(
+                    '-C', self.SUBMISSION_PATH,
+                    'add', '--all'
+                )
+            sh.git(
+                '-C', self.SUBMISSION_PATH,
+                'commit', '-m', 'exam: start', '--allow-empty',
+            )
+
+    def setup_submission(self):
+        if self.allow_submission:
+            self.ALLOW_SUBMISSION_PATH.touch()
+        else:
+            try:
+                self.ALLOW_SUBMISSION_PATH.unlink()
+            except FileNotFoundError:
+                pass
+
+
+if __name__ == '__main__':
+    print(
+        colored(
+            f"You can restart this script by running {argv[0]}",
+            'yellow',
+        ),
+    )
+
+    if Exam.SUBMISSION_PATH.exists():
+        overwrite = input(
+            colored(
+                "You already started an exam, if you continue you will LOSE"
+                " UNSUBMITED WORK! Do you want to continue? [y/N]",
+                'red',
+                attrs=['bold'],
+            )
+        )
+
+        if overwrite.lower().strip() not in ('y', 'yes'):
+            print('Aborting...')
+            exit(0)
+
+        time = datetime.now().strftime('%Y%m%d-%H%M%S')
+        backup_dir_path = Path(f'~/.backup-{time}').expanduser()
+        Exam.SUBMISSION_PATH.rename(backup_dir_path)
+        sh.rm('-rf', Exam.CONTENT_PATH, Exam.SUBJECT_PATH)
+
+    cri_login = getuser()
+    if cri_login in ["epita", "root"]:
+        print(
+            colored(f"{cri_login} is not a student", 'red', attrs=['bold']),
+            file=stderr,
+        )
+        exit(1)
+
+    session = Session()
+    session.auth = HTTPSPNEGOAuth(opportunistic_auth=True)
+
+    try:
+        user = User(cri_login, session)
+    except User.AuthFailed as e:
+        print(
+            colored(f"Login failed: {e}", 'red', attrs=['bold']),
+            file=stderr,
+        )
+        exit(1)
+
+    print(user.data())
+    print()
+
+    user.configure_git()
+    user.set_background()
+
+    print()
+
+    exam = None
+    while True:
+        token = input(colored('Exam token: ', 'cyan', attrs=['bold']))
+        try:
+            exam = Exam(token, cri_login, session)
+            break
+        except Exam.InvalidToken:
+            print(
+                colored(f"Invalid token: {token}", 'red', attrs=['bold']),
+                file=stderr,
+            )
+        except Exam.UnexpectedResponse as e:
+            print(
+                colored(f"Unable to check token: {e}", 'red', attrs=['bold']),
+                file=stderr,
+            )
+    print(colored('Token is valid', 'green', attrs=['bold']))
+
+    exam.clone_repo()
+    try:
+        exam.get_archive()
+    except Exam.CannotFetchArchive as e:
+        print(
+            colored(f"Unable to fetch subject: {e}", 'red', attrs=['bold']),
+            file=stderr,
+        )
+        exit(1)
+    exam.make_skel()
+    exam.setup_submission()
+
+    print(colored('Exam is ready', 'green', attrs=['bold']))
