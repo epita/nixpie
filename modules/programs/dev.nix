@@ -19,6 +19,7 @@
     capstone
     check
     checkbashisms
+    clang-format-epita
     criterion
     ctags
     dash
