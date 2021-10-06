@@ -26,7 +26,7 @@ writeShellScriptBin "clang-format-epita" ''
       die "Failed to find clang-format configuration at ''${clang_format_file}"
   fi
   
-  ${findutils}/bin/find "$repo" -type f -name '*.[ch]' -exec ${clang-tools}/bin/clang-format --style=file {} ';'
+  ${findutils}/bin/find "$repo" -type f -name '*.[ch]' -exec ${clang-tools}/bin/clang-format --style=file -i {} ';'
 
 '' // {
   meta = with lib; {
