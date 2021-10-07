@@ -77,6 +77,7 @@ let
 
   hosts = lib.mapAttrs nixosSystem {
     "nixos-exec" = { };
+    "nixos-gpgpu" = { };
     "nixos-lan" = { };
     "nixos-nlp" = { };
     "nixos-pie" = { };

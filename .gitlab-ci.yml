@@ -82,6 +82,18 @@ fmt:
 
 # Builds
 
+nixos-gpgpu-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-gpgpu
+nixos-lan-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-lan
+nixos-nlp-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-nlp
 nixos-pie-build:
   <<: *build-image-job
   variables:
@@ -94,14 +106,6 @@ nixos-spe-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-spe
-nixos-nlp-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-nlp
-nixos-lan-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-lan
 
 nixos-test-build:
   <<: *build-image-job
@@ -121,14 +125,14 @@ nixos-pie-vm-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-pie-vm
-nixos-sup-vm-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-sup-vm
 nixos-spe-vm-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-spe-vm
+nixos-sup-vm-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: nixos-sup-vm
 
 nixos-exec-vm-build:
   <<: *build-image-job
@@ -142,36 +146,42 @@ nixos-test-vm-build:
 
 # Deploys
 
-nixos-pie-deploy:
+nixos-gpgpu-deploy:
   <<: *deploy-image-job
   needs:
-    - nixos-pie-build
+    - nixos-gpgpu-build
   variables:
-    IMAGE_NAME: nixos-pie
-nixos-sup-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-sup-build
-  variables:
-    IMAGE_NAME: nixos-sup
-nixos-spe-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-spe-build
-  variables:
-    IMAGE_NAME: nixos-spe
-nixos-nlp-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-nlp-build
-  variables:
-    IMAGE_NAME: nixos-nlp
+    IMAGE_NAME: nixos-gpgpu
 nixos-lan-deploy:
   <<: *deploy-image-job
   needs:
     - nixos-lan-build
   variables:
     IMAGE_NAME: nixos-lan
+nixos-nlp-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-nlp-build
+  variables:
+    IMAGE_NAME: nixos-nlp
+nixos-pie-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-pie-build
+  variables:
+    IMAGE_NAME: nixos-pie
+nixos-spe-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-spe-build
+  variables:
+    IMAGE_NAME: nixos-spe
+nixos-sup-deploy:
+  <<: *deploy-image-job
+  needs:
+    - nixos-sup-build
+  variables:
+    IMAGE_NAME: nixos-sup
 
 nixos-exec-deploy:
   <<: *deploy-image-job
