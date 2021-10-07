@@ -22,7 +22,9 @@ in
 {
   netboot = {
     enable = true;
-    bootcache.enable = false;
+    bootcache.enable = lib.mkForce false;
+    home.enable = lib.mkForce false;
+    swap.enable = lib.mkForce false;
   };
 
   cri = {

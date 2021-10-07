@@ -86,18 +86,10 @@ let
 
     "exam-pie" = { };
 
-    "nixos-exec-vm" = {
-      isVM = true;
-      extraModules = [{
-        netboot = {
-          home.enable = lib.mkForce false;
-          swap.enable = lib.mkForce false;
-        };
-      }];
-    };
+    "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };
-    "nixos-sup-vm" = { isVM = true; };
     "nixos-spe-vm" = { isVM = true; };
+    "nixos-sup-vm" = { isVM = true; };
     "nixos-test-vm" = { isVM = true; };
   };
 in
