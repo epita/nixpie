@@ -47,6 +47,8 @@ in
     ./dev-sql.nix
     ./fuse.nix
     ./games.nix
+    ./gpgpu.nix
+    ./opengl.nix
   ];
 
   config = {

@@ -10,6 +10,7 @@
     man-pages
     man-pages-posix
     pipenv
+    procps
     psmisc
     rsync
     screen
@@ -19,6 +20,7 @@
     tmux
     tree
     udevil
+    utillinux
     unzip
     wget
     zip
