@@ -15,6 +15,12 @@
     "nomodeset"
   ];
 
+  environment.pathsToLink = [
+    "/nvvm"
+    "/nvvmx"
+    "/targets"
+  ];
+
   cri.programs.packages = with config.cri.programs.packageBundles; [
     dev
     gpgpu

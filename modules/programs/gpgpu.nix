@@ -23,6 +23,7 @@
     xorg.libXi
     xorg.libXmu
     xorg.libXrandr
+    xorg.libXtst
     xorg.libXv
     zlib
 
