@@ -24,6 +24,10 @@
     };
 
     futils.url = "github:numtide/flake-utils";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
   outputs =
@@ -37,6 +41,7 @@
     , nuc-led-setter
 
     , futils
+    , flake-compat
     } @ inputs:
     let
       inherit (nixpkgs) lib;
