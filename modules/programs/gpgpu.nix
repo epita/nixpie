@@ -13,6 +13,7 @@
     cudatoolkit
     freeglut
     gperf
+    gitRepo
     libGL
     libGLU
     linuxPackages.nvidia_x11

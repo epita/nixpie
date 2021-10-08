@@ -10,8 +10,11 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  boot.extraModprobeConfig = ''
+    options nvidia NVreg_RestrictProfilingToAdminUsers=0
+  '';
+
   boot.kernelParams = [
-    "NVreg_RestrictProfilingToAdminUsers=0"
     "nomodeset"
   ];
 
