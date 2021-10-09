@@ -77,10 +77,11 @@ let
 
   hosts = lib.mapAttrs nixosSystem {
     "nixos-exec" = { };
+    "nixos-lan" = { };
     "nixos-nlp" = { };
     "nixos-pie" = { };
-    "nixos-sup" = { };
     "nixos-spe" = { };
+    "nixos-sup" = { };
     "nixos-test" = { };
 
     "exam-pie" = { };

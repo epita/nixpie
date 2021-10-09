@@ -46,6 +46,7 @@ in
     ./dev-sdl.nix
     ./dev-sql.nix
     ./fuse.nix
+    ./games.nix
   ];
 
   config = {
