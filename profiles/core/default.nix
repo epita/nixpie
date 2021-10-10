@@ -62,7 +62,10 @@ with lib;
     users.enable = true;
     yubikey.enable = true;
   };
-  programs.vim.defaultEditor = true;
+  programs.vim = {
+    defaultEditor = true;
+    package = pkgs.vim_configurable;
+  };
 
   cri.programs.packages = with config.cri.programs.packageBundles; [ core fuse ];
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ core ];
