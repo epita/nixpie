@@ -13,8 +13,6 @@ stdenv.mkDerivation {
 
   phases = [ "installPhase" "fixupPhase" ];
 
-  preferLocalBuild = true;
-
   src = ./.;
 
   installPhase = ''
