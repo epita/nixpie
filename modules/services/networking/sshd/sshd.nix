@@ -1,7 +1,10 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
 
+let
+  cfg = config.cri.sshd;
+in
 {
   options = {
     cri.sshd = {
@@ -9,19 +12,34 @@ with lib;
         Whether to enable the OpenSSH secure shell daemon, which allows secure
         remote logins.
       '';
+      allowUsers = mkEnableOption ''
+        Allow simple users to log in via SSH.
+      '';
     };
   };
 
-  config = mkIf config.cri.sshd.enable {
+  config = mkIf cfg.enable {
     services.openssh = {
       enable = true;
       passwordAuthentication = false;
       forwardX11 = true;
       challengeResponseAuthentication = false;
-      extraConfig = mkBefore ''
-        AllowUsers root
-        PermitEmptyPasswords no
-      '';
+      extraConfig = mkBefore
+        ((if cfg.allowUsers then ''
+          AllowUsers *
+          AuthorizedKeysCommand /run/wrappers/bin/sss_ssh_authorizedkeys
+          AuthorizedKeysCommandUser nobody
+        '' else ''
+          AllowUsers root
+        '') + ''
+          PermitEmptyPasswords no
+        '');
+    };
+
+    security.wrappers = mkIf cfg.allowUsers {
+      sss_ssh_authorizedkeys = {
+        source = "${pkgs.sssd}/bin/sss_ssh_authorizedkeys";
+      };
     };
 
     environment.etc = {
