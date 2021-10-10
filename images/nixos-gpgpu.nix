@@ -7,6 +7,7 @@
 
   netboot.enable = true;
   cri.sddm.title = "NixOS GPGPU";
+  cri.sshd.allowUsers = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
