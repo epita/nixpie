@@ -5,6 +5,7 @@ final: prev:
   # torchtext = final.python3Packages.callPackage ./development/python-modules/torchtext { };
 
   clang-format-epita = final.callPackage ./development/tools/clang-format-epita { };
+  clonezilla = final.callPackage ./tools/system/clonezilla { };
   exec-tools = final.callPackage ./exec-tools { };
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
   libfff = final.callPackage ./development/libraries/libfff { };
