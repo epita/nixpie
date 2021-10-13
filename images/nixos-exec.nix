@@ -34,6 +34,8 @@ in
     users.createEpitaUser = false;
   };
 
+  boot.supportedFilesystems = [ "nfs" ]; # To create dumps
+
   users.users.root.password = lib.mkForce "";
 
   systemd.services."autovt@tty1" = {
