@@ -9,4 +9,4 @@ if [ ! -b "${BOOTCACHE_PARTITION}" ]; then
   exit 0
 fi
 
-@mkfs.ext4_bin@ -F -L bootcache "${BOOTCACHE_PARTITION}"
+mkfs.ext4 -F -L bootcache "${BOOTCACHE_PARTITION}"

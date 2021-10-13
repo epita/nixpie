@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-@htop_bin@
+htop
