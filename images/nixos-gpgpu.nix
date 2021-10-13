@@ -54,7 +54,7 @@
         overlays = (attrValues nixpie.overlays) ++ [ nixpie.overrides.''${system} ];
       };
     in
-    pkgs.stdenv.mkDerivation {
+    pkgs.mkShell {
       name = "cuda-env-shell";
       buildInputs = with pkgs; [
         git gitRepo gnupg autoconf curl
@@ -68,12 +68,12 @@
           gcc = stdenv.cc;
         })
       ];
-      shellHook = '' + "''" + ''
+      shellHook = with pkgs;'' + "''" + ''
     export CUDA_PATH=''${pkgs.cudatoolkit}
-    export LD_LIBRARY_PATH=''${pkgs.linuxPackages.nvidia_x11}/lib:''${pkgs.ncurses5}/lib
-    export EXTRA_LDFLAGS="-L/lib -L''${pkgs.linuxPackages.nvidia_x11}/lib"
-    export EXTRA_CCFLAGS="-I/usr/include"
-    export PATH=$CUDA_PATH/nsight_compute:$PATH
+    export PATH=$CUDA_PATH/nsight_compute:$CUDA_PATH/nsight_systems/host-linux-x64:$PATH
+    export LD_LIBRARY_PATH=''${linuxPackages.nvidia_x11}/lib:''${ncurses5}/lib:''${libkrb5}/lib:$LD_LIBRARY_PATH
+    export EXTRA_LDFLAGS="-L/lib -L''${linuxPackages.nvidia_x11}/lib $EXTRA_LDFLAGS"
+    export EXTRA_CCFLAGS="-I/usr/include $EXTRA_CCFLAGS"
   '' + "''" + '';
     }
   '';
