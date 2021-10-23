@@ -1,5 +1,5 @@
 default:
-  image: nixpkgs/nix-flakes
+  image: registry.cri.epita.fr/cri/infrastructure/nixpie/nix
 
 stages:
   - build
@@ -8,8 +8,6 @@ stages:
   - docker
 
 before_script:
-  - mkdir -p /etc/nix
-  - cat "${NIX_CONF}" > /etc/nix/nix.conf
   - mkdir -p ~/.aws
   - echo "[default]" > ~/.aws/config
   # Fix nix errors about dirty tree
@@ -247,6 +245,11 @@ nixos-test-vm-deploy:
 
 # Docker
 
+nix-docker:
+  <<: *deploy-docker-image-job
+  needs: []
+  variables:
+    IMAGE_NAME: nix
 nixos-pie-docker:
   <<: *deploy-docker-image-job
   needs:

@@ -23,6 +23,11 @@
       };
     };
 
+    docker-nixpkgs = {
+      url = "github:nix-community/docker-nixpkgs";
+      flake = false;
+    };
+
     futils.url = "github:numtide/flake-utils";
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -40,6 +45,8 @@
     , machine-state
     , nuc-led-setter
 
+    , docker-nixpkgs
+
     , futils
     , flake-compat
     } @ inputs:
@@ -54,7 +61,11 @@
           config = {
             allowUnfree = true;
           };
-          overlays = (attrValues self.overlays) ++ (optional withOverrides self.overrides.${system});
+          overlays =
+            (attrValues self.overlays) ++
+            (optional withOverrides self.overrides.${system}) ++ [
+              (import "${docker-nixpkgs}/overlay.nix")
+            ];
         };
 
       pkgset = system: {
