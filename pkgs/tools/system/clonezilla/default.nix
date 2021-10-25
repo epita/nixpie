@@ -15,6 +15,7 @@
 , gzip
 , lbzip2
 , lrzip
+, lvm2
 , lzop
 , ncurses
 , ntfs3g
@@ -24,6 +25,7 @@
 , pbzip2
 , pigz
 , pixz
+, procps
 , screen
 , sshfs
 , xz
@@ -112,6 +114,7 @@ buildFHSUserEnv {
     gzip
     lbzip2
     lrzip
+    lvm2
     lzop
     ntfs3g
     (partclone.overrideAttrs (old: {
@@ -121,8 +124,10 @@ buildFHSUserEnv {
     parted
     partimage
     pbzip2
+    perl
     pigz
     pixz
+    procps
     screen
     sshfs
     xz
