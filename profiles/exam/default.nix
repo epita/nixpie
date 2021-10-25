@@ -3,6 +3,10 @@
 {
   cri.afs.enable = false;
 
+  netboot = {
+    nix-store-rw.enable = false;
+  };
+
   networking.firewall.enable = false;
 
   services.xserver.windowManager.i3 = {
