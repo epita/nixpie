@@ -88,7 +88,6 @@ let
     "exam-pie" = { };
 
     "nixos-exec-vm" = { isVM = true; };
-    "nixos-gpgpu-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };
     "nixos-spe-vm" = { isVM = true; };
     "nixos-sup-vm" = { isVM = true; };

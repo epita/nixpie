@@ -167,6 +167,7 @@ with lib;
       extraUtilsCommands = ''
         copy_bin_and_libs ${pkgs.aria2}/bin/aria2c
         copy_bin_and_libs ${pkgs.rng-tools}/bin/rngd
+        copy_bin_and_libs ${pkgs.e2fsprogs}/bin/mke2fs
         copy_bin_and_libs ${pkgs.e2fsprogs}/bin/mkfs.ext4
       '';
     };
