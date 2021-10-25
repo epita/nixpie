@@ -93,6 +93,8 @@ let
     "nixos-spe-vm" = { isVM = true; };
     "nixos-sup-vm" = { isVM = true; };
     "nixos-test-vm" = { isVM = true; };
+
+    "france-ioi" = { };
   };
 in
 hosts

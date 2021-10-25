@@ -145,6 +145,11 @@ nixos-test-vm-build:
   variables:
     IMAGE_NAME: nixos-test-vm
 
+france-ioi-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: france-ioi
+
 
 # Deploys
 
@@ -242,6 +247,13 @@ nixos-test-vm-deploy:
     - nixos-test-vm-build
   variables:
     IMAGE_NAME: nixos-test-vm
+
+france-ioi-deploy:
+  <<: *deploy-image-job
+  needs:
+    - france-ioi-build
+  variables:
+    IMAGE_NAME: france-ioi
 
 # Docker
 
