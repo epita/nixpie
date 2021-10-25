@@ -29,7 +29,14 @@ with lib;
       };
 
       script = ''
-        ${pkgs.aria2}/bin/aria2c --enable-dht=false --seed-ratio=0 -V -i ${config.cri.aria2.seedlist}
+        aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"
+        aria2_tracker="--bt-tracker-connect-timeout=20 --bt-tracker-timeout=20"
+        aria2_summary="--summary-interval=60"
+        aria2_nodht="--enable-dht=false --enable-dht6=false"
+        aria2_noseed="--seed-time=0 --seed-ratio=0"
+        aria2_opts="$aria2_base $aria2_tracker $aria2_summary $aria2_nodht $aria2_noseed"
+
+        ${pkgs.aria2}/bin/aria2c $aria2_opts --check-integrity --input-file=${config.cri.aria2.seedlist}
       '';
     };
   };

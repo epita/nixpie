@@ -2,11 +2,17 @@
 
 set -euo pipefail
 
-BOOTCACHE_PARTITION="/dev/disk/by-partlabel/bootcache"
+clear_partition() {
+  label="${1}"
+  partition="/dev/disk/by-partlabel/${label}"
 
-if [ ! -b "${BOOTCACHE_PARTITION}" ]; then
-  echo "No bootcache partition found. Exiting..."
-  exit 0
-fi
+  if [ ! -b "${partition}" ]; then
+    echo "No ${label} partition found. Exiting..."
+    return
+  fi
 
-mkfs.ext4 -F -L bootcache "${BOOTCACHE_PARTITION}"
+  mkfs.ext4 -F -L "${label}" "${partition}"
+}
+
+clear_partition bootcache
+clear_partition nix-store-rw

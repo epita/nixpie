@@ -48,7 +48,8 @@ with lib;
         description = "List of backup nameservers to use.";
       };
       home.enable = mkEnableOption "home partition mounting";
-      swap.enable = mkEnableOption "home partition mounting";
+      swap.enable = mkEnableOption "swap partition mounting";
+      nix-store-rw.enable = mkEnableOption "Nix Store read-write partition mounting" // { default = true; };
     };
   };
 
@@ -75,9 +76,10 @@ with lib;
         neededForBoot = true;
       };
 
-      "/nix/.rw-store" = {
-        fsType = "tmpfs";
-        options = [ "mode=0755" ];
+      "/nix/.rw-store" = mkIf config.netboot.nix-store-rw.enable {
+        fsType = "ext4";
+        device = "/dev/disk/by-partlabel/nix-store-rw";
+        options = [ "nofail" "x-systemd.device-timeout=15s" ];
         neededForBoot = true;
       };
 
@@ -165,6 +167,7 @@ with lib;
       extraUtilsCommands = ''
         copy_bin_and_libs ${pkgs.aria2}/bin/aria2c
         copy_bin_and_libs ${pkgs.rng-tools}/bin/rngd
+        copy_bin_and_libs ${pkgs.e2fsprogs}/bin/mkfs.ext4
       '';
     };
 
@@ -185,6 +188,15 @@ with lib;
         if ! [ -f /etc/resolv.conf ]; then
           # In case we didn't receive a nameserver from our DHCP
           ${nameservers}
+        fi
+
+        nixStoreRwPartition="/dev/disk/by-partlabel/nix-store-rw"
+        if [[ -e $nixStoreRwPartition ]]; then
+          if ! mkfs.ext4 -F -L nix-store-rw /dev/disk/by-partlabel/nix-store-rw; then
+            echo "Failed to cleanup nix-store-rw partition"
+          fi
+        else
+          echo "No nix-store-rw partition found."
         fi
 
         imageName="${imageName}"

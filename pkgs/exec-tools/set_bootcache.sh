@@ -27,6 +27,7 @@ fi
 
 echo "Setting partitions on ${DISK_NAME}"
 echo "  - bootcache (32G)"
+echo "  - nix-store-rw (32G)"
 echo "ALL THIS DISK CONTENT WILL BE ERASED!"
 echo "Press Ctrl+C to cancel..."
 echo "Waiting 10 seconds before starting..."
@@ -39,7 +40,11 @@ sgdisk --clear "${DISK_NAME}"
 sgdisk --new 1:2M:+32G "${DISK_NAME}"
 sgdisk --change-name 1:bootcache "${DISK_NAME}"
 
+sgdisk --new 2:0:+32G "${DISK_NAME}"
+sgdisk --change-name 2:nix-store-rw "${DISK_NAME}"
+
 partx --update "${DISK_NAME}"
 sleep 5
 
 mkfs.ext4 -F -L bootcache /dev/disk/by-partlabel/bootcache
+mkfs.ext4 -F -L nix-store-rw /dev/disk/by-partlabel/nix-store-rw

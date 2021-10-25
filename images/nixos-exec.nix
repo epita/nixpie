@@ -23,6 +23,7 @@ in
   netboot = {
     enable = true;
     bootcache.enable = lib.mkForce false;
+    nix-store-rw.enable = lib.mkForce false;
     home.enable = lib.mkForce false;
     swap.enable = lib.mkForce false;
   };
