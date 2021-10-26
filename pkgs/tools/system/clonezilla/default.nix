@@ -11,6 +11,7 @@
 , dialog
 , dosfstools
 , ecryptfs
+, file
 , gptfdisk
 , gzip
 , lbzip2
@@ -110,6 +111,7 @@ buildFHSUserEnv {
     dialog
     dosfstools
     ecryptfs
+    file
     gptfdisk
     gzip
     lbzip2
