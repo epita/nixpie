@@ -59,6 +59,7 @@ in
     ./dev-rust.nix
     ./dev-sdl.nix
     ./dev-sql.nix
+    ./dev-tiger.nix
     ./fuse.nix
     ./games.nix
     ./gpgpu.nix
