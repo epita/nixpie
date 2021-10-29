@@ -9,6 +9,7 @@ rec {
   clonezilla = final.callPackage ./tools/system/clonezilla { };
   exam-start = final.callPackage ./exam-start { };
   exec-tools = final.callPackage ./exec-tools { };
+  havm = final.callPackage ./development/tools/havm { };
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
   libfff = final.callPackage ./development/libraries/libfff { };
   m68k = final.qt5.callPackage ./development/tools/m68k { };
