@@ -10,6 +10,8 @@ let
     ! colors
     *.foreground      : white
     *.background      : black
+    ! make dark blue color more readable
+    *.color12         : #2ca2f5
 
     URxvt.font        : xft:DejaVu Sans Mono:pixelsize=10:antialias=true:hinting=true
   '';
