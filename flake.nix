@@ -10,6 +10,8 @@
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
+    nixpkgsNlp.url = "github:rissson/nixpkgs/nixos-nlp-21.05";
+
     machine-state = {
       url = "git+https://gitlab.cri.epita.fr/cri/packages/machine-state.git";
       inputs = {
@@ -41,6 +43,8 @@
     , nixpkgs
     , nixpkgsUnstable
     , nixpkgsMaster
+
+    , nixpkgsNlp
 
     , machine-state
     , nuc-led-setter

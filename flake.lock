@@ -130,6 +130,22 @@
         "type": "github"
       }
     },
+    "nixpkgsNlp": {
+      "locked": {
+        "lastModified": 1635952775,
+        "narHash": "sha256-sj2yj6G8tiwSaKLCiaKaLJzZCq7t7xnn0jX3SyqTehk=",
+        "owner": "rissson",
+        "repo": "nixpkgs",
+        "rev": "3a087c8041f55f89e255c92f58d9fbfc7688fb12",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rissson",
+        "ref": "nixos-nlp-21.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgsUnstable": {
       "locked": {
         "lastModified": 1635781173,
@@ -175,6 +191,7 @@
         "machine-state": "machine-state",
         "nixpkgs": "nixpkgs",
         "nixpkgsMaster": "nixpkgsMaster",
+        "nixpkgsNlp": "nixpkgsNlp",
         "nixpkgsUnstable": "nixpkgsUnstable",
         "nuc-led-setter": "nuc-led-setter"
       }

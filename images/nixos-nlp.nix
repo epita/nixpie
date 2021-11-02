@@ -1,5 +1,13 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, system, ... }:
 
+let
+  pkgsNlp = import inputs.nixpkgsNlp {
+    inherit system;
+    config = {
+      allowUnfree = true;
+    };
+  };
+in
 {
   imports = [
     ../profiles/graphical
@@ -12,18 +20,21 @@
 
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [
     dev
-    (ps: with ps; [
-      nltk
-      spacy
-      transformers
-      jupyterlab
-      ipywidgets
-      scikit-learn
-      tqdm
+    (_: with pkgsNlp.python3Packages; [
+      annoy
+      beir
+      datasets
       fasttext
       gensim
+      hnswlib
+      ipywidgets
+      jupyterlab
+      nltk
       pytorch
-      datasets
+      scikit-learn
+      spacy
+      tqdm
+      transformers
     ])
   ];
 }

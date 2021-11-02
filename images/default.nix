@@ -14,7 +14,7 @@ let
       _imageName = if isVM then lib.removeSuffix "-vm" imageName else imageName;
 
       specialArgs = {
-        inherit inputs;
+        inherit inputs system;
         nixpie = self;
         inherit imageName;
       };
