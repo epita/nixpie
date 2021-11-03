@@ -86,6 +86,7 @@ let
     "nixos-test" = { };
 
     "exam-pie" = { };
+    "exam-prepa" = { };
 
     "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };

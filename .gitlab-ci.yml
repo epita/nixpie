@@ -118,6 +118,10 @@ exam-pie-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: exam-pie
+exam-prepa-build:
+  <<: *build-image-job
+  variables:
+    IMAGE_NAME: exam-prepa
 
 nixos-pie-vm-build:
   <<: *build-image-job
@@ -205,6 +209,12 @@ exam-pie-deploy:
     - exam-pie-build
   variables:
     IMAGE_NAME: exam-pie
+exam-prepa-deploy:
+  <<: *deploy-image-job
+  needs:
+    - exam-prepa-build
+  variables:
+    IMAGE_NAME: exam-prepa
 
 nixos-pie-vm-deploy:
   <<: *deploy-image-job
