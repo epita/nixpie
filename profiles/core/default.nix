@@ -14,9 +14,9 @@ with lib;
     package = pkgs.nixFlakes;
     systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-    autoOptimiseStore = true;
-    gc.automatic = true;
-    optimise.automatic = true;
+    autoOptimiseStore = false;
+    gc.automatic = false;
+    optimise.automatic = false;
 
     useSandbox = true;
 
