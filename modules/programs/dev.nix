@@ -8,6 +8,8 @@
     automake
     cmake
     gnumake
+    meson
+    ninja
 
     # compilers
     clang
@@ -32,6 +34,7 @@
     ltrace
     pharaoh
     pkg-config
+    readline
     rr
     shellcheck
     strace
