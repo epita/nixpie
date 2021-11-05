@@ -22,6 +22,10 @@ in
       after = (optional config.cri.machine-state.enable "machine-state.service");
       path = [ pkgs.kmod ];
 
+      serviceConfig = {
+        Restart = "always";
+      };
+
       preStart = ''
         modprobe nuc_led
       '';

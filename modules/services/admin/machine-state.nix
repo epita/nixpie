@@ -21,6 +21,10 @@ in
       wantedBy = [ "multi-user.target" ];
       after = [ "network-online.target" ];
 
+      serviceConfig = {
+        Restart = "always";
+      };
+
       environment = {
         MACHINE_STATE_ENDPOINT = "https://fleet.pie.cri.epita.fr/api/sessions/ping";
         IMAGE = imageName;
