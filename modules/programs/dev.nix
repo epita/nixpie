@@ -12,9 +12,9 @@
     ninja
 
     # compilers
-    clang
+    clang_12
     gcc
-    llvm
+    llvmPackages_12.llvm
 
     # misc
     bintools
