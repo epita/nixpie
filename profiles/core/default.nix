@@ -46,6 +46,20 @@ with lib;
       "2.nixos.pool.ntp.org"
       "3.nixos.pool.ntp.org"
     ];
+    firewall = {
+      allowedTCPPortRanges = [
+        {
+          from = 42000;
+          to = 42999;
+        }
+      ];
+      allowedUDPPortRanges = [
+        {
+          from = 42000;
+          to = 42999;
+        }
+      ];
+    };
   };
 
   security = {
