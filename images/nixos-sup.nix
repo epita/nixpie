@@ -1,4 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+with lib;
 
 let
   nixosSupPkgs = with pkgs; [
@@ -18,13 +20,10 @@ in
   cri.programs.packages = with config.cri.programs.packageBundles; [
     dev
     devOcaml
+    devAfit
     devCsharp
     nixosSupPkgs
   ];
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
-
-  environment.variables = with pkgs; with ocamlPackages; {
-    OCAMLPATH = "${graphics}/lib/ocaml/${ocaml.version}/site-lib/";
-    CAML_LD_LIBRARY_PATH = "${graphics}/lib/ocaml/${ocaml.version}/site-lib/stublibs";
-  };
+  cri.programs.ocamlPackages = with config.cri.programs.ocamlPackageBundles; [ dev devAfit ];
 }

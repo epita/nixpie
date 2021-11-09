@@ -20,6 +20,13 @@ in
         example = literalExample "{ core = pythonPackages: with pythonPackages; [ pip virtualenv ]; }";
       };
 
+      ocamlPackageBundles = mkOption {
+        type = with types; attrsOf (listOf package);
+        default = { };
+        description = "Set of ocaml package bundles.";
+        example = literalExample "{ core = with pkgs.ocamlPackages; [ findlib ]; }";
+      };
+
       packages = mkOption {
         default = [ ];
         type = with types; listOf (oneOf [ package (listOf package) ]);
@@ -31,6 +38,12 @@ in
         type = with types; listOf (functionTo (listOf package));
         description = "Python packages to install.";
       };
+
+      ocamlPackages = mkOption {
+        default = [ ];
+        type = with types; listOf (listOf package);
+        description = "Ocaml packages to install.";
+      };
     };
   };
 
@@ -38,6 +51,7 @@ in
     ./core.nix
     ./desktop.nix
     ./dev.nix
+    ./dev-afit.nix
     ./dev-asm.nix
     ./dev-csharp.nix
     ./dev-gtk.nix
@@ -54,6 +68,11 @@ in
   config = {
     environment.systemPackages = (flatten cfg.packages) ++ [
       (pkgs.python3.withPackages (ps: flatten (map (set: set ps) cfg.pythonPackages)))
-    ];
+    ] ++ (flatten cfg.ocamlPackages);
+
+    environment.variables = {
+      OCAMLPATH = concatMapStringsSep ":" (pkg: "${pkg}/lib/ocaml/${pkgs.ocaml.version}/site-lib/") (flatten cfg.ocamlPackages);
+      CAML_LD_LIBRARY_PATH = concatMapStringsSep ":" (pkg: "${pkg}/lib/ocaml/${pkgs.ocaml.version}/site-lib/stublibs") (flatten cfg.ocamlPackages);
+    };
   };
 }

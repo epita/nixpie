@@ -8,6 +8,7 @@
 , system
 , ...
 }@inputs:
+with lib;
 let
   inherit (pkgset) pkgs;
   mkDockerImage = image: config: pkgs.dockerTools.buildLayeredImage {
@@ -17,12 +18,19 @@ let
       mkdir -p /tmp
     '';
     config = {
-      # See profiles/core/default.nix
-      Env = [
-        "NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu=-I/include"
-        "NIX_CFLAGS_LINK_x86_64_unknown_linux_gnu=-L/lib"
-        "PKG_CONFIG_PATH=/lib/pkgconfig"
-      ];
+      # See profiles/core/default.nix and modules/programs/programs.nix
+      Env =
+        let
+          OCAMLPATH = concatMapStringsSep ":" (pkg: "${pkg}/lib/ocaml/${pkgs.ocaml.version}/site-lib/") (flatten config.cri.programs.ocamlPackages);
+          CAML_LD_LIBRARY_PATH = concatMapStringsSep ":" (pkg: "${pkg}/lib/ocaml/${pkgs.ocaml.version}/site-lib/stublibs") (flatten config.cri.programs.ocamlPackages);
+        in
+        [
+          "NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu=-I/include"
+          "NIX_CFLAGS_LINK_x86_64_unknown_linux_gnu=-L/lib"
+          "PKG_CONFIG_PATH=/lib/pkgconfig"
+          "OCAMLPATH=${OCAMLPATH}"
+          "CAML_LD_LIBRARY_PATH=${CAML_LD_LIBRARY_PATH}"
+        ];
     };
   };
 in
