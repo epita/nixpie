@@ -5,10 +5,14 @@
     file
     git
     htop
+    iftop
+    iotop
     iproute
+    ldns
     lsof
     man-pages
     man-pages-posix
+    pciutils
     pipenv
     procps
     psmisc
@@ -20,6 +24,7 @@
     tmux
     tree
     udevil
+    usbutils
     utillinux
     unzip
     wget
