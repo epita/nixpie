@@ -26,7 +26,8 @@ in
       };
 
       environment = {
-        MACHINE_STATE_ENDPOINT = "https://fleet.pie.cri.epita.fr/api/sessions/ping";
+        MACHINE_STATE_SESSION_ENDPOINT = "https://fleet.pie.cri.epita.fr/api/sessions/ping";
+        MACHINE_STATE_ISSUES_ENDPOINT = "https://fleet.pie.cri.epita.fr/api/fleet/issues/";
         IMAGE = imageName;
       };
 
