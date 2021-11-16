@@ -5,6 +5,7 @@
     atk
     cairo
     gdk-pixbuf
+    glade
     glib
     gtk3
     gtk3-x11
