@@ -109,10 +109,7 @@ with lib;
   };
 
   programs.ssh = {
-    startAgent = true;
     extraConfig = ''
-      AddKeysToAgent yes
-
       Host exam.pie.cri.epita.fr
         GSSAPIAuthentication yes
       Host git.cri.epita.fr
@@ -121,5 +118,16 @@ with lib;
         GSSAPIAuthentication yes
         GSSAPIDelegateCredentials yes
     '';
+  };
+
+  programs.gnupg = {
+    dirmngr.enable = true;
+    agent = {
+      enable = true;
+      pinentryFlavor = "gtk2";
+      enableBrowserSocket = true;
+      enableExtraSocket = true;
+      enableSSHSupport = true;
+    };
   };
 }
