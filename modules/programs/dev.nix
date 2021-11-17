@@ -53,6 +53,8 @@
   ];
 
   cri.programs.pythonPackageBundles.dev = pythonPackages: with pythonPackages; [
+    ipython
+    jupyterlab
     pytest
   ];
 }

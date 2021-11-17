@@ -28,7 +28,6 @@ in
       gensim
       hnswlib
       ipywidgets
-      jupyterlab
       nltk
       pytorch
       scikit-learn
