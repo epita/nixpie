@@ -66,6 +66,8 @@ with lib;
     protectKernelImage = true;
   };
 
+  hardware.enableRedistributableFirmware = true;
+
   cri = {
     aria2.enable = true;
     machine-state.enable = true;
