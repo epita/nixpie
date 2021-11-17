@@ -15,8 +15,12 @@ with lib;
     hardware = {
       pulseaudio = {
         enable = true;
+        systemWide = true;
         package = mkIf config.cri.bluetooth.enable pkgs.pulseaudioFull;
         extraModules = optional config.cri.bluetooth.enable pkgs.pulseaudio-modules-bt;
+        extraConfig = ''
+          load-module module-native-protocol-unix auth-anonymous=1
+        '';
       };
     };
 
