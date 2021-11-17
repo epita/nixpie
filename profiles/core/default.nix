@@ -122,4 +122,15 @@ with lib;
         GSSAPIDelegateCredentials yes
     '';
   };
+
+  programs.gnupg = {
+    dirmngr.enable = true;
+    agent = {
+      enable = true;
+      pinentryFlavor = "gtk2";
+      enableBrowserSocket = true;
+      enableExtraSocket = true;
+      enableSSHSupport = false;
+    };
+  };
 }
