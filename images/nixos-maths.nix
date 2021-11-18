@@ -20,6 +20,13 @@ in
 
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [
     dev
+    (p: with p; [
+      jupyterlab
+      numpy
+      matplotlib
+      scikitimage
+      scipy
+    ])
     (_: with pkgsMaths.python3Packages; [
       annoy
       beir
