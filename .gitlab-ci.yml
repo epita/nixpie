@@ -20,8 +20,9 @@ ci generation:
   stage: bootstrap
   script:
     - nix -L build .#ci.x86_64-linux
-  paths:
-    - result/*
+  artifacts:
+    paths:
+      - result/*
 
 all ci:
   stage: triggers
