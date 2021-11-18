@@ -68,7 +68,7 @@ in
 
   config = {
     environment.systemPackages = (flatten cfg.packages) ++ [
-      (pkgs.python3.withPackages (ps: flatten (map (set: set ps) cfg.pythonPackages)))
+      ((pkgs.python3.withPackages (ps: flatten (map (set: set ps) cfg.pythonPackages))).override (args: { ignoreCollisions = true; }))
     ] ++ (flatten cfg.ocamlPackages);
 
     environment.variables = {
