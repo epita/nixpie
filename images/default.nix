@@ -54,7 +54,8 @@ let
               };
             };
 
-            system.configurationRevision = lib.mkIf (self ? rev) self.rev;
+            environment.etc."nixos-version".text = lib.mkIf (self ? rev) self.rev;
+            system.configurationRevision = null; # triggers rebuild of mandb
           };
 
           local = import "${toString ./.}/${_imageName}.nix";
