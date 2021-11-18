@@ -18,6 +18,8 @@ before_script:
 
 ci generation:
   stage: bootstrap
+  tags:
+    - nix
   script:
     - nix -L build .#ci.x86_64-linux
   artifacts:
