@@ -79,7 +79,7 @@ let
     "nixos-exec" = { };
     "nixos-gpgpu" = { };
     "nixos-lan" = { };
-    "nixos-nlp" = { };
+    "nixos-maths" = { };
     "nixos-pie" = { };
     "nixos-spe" = { };
     "nixos-sup" = { };

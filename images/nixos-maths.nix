@@ -1,7 +1,7 @@
 { config, pkgs, inputs, system, ... }:
 
 let
-  pkgsNlp = import inputs.nixpkgsNlp {
+  pkgsMaths = import inputs.nixpkgsMaths {
     inherit system;
     config = {
       allowUnfree = true;
@@ -14,13 +14,13 @@ in
   ];
 
   netboot.enable = true;
-  cri.sddm.title = "NixOS NLP";
+  cri.sddm.title = "NixOS Maths";
 
   cri.programs.packages = with config.cri.programs.packageBundles; [ dev ];
 
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [
     dev
-    (_: with pkgsNlp.python3Packages; [
+    (_: with pkgsMaths.python3Packages; [
       annoy
       beir
       datasets

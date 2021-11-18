@@ -88,10 +88,10 @@ nixos-lan-build:
   <<: *build-image-job
   variables:
     IMAGE_NAME: nixos-lan
-nixos-nlp-build:
+nixos-maths-build:
   <<: *build-image-job
   variables:
-    IMAGE_NAME: nixos-nlp
+    IMAGE_NAME: nixos-maths
 nixos-pie-build:
   <<: *build-image-job
   variables:
@@ -165,12 +165,12 @@ nixos-lan-deploy:
     - nixos-lan-build
   variables:
     IMAGE_NAME: nixos-lan
-nixos-nlp-deploy:
+nixos-maths-deploy:
   <<: *deploy-image-job
   needs:
-    - nixos-nlp-build
+    - nixos-maths-build
   variables:
-    IMAGE_NAME: nixos-nlp
+    IMAGE_NAME: nixos-maths
 nixos-pie-deploy:
   <<: *deploy-image-job
   needs:

@@ -130,7 +130,7 @@
         "type": "github"
       }
     },
-    "nixpkgsNlp": {
+    "nixpkgsMaths": {
       "locked": {
         "lastModified": 1635952775,
         "narHash": "sha256-sj2yj6G8tiwSaKLCiaKaLJzZCq7t7xnn0jX3SyqTehk=",
@@ -141,7 +141,7 @@
       },
       "original": {
         "owner": "rissson",
-        "ref": "nixos-nlp-21.05",
+        "ref": "nixos-maths-21.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -191,7 +191,7 @@
         "machine-state": "machine-state",
         "nixpkgs": "nixpkgs",
         "nixpkgsMaster": "nixpkgsMaster",
-        "nixpkgsNlp": "nixpkgsNlp",
+        "nixpkgsMaths": "nixpkgsMaths",
         "nixpkgsUnstable": "nixpkgsUnstable",
         "nuc-led-setter": "nuc-led-setter"
       }
