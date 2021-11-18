@@ -42,7 +42,16 @@ let
               nixpkgs.flake = nixpkgs;
               nixpkgsUnstable.flake = nixpkgsUnstable;
               nixpkgsMaster.flake = nixpkgsMaster;
-              nixpie.flake = self;
+              nixpie = {
+                from = {
+                  id = "nixpie";
+                  type = "indirect";
+                };
+                to = {
+                  type = "git";
+                  url = "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie.git";
+                };
+              };
             };
 
             system.configurationRevision = lib.mkIf (self ? rev) self.rev;
