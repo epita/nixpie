@@ -2,6 +2,15 @@
 
 with lib;
 
+let
+  sddm-epita-themes = pkgs.sddm-epita-themes.override {
+    extraThemeConfig = ''
+      logo=epita.png
+      title="-- ${config.cri.sddm.title} --"
+      footer="nixos-system-${config.system.name}-${config.system.nixos.label}"
+    '';
+  };
+in
 {
   options = {
     cri.sddm = {
@@ -23,18 +32,6 @@ with lib;
   };
 
   config = mkIf config.cri.sddm.enable {
-    environment.systemPackages = with pkgs; [
-      (
-        sddm-epita-themes.override {
-          extraThemeConfig = ''
-            logo=epita.png
-            title="-- ${config.cri.sddm.title} --"
-            footer="nixos-system-${config.system.name}-${config.system.nixos.label}"
-          '';
-        }
-      )
-    ];
-
     services.xserver.displayManager = {
       autoLogin = {
         inherit (config.cri.sddm.autoLogin) enable user;
@@ -44,6 +41,7 @@ with lib;
         autoNumlock = true;
         autoLogin.relogin = true;
         theme = "epita-simplyblack";
+        settings.Theme.ThemeDir = "${sddm-epita-themes}/share/sddm/themes";
       };
     };
 
