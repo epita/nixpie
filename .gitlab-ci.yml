@@ -1,9 +1,7 @@
-default:
-  image: registry.cri.epita.fr/cri/infrastructure/nixpie/nix
-
 stages:
   - build
   - qa
+  - signing
   - deploy
   - docker
 
@@ -13,37 +11,37 @@ before_script:
   # Fix nix errors about dirty tree
   - git switch $CI_COMMIT_REF_NAME
   - git reset --hard $CI_COMMIT_SHA
-  # Fix for skopeo
-  - mkdir -p /var/tmp
-
 
 # Jobs templates
 
 .build-image-job: &build-image-job
   stage: build
   needs: []
+  tags:
+    - nix
   script:
-    - cat "${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
     - export buildExpression=".#nixosConfigurations.${IMAGE_NAME}.config.system.build.toplevel"
     - nix -L build "$buildExpression"
-    - nix store sign --recursive --key-file "${NIX_CACHE_PRIV_KEY_FILE}" --all
-    - nix copy --to "s3://${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=${AWS_NIX_CACHE_ENDPOINT}" --all
 
 .deploy-image-job: &deploy-image-job
   stage: deploy
   needs:
     - qa
+  tags:
+    - nix
   script:
-    - cat "${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
     - export buildExpression=".#nixosConfigurations.${IMAGE_NAME}.config.system.build.toplevel-netboot"
     - nix -L build "$buildExpression"
     - nix profile install 'nixpkgs#awscli'
+    - cat "${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
     - aws s3 --endpoint-url "${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "$(readlink -f ./result)" "s3://${AWS_PXE_IMAGES_BUCKET}"
   when: manual
 
 .deploy-docker-image-job: &deploy-docker-image-job
   stage: docker
   needs: []
+  tags:
+    - nix
   script:
     - export buildExpression=".#${IMAGE_NAME}-docker"
     - nix -L build "$buildExpression"
@@ -58,6 +56,8 @@ before_script:
 check:
   stage: qa
   needs: []
+  tags:
+    - nix
   script:
     - nix flake show
     # - nix flake check
@@ -65,6 +65,8 @@ check:
 fmt:
   stage: qa
   needs: []
+  tags:
+    - nix
   script:
     - nix profile install 'nixpkgs#nixpkgs-fmt' 'nixpkgs#findutils'
     - nixpkgs-fmt --check $(find -name \*.nix)
@@ -76,6 +78,24 @@ fmt:
     expose_as: "nixpkgs-fmt diff"
     paths:
       - nixpkgs-fmt.diff
+
+
+# Signing
+
+nix store signing:
+  stage: signing
+  tags:
+    - nix
+  script:
+    - nix store sign --recursive --key-file "${NIX_CACHE_PRIV_KEY_FILE}" --all
+
+nix cache upload:
+  stage: deploy
+  tags:
+    - nix
+  script:
+    - cat "${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - nix copy --to "s3://${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=${AWS_NIX_CACHE_ENDPOINT}" --all
 
 
 # Builds
