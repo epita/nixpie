@@ -22,6 +22,7 @@ let
   }).makeTest;
 
   tests = {
+    criterion = ./criterion.nix;
     version = ./version.nix;
   };
 in
@@ -29,7 +30,7 @@ mapAttrs
   (name: testPath:
     let
       f = import testPath;
-      test = if isFunction f then f inputs else f;
+      test = if isFunction f then f (recursiveUpdate inputs { inherit pkgs; }) else f;
     in
     makeTest ({ inherit name; } // test))
   tests
