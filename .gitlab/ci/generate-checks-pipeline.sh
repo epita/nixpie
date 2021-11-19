@@ -27,7 +27,7 @@ function didCheckChange() {
   previousCheckDrvPath="$(getCheckDrvPath "git+${CI_PROJECT_URL}?ref=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}" "${check}")"
 
   currentDrv="$(nix eval --raw "${currentCheckDrvPath}")"
-  previousDrv="$(nix eval --raw "${previousCheckDrvPath}")"
+  previousDrv="$(nix eval --raw "${previousCheckDrvPath}")" || return 0
 
   # We allow 31 lines of differences, which is the amount that changes when
   # only the commit SHA changes.

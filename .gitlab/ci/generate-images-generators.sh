@@ -27,7 +27,7 @@ function didImageChange() {
   previousImageDrvPath="$(getImageDrvPath "git+${CI_PROJECT_URL}?ref=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}" "${image}")"
 
   currentDrv="$(nix eval --raw "${currentImageDrvPath}")"
-  previousDrv="$(nix eval --raw "${previousImageDrvPath}")"
+  previousDrv="$(nix eval --raw "${previousImageDrvPath}")" || return 0
 
   # We allow 54 lines of differences, which is the amount that changes when
   # only the commit SHA changes.

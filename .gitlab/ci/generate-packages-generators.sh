@@ -27,7 +27,7 @@ function didPkgChange() {
   previousPkgDrvPath="$(getPkgDrvPath "git+${CI_PROJECT_URL}?ref=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}" "${pkg}")"
 
   currentDrv="$(nix eval --raw "${currentPkgDrvPath}")"
-  previousDrv="$(nix eval --raw "${previousPkgDrvPath}")"
+  previousDrv="$(nix eval --raw "${previousPkgDrvPath}")" || return 0
 
   diffDrv "${previousDrv}" "${currentDrv}" "${diffFile}"
 }
