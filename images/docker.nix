@@ -38,6 +38,7 @@ in
   nix-docker = pkgs.docker-nixpkgs.nix.override {
     nix = pkgs.nixFlakes;
     extraContents = [
+      pkgs.findutils
       (pkgs.writeTextFile {
         name = "nix.conf";
         destination = "/etc/nix/nix.conf";
