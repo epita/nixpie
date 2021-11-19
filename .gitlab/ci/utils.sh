@@ -15,7 +15,7 @@ include:
   - local: .gitlab/ci/templates.yml
 
 dummy:
-  stage: qa
+  extends: .qa
   tags: []
   script:
     - echo I am only here so the pipeline does not fail when nothing needs rebuilding.
