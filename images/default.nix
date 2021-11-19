@@ -6,62 +6,19 @@
 , self
 , system
 , ...
-}@inputs:
+} @ inputs:
 let
 
-  nixosSystem = imageName: { isVM ? false, extraModules ? [ ] }:
+  nixosSystem = imageName: { isVM ? false, extraModules ? [ ] } @ args:
     let
       _imageName = if isVM then lib.removeSuffix "-vm" imageName else imageName;
 
-      specialArgs = {
-        inherit inputs system;
-        nixpie = self;
-        inherit imageName;
-      };
+      specialArgs = import ./special-args.nix inputs imageName;
 
       modules =
         let
-          core = self.nixosModules.profiles.core;
-
-          global = {
-            system.name = imageName;
-            networking.hostName = ""; # Use the DHCP provided hostname
-            nix.nixPath = [
-              "nixpkgs=${nixpkgs}"
-              "nixpkgs-unstable=${nixpkgsUnstable}"
-              "nixpkgs-master=${nixpkgsMaster}"
-            ];
-
-            nixpkgs = {
-              inherit (pkgset) pkgs;
-              overlays = [ self.overlay self.overrides.${system} ];
-            };
-
-            nix.registry = {
-              nixpkgs.flake = nixpkgs;
-              nixpkgsUnstable.flake = nixpkgsUnstable;
-              nixpkgsMaster.flake = nixpkgsMaster;
-              nixpie = {
-                from = {
-                  id = "nixpie";
-                  type = "indirect";
-                };
-                to = {
-                  type = "git";
-                  url = "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie.git";
-                };
-              };
-            };
-
-            environment.etc."nixos-version".text = if (self ? rev) then self.rev else "";
-            system.configurationRevision = null; # triggers rebuild of mandb
-          };
-
+          inherit (import ./modules.nix inputs imageName) core global flakeModules;
           local = import "${toString ./.}/${_imageName}.nix";
-
-          flakeModules =
-            builtins.attrValues (removeAttrs self.nixosModules [ "profiles" "nixpie" ]);
-
         in
         flakeModules ++ [ core global local ] ++ (lib.optional isVM ../profiles/vm) ++ extraModules;
     in
