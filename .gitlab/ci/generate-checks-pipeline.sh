@@ -34,7 +34,7 @@ function didCheckChange() {
   diffDrv "${previousDrv}" "${currentDrv}" "${diffFile}" 31
 }
 
-echoInfo "Listing all check..."
+echoInfo "Listing all checks..."
 checks="$(nix_run list-checks | xargs)"
 echoInfo "Checks found: ${checks}"
 
