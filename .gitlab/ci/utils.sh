@@ -21,5 +21,5 @@ function nix_run() {
 }
 
 function isFork() {
-  [ "${CI_MERGE_REQUEST_SOURCE_PROJECT_URL}" != "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie" ]
+  [ -n "${CI_MERGE_REQUEST_SOURCE_PROJECT_URL:-}" ] && [ "${CI_MERGE_REQUEST_SOURCE_PROJECT_URL:-}" != "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie" ]
 }

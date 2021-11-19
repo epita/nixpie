@@ -1,6 +1,7 @@
 ---
 
 include:
+  # Overriden in .rules-default but left here for reference
   - template: Workflows/MergeRequest-Pipelines.gitlab-ci.yml
   - local: .gitlab/ci/templates.yml
 
