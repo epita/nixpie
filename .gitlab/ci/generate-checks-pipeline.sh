@@ -83,7 +83,6 @@ cat <<EOF
   artifacts:
     paths:
       - result/*
-    expose_as: "${check} test results"
     when: always
 EOF
 done
