@@ -113,10 +113,43 @@
             buildInputs = with pkgs; [
               awscli
               git
+              nix-diff
               nixpkgs-fmt
               pre-commit
+              shellcheck
             ];
           };
+
+          apps =
+            let
+              imageList = builtins.attrNames self.nixosConfigurations;
+              pkgsList = builtins.attrNames (lib.filterAttrs (name: _: !lib.hasSuffix "-docker" name) self.packages.${system});
+              mkListApp = list: {
+                type = "app";
+                program = toString (pkgs.writeShellScript "list.sh" (lib.concatMapStringsSep "\n" (el: "echo '${el}'") list));
+              };
+            in
+            {
+              list-images = mkListApp imageList;
+              list-pkgs = mkListApp pkgsList;
+
+              awscli = {
+                type = "app";
+                program = "${pkgs.awscli}/bin/aws";
+              };
+              nix-diff = {
+                type = "app";
+                program = "${pkgs.nix-diff}/bin/nix-diff";
+              };
+              nixpkgs-fmt = {
+                type = "app";
+                program = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
+              };
+              skopeo = {
+                type = "app";
+                program = "${pkgs.skopeo}/bin/skopeo";
+              };
+            };
 
           overrides = import ./overlays/overrides.nix { inherit pkgsUnstable pkgsMaster; };
 
