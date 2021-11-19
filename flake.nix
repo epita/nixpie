@@ -113,7 +113,7 @@
             buildInputs = with pkgs; [
               awscli
               git
-              nix-diff
+              pkgsMaster.nix-diff
               nixpkgs-fmt
               pre-commit
               shellcheck
@@ -139,7 +139,7 @@
               };
               nix-diff = {
                 type = "app";
-                program = "${pkgs.nix-diff}/bin/nix-diff";
+                program = "${pkgsMaster.nix-diff}/bin/nix-diff";
               };
               nixpkgs-fmt = {
                 type = "app";
