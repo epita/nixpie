@@ -72,6 +72,7 @@ stages:
   stage: deploy
   needs:
     - build
+  allow_failure: true
   rules:
     - when: manual
 
@@ -88,5 +89,6 @@ stages:
     - nix -L build "$buildExpression"
     - nix_run skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA
     - nix_run skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE:latest
+  allow_failure: true
   rules:
     - when: manual
