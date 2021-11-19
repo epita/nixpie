@@ -3,6 +3,7 @@
 stages:
   - generate
   - trigger
+  - test
   - build
   - qa
   - deploy
@@ -58,6 +59,10 @@ stages:
     include:
       - job: generate
         artifact: pipeline.yml
+
+.test:
+  extends: .default
+  stage: test
 
 .build:
   extends: .default

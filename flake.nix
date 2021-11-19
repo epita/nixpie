@@ -108,6 +108,8 @@
           inherit (pkgset system) pkgs pkgsUnstable pkgsMaster;
         in
         {
+          checks = (import ./tests (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }));
+
           devShell = pkgs.mkShell {
             name = "nixpie";
             buildInputs = with pkgs; [
@@ -122,6 +124,7 @@
 
           apps =
             let
+              checkList = builtins.attrNames self.checks.${system};
               imageList = builtins.attrNames self.nixosConfigurations;
               pkgsList = builtins.attrNames (lib.filterAttrs (name: _: !lib.hasSuffix "-docker" name) self.packages.${system});
               mkListApp = list: {
@@ -130,6 +133,7 @@
               };
             in
             {
+              list-checks = mkListApp checkList;
               list-images = mkListApp imageList;
               list-pkgs = mkListApp pkgsList;
 

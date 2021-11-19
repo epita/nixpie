@@ -5,6 +5,16 @@ include:
   - template: Workflows/MergeRequest-Pipelines.gitlab-ci.yml
   - local: .gitlab/ci/templates.yml
 
+generate checks generators:
+  extends: .generate-generators
+  script:
+    - .gitlab/ci/generate-checks-pipeline.sh | tee pipeline.yml
+
+generate checks generators for forks:
+  extends:
+    - generate checks generators
+    - .fork-default
+
 generate images generators:
   extends: .generate-generators
   script:
@@ -24,6 +34,26 @@ generate packages generators for forks:
   extends:
     - generate packages generators
     - .fork-default
+
+trigger checks generators:
+  extends: .trigger
+  needs:
+    - generate checks generators
+  trigger:
+    include:
+      - job: generate checks generators
+        artifact: pipeline.yml
+
+trigger checks generators for forks:
+  extends:
+    - trigger checks generators
+    - .rules-fork-default
+  needs:
+    - generate checks generators for forks
+  trigger:
+    include:
+      - job: generate checks generators for forks
+        artifact: pipeline.yml
 
 trigger images generators:
   extends: .trigger
