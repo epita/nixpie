@@ -1,77 +1,55 @@
-stages:
-  - build
-  - qa
-  - signing
-  - deploy
-  - docker
+---
 
-before_script:
-  - mkdir -p ~/.aws
-  - echo "[default]" > ~/.aws/config
-  # Fix nix errors about dirty tree
-  - git switch $CI_COMMIT_REF_NAME
-  - git reset --hard $CI_COMMIT_SHA
+include:
+  - template: Workflows/MergeRequest-Pipelines.gitlab-ci.yml
+  - local: .gitlab/ci/templates.yml
 
-# Jobs templates
-
-.build-image-job: &build-image-job
-  stage: build
-  needs: []
-  tags:
-    - nix
+generate:
+  extends: .generate
   script:
-    - export buildExpression=".#nixosConfigurations.${IMAGE_NAME}.config.system.build.toplevel"
-    - nix -L build "$buildExpression"
+    - .gitlab/ci/generate-generators.sh | tee pipeline.yml
+  artifacts:
+    paths:
+      - diffs
+      - pipeline.yml
 
-.deploy-image-job: &deploy-image-job
-  stage: deploy
+generate for forks:
+  extends:
+    - generate
+    - .fork-default
+
+trigger:
+  extends: .trigger
+
+trigger for forks:
+  extends:
+    - trigger
+    - .rules-fork-default
   needs:
-    - qa
-  tags:
-    - nix
-  script:
-    - export buildExpression=".#nixosConfigurations.${IMAGE_NAME}.config.system.build.toplevel-netboot"
-    - nix -L build "$buildExpression"
-    - nix profile install 'nixpkgs#awscli'
-    - cat "${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
-    - aws s3 --endpoint-url "${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "$(readlink -f ./result)" "s3://${AWS_PXE_IMAGES_BUCKET}"
-  when: manual
-
-.deploy-docker-image-job: &deploy-docker-image-job
-  stage: docker
-  needs: []
-  tags:
-    - nix
-  script:
-    - export buildExpression=".#${IMAGE_NAME}-docker"
-    - nix -L build "$buildExpression"
-    - nix profile install 'nixpkgs#skopeo'
-    - skopeo login registry.cri.epita.fr --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD}
-    - skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_SHA
-    - skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE_NAME:latest
-  when: manual
+    - generate for forks
+  trigger:
+    include:
+      - job: generate for forks
+        artifact: pipeline.yml
 
 # Lint
 
-check:
-  stage: qa
-  needs: []
-  tags:
-    - nix
+show:
+  extends: .qa
   script:
     - nix flake show
-    # - nix flake check
+
+show for forks:
+  extends:
+    - show
+    - .fork-default
 
 fmt:
-  stage: qa
-  needs: []
-  tags:
-    - nix
+  extends: .qa
   script:
-    - nix profile install 'nixpkgs#nixpkgs-fmt' 'nixpkgs#findutils'
-    - nixpkgs-fmt --check $(find -name \*.nix)
+    - nix run .#nixpkgs-fmt -- --check $(find -name \*.nix)
   after_script:
-    - nixpkgs-fmt $(find -name \*.nix)
+    - nix run .#nixpkgs-fmt -- $(find -name \*.nix)
     - git diff | tee nixpkgs-fmt.diff
   artifacts:
     when: on_failure
@@ -79,224 +57,15 @@ fmt:
     paths:
       - nixpkgs-fmt.diff
 
-
-# Signing
-
-nix store signing:
-  stage: signing
-  tags:
-    - nix
-  script:
-    - nix store sign --recursive --key-file "${NIX_CACHE_PRIV_KEY_FILE}" --all
-
-nix cache upload:
-  stage: deploy
-  tags:
-    - nix
-  script:
-    - cat "${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
-    - nix copy --to "s3://${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=${AWS_NIX_CACHE_ENDPOINT}" --all
-
-
-# Builds
-
-nixos-gpgpu-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-gpgpu
-nixos-lan-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-lan
-nixos-maths-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-maths
-nixos-pie-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-pie
-nixos-sup-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-sup
-nixos-spe-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-spe
-
-nixos-test-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-test
-nixos-exec-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-exec
-
-exam-pie-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: exam-pie
-exam-prepa-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: exam-prepa
-
-nixos-pie-vm-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-pie-vm
-nixos-spe-vm-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-spe-vm
-nixos-sup-vm-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-sup-vm
-
-nixos-exec-vm-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-exec-vm
-nixos-test-vm-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: nixos-test-vm
-
-france-ioi-build:
-  <<: *build-image-job
-  variables:
-    IMAGE_NAME: france-ioi
-
-
-# Deploys
-
-nixos-gpgpu-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-gpgpu-build
-  variables:
-    IMAGE_NAME: nixos-gpgpu
-nixos-lan-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-lan-build
-  variables:
-    IMAGE_NAME: nixos-lan
-nixos-maths-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-maths-build
-  variables:
-    IMAGE_NAME: nixos-maths
-nixos-pie-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-pie-build
-  variables:
-    IMAGE_NAME: nixos-pie
-nixos-spe-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-spe-build
-  variables:
-    IMAGE_NAME: nixos-spe
-nixos-sup-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-sup-build
-  variables:
-    IMAGE_NAME: nixos-sup
-
-nixos-exec-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-exec-build
-  variables:
-    IMAGE_NAME: nixos-exec
-nixos-test-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-test-build
-  variables:
-    IMAGE_NAME: nixos-test
-
-exam-pie-deploy:
-  <<: *deploy-image-job
-  needs:
-    - exam-pie-build
-  variables:
-    IMAGE_NAME: exam-pie
-exam-prepa-deploy:
-  <<: *deploy-image-job
-  needs:
-    - exam-prepa-build
-  variables:
-    IMAGE_NAME: exam-prepa
-
-nixos-pie-vm-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-pie-vm-build
-  variables:
-    IMAGE_NAME: nixos-pie-vm
-nixos-spe-vm-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-spe-vm-build
-  variables:
-    IMAGE_NAME: nixos-spe-vm
-nixos-sup-vm-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-sup-vm-build
-  variables:
-    IMAGE_NAME: nixos-sup-vm
-
-nixos-exec-vm-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-exec-vm-build
-  variables:
-    IMAGE_NAME: nixos-exec-vm
-nixos-test-vm-deploy:
-  <<: *deploy-image-job
-  needs:
-    - nixos-test-vm-build
-  variables:
-    IMAGE_NAME: nixos-test-vm
-
-france-ioi-deploy:
-  <<: *deploy-image-job
-  needs:
-    - france-ioi-build
-  variables:
-    IMAGE_NAME: france-ioi
+fmt for forks:
+  extends:
+    - fmt
+    - .fork-default
 
 # Docker
 
 nix-docker:
-  <<: *deploy-docker-image-job
+  extends: .docker
   needs: []
   variables:
-    IMAGE_NAME: nix
-nixos-pie-docker:
-  <<: *deploy-docker-image-job
-  needs:
-    - nixos-pie-build
-  variables:
-    IMAGE_NAME: nixos-pie
-nixos-sup-docker:
-  <<: *deploy-docker-image-job
-  needs:
-    - nixos-sup-build
-  variables:
-    IMAGE_NAME: nixos-sup
-nixos-spe-docker:
-  <<: *deploy-docker-image-job
-  needs:
-    - nixos-spe-build
-  variables:
-    IMAGE_NAME: nixos-spe
+    IMAGE: nix

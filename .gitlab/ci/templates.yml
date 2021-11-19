@@ -1,0 +1,84 @@
+---
+
+stages:
+  - generate
+  - trigger
+  - build
+  - qa
+  - deploy
+  - docker
+
+.rules-default:
+  rules:
+    - if: '$CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_SOURCE_PROJECT_URL == "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie"'
+
+.default:
+  extends: .rules-default
+  image: registry.cri.epita.fr/cri/infrastructure/nixpie/nix # only used for forks
+  needs: []
+  tags:
+    - nix
+  before_script:
+    - mkdir -p ~/.aws
+    - echo "[default]" > ~/.aws/config
+    - source .gitlab/ci/utils.sh
+    # Fix nix errors about dirty tree
+    - git switch -t origin/master
+    - git reset --hard $CI_COMMIT_SHA
+
+.rules-fork-default:
+  rules:
+    - if: '$CI_MERGE_REQUEST_SOURCE_PROJECT_URL != "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie"'
+
+.fork-default:
+  extends: .rules-fork-default
+  tags: []
+
+.generate:
+  extends: .default
+  stage: generate
+  artifacts:
+    paths:
+      - pipeline.yml
+
+.trigger:
+  extends: .rules-default
+  needs:
+    - generate
+  stage: trigger
+  trigger:
+    include:
+      - job: generate
+        artifact: pipeline.yml
+
+.build:
+  extends: .default
+  stage: build
+
+.qa:
+  extends: .default
+  stage: qa
+
+.deploy:
+  extends: .default
+  stage: deploy
+  needs:
+    - build
+  rules:
+    - when: manual
+
+.docker:
+  extends: .default
+  stage: docker
+  needs:
+    - build
+  before_script:
+    - !reference [.default, before_script]
+    - nix_run skopeo login registry.cri.epita.fr --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD
+  script:
+    - export buildExpression=".#${IMAGE}-docker"
+    - nix -L build "$buildExpression"
+    - nix_run skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA
+    - nix_run skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE:latest
+  rules:
+    - when: manual
