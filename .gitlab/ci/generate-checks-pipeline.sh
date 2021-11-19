@@ -29,7 +29,9 @@ function didCheckChange() {
   currentDrv="$(nix eval --raw "${currentCheckDrvPath}")"
   previousDrv="$(nix eval --raw "${previousCheckDrvPath}")"
 
-  diffDrv "${previousDrv}" "${currentDrv}" "${diffFile}"
+  # We allow 31 lines of differences, which is the amount that changes when
+  # only the commit SHA changes.
+  diffDrv "${previousDrv}" "${currentDrv}" "${diffFile}" 31
 }
 
 echoInfo "Listing all check..."
