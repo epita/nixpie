@@ -23,6 +23,7 @@ let
 
   tests = {
     criterion = ./criterion.nix;
+    login-epita = ./login-epita.nix;
     node-exporter = ./node-exporter.nix;
     version = ./version.nix;
   };
