@@ -5,32 +5,64 @@ include:
   - template: Workflows/MergeRequest-Pipelines.gitlab-ci.yml
   - local: .gitlab/ci/templates.yml
 
-generate:
-  extends: .generate
+generate images generators:
+  extends: .generate-generators
   script:
-    - .gitlab/ci/generate-generators.sh | tee pipeline.yml
-  artifacts:
-    paths:
-      - diffs
-      - pipeline.yml
+    - .gitlab/ci/generate-images-generators.sh | tee pipeline.yml
 
-generate for forks:
+generate images generators for forks:
   extends:
-    - generate
+    - generate images generators
     - .fork-default
 
-trigger:
-  extends: .trigger
+generate packages generators:
+  extends: .generate-generators
+  script:
+    - .gitlab/ci/generate-packages-generators.sh | tee pipeline.yml
 
-trigger for forks:
+generate packages generators for forks:
   extends:
-    - trigger
-    - .rules-fork-default
+    - generate packages generators
+    - .fork-default
+
+trigger images generators:
+  extends: .trigger
   needs:
-    - generate for forks
+    - generate images generators
   trigger:
     include:
-      - job: generate for forks
+      - job: generate images generators
+        artifact: pipeline.yml
+
+trigger images generators for forks:
+  extends:
+    - trigger images generators
+    - .rules-fork-default
+  needs:
+    - generate images generators for forks
+  trigger:
+    include:
+      - job: generate images generators for forks
+        artifact: pipeline.yml
+
+trigger packages generators:
+  extends: .trigger
+  needs:
+    - generate packages generators
+  trigger:
+    include:
+      - job: generate packages generators
+        artifact: pipeline.yml
+
+trigger packages generators for forks:
+  extends:
+    - trigger packages generators
+    - .rules-fork-default
+  needs:
+    - generate packages generators for forks
+  trigger:
+    include:
+      - job: generate packages generators for forks
         artifact: pipeline.yml
 
 # Lint

@@ -44,10 +44,15 @@ stages:
     paths:
       - pipeline.yml
 
+.generate-generators:
+  extends: .generate
+  artifacts:
+    paths:
+      - pipeline.yml
+      - diffs
+
 .trigger:
   extends: .rules-default
-  needs:
-    - generate
   stage: trigger
   trigger:
     include:
