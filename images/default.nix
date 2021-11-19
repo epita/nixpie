@@ -53,7 +53,7 @@ let
               };
             };
 
-            environment.etc."nixos-version".text = lib.mkIf (self ? rev) self.rev;
+            environment.etc."nixos-version".text = if (self ? rev) then self.rev else "";
             system.configurationRevision = null; # triggers rebuild of mandb
           };
 
