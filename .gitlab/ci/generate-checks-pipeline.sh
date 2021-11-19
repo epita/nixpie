@@ -80,6 +80,11 @@ cat <<EOF
   script:
     - buildExpression=".#checks.x86_64-linux.${check}"
     - nix -L build "\$buildExpression"
+  artifacts:
+    paths:
+      - result/*
+    expose_as: "${check} test results"
+    when: always
 EOF
 done
 
