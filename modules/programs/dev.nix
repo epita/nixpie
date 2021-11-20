@@ -15,6 +15,7 @@
     clang_12
     gcc
     llvmPackages_12.llvm
+    llvmPackages_12.lld
 
     # misc
     bintools
