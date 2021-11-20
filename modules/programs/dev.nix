@@ -22,6 +22,7 @@
     check
     checkbashisms
     clang-format-epita
+    clang-tools
     criterion
     ctags
     dash
