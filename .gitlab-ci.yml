@@ -18,7 +18,7 @@ generate checks generators for forks:
 generate images generators:
   extends: .generate-generators
   script:
-    - .gitlab/ci/generate-images-generators.sh | tee pipeline.yml
+    - .gitlab/ci/generate-images-pipeline.sh | tee pipeline.yml
 
 generate images generators for forks:
   extends:
@@ -28,7 +28,7 @@ generate images generators for forks:
 generate packages generators:
   extends: .generate-generators
   script:
-    - .gitlab/ci/generate-packages-generators.sh | tee pipeline.yml
+    - .gitlab/ci/generate-packages-pipeline.sh | tee pipeline.yml
 
 generate packages generators for forks:
   extends:

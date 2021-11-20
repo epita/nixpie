@@ -65,28 +65,30 @@ echoInfo "Generating pipeline..."
 for pkg in ${changedPkgs}; do
 echoInfo "Generating jobs for package ${pkg}..."
 cat <<EOF
-generate ${pkg} package pipeline:
-  extends: .generate
+${pkg}:build:
+  extends:
+    - .build
 EOF
+
 if isFork; then
 cat <<EOF
-  tags: []
+    - .fork-default
 EOF
 fi
+
 cat <<EOF
   script:
-    - .gitlab/ci/generate-package-pipeline.sh | tee pipeline.yml
-  variables:
-    PACKAGE: ${pkg}
-${pkg} package pipeline:
-  extends: .trigger
-  needs:
-    - generate ${pkg} package pipeline
-  trigger:
-    include:
-      - job: generate ${pkg} package pipeline
-        artifact: pipeline.yml
+    - buildExpression=".#${pkg}"
+    - nix -L build "\$buildExpression"
 EOF
+
+if ! isFork; then
+cat <<EOF
+    - nix store sign --recursive --key-file "\${NIX_CACHE_PRIV_KEY_FILE}" "\$buildExpression"
+    - cat "\${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - nix copy --to "s3://\${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=\${AWS_NIX_CACHE_ENDPOINT}" "\$buildExpression"
+EOF
+fi
 done
 
 echoSuccess "All done!"

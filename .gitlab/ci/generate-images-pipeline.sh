@@ -67,28 +67,47 @@ echoInfo "Generating pipeline..."
 for image in ${changedImages}; do
 echoInfo "Generating jobs for image ${image}..."
 cat <<EOF
-generate ${image} image pipeline:
-  extends: .generate
+${image}:build:
+  extends:
+    - .build
 EOF
+
 if isFork; then
 cat <<EOF
-  tags: []
+    - .fork-default
 EOF
 fi
+
 cat <<EOF
   script:
-    - .gitlab/ci/generate-image-pipeline.sh | tee pipeline.yml
+    - buildExpression=".#nixosConfigurations.${image}.config.system.build.toplevel"
+    - nix -L build "\$buildExpression"
+EOF
+
+if ! isFork; then
+cat <<EOF
+    - nix store sign --recursive --key-file "\${NIX_CACHE_PRIV_KEY_FILE}" "\$buildExpression"
+    - cat "\${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - nix copy --to "s3://\${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=\${AWS_NIX_CACHE_ENDPOINT}" "\$buildExpression"
+
+${image}:deploy:
+  extends: .deploy
+  needs:
+    - ${image}:build
+  script:
+    - buildExpression=".#nixosConfigurations.${image}.config.system.build.toplevel-netboot"
+    - nix -L build "\$buildExpression"
+    - cat "\${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - nix_run awscli s3 --endpoint-url "\${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "\$(readlink -f ./result)" "s3://\${AWS_PXE_IMAGES_BUCKET}"
+
+${image}:docker:
+  extends: .docker
+  needs:
+    - ${image}:build
   variables:
     IMAGE: ${image}
-${image} image pipeline:
-  extends: .trigger
-  needs:
-    - generate ${image} image pipeline
-  trigger:
-    include:
-      - job: generate ${image} image pipeline
-        artifact: pipeline.yml
 EOF
+fi
 done
 
 echoSuccess "All done!"
