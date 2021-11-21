@@ -38,6 +38,7 @@ let
     criterion = ./criterion.nix;
     login-epita = ./login-epita.nix;
     node-exporter = ./node-exporter.nix;
+    spider = ./spider.nix;
     version = ./version.nix;
   };
 in
