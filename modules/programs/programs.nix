@@ -58,6 +58,7 @@ in
     ./dev-ocaml.nix
     ./dev-rust.nix
     ./dev-sdl.nix
+    ./dev-spider.nix
     ./dev-sql.nix
     ./dev-tiger.nix
     ./fuse.nix
