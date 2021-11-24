@@ -10,6 +10,7 @@ rec {
   exam-start = final.callPackage ./exam-start { };
   exec-tools = final.callPackage ./exec-tools { };
   havm = final.callPackage ./development/tools/havm { };
+  i3lock = final.callPackage ./applications/window-managers/i3/lock.nix { inherit (prev) i3lock; };
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
   jupyter-dash = final.python3Packages.callPackage ./development/python-modules/jupyter-dash { };
   jupyter_contrib_core = final.python3Packages.callPackage ./development/python-modules/jupyter_contrib_core { };
