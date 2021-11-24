@@ -23,6 +23,7 @@ rec {
   m68k = final.qt5.callPackage ./development/tools/m68k { };
   nbtranslate = final.python3Packages.callPackage ./development/python-modules/nbtranslate { };
   nixpie-utils = final.callPackage ./nixpie-utils { };
+  ocaml = final.callPackage ./development/compilers/ocaml { inherit (prev) ocaml; };
   nolimips = final.callPackage ./development/tools/nolimips { };
   nswrappers = final.callPackage ./nswrappers { };
   pam_afs_session = final.callPackage ./os-specific/linux/pam_afs_session { };
