@@ -32,6 +32,7 @@
     bc
     dialog
     gnome3.zenity
+    hicolor-icon-theme
     keepassxc
     mlocate
     netcat-gnu
