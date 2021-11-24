@@ -82,7 +82,7 @@
       anySystemOutputs = {
         lib = import ./lib { inherit lib; };
 
-        overlays = (import ./overlays) // {
+        overlays = {
           packages = import ./pkgs;
         };
         overlay = self.overlays.packages;
@@ -158,9 +158,9 @@
               };
             };
 
-          overrides = import ./overlays/overrides.nix { inherit pkgsUnstable pkgsMaster; };
+          overrides = import ./pkgs/overrides.nix { inherit pkgsUnstable pkgsMaster; };
 
-          packages = (self.lib.overlaysToPkgs self.overlays pkgs) // (import ./images/docker.nix (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }));
+          packages = /* (self.lib.overlaysToPkgs self.overlays pkgs) // */ (import ./images/docker.nix (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }));
         });
     in
     recursiveUpdate multiSystemOutputs anySystemOutputs;
