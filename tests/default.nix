@@ -36,6 +36,7 @@ let
 
   tests = {
     criterion = ./criterion.nix;
+    gtest = ./gtest.nix;
     login-epita = ./login-epita.nix;
     node-exporter = ./node-exporter.nix;
     spider = ./spider.nix;

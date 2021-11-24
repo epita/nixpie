@@ -17,6 +17,10 @@
     llvmPackages_12.llvm
     llvmPackages_12.lld
 
+    # testing frameworks
+    criterion
+    gtest
+
     # misc
     bintools
     capstone
@@ -24,7 +28,6 @@
     checkbashisms
     clang-format-epita
     clang-tools
-    criterion
     ctags
     dash
     doxygen
