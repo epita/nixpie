@@ -22,6 +22,8 @@
     ])
   ];
 
+  environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}/glib-2.0/schemas";
+
   environment.systemPackages = with pkgs; [
     graphviz
   ];
