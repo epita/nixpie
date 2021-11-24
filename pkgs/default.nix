@@ -9,6 +9,7 @@ rec {
   clonezilla = final.callPackage ./tools/system/clonezilla { };
   exam-start = final.callPackage ./exam-start { };
   exec-tools = final.callPackage ./exec-tools { };
+  geany = final.callPackage ./applications/editors/geany { inherit (prev) geany; };
   havm = final.callPackage ./development/tools/havm { };
   i3lock = final.callPackage ./applications/window-managers/i3/lock.nix { inherit (prev) i3lock; };
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
