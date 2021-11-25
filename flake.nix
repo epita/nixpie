@@ -82,10 +82,7 @@
       anySystemOutputs = {
         lib = import ./lib { inherit lib; };
 
-        overlays = {
-          packages = import ./pkgs;
-        };
-        overlay = self.overlays.packages;
+        overlays = import ./pkgs/overlays.nix { inherit lib; };
 
         nixosModules = (import ./modules) // {
           profiles = import ./profiles;
@@ -160,7 +157,7 @@
 
           overrides = import ./pkgs/overrides.nix { inherit pkgsUnstable pkgsMaster; };
 
-          packages = /* (self.lib.overlaysToPkgs self.overlays pkgs) // */ (import ./images/docker.nix (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }));
+          packages = (import ./pkgs { inherit lib pkgs; }) // (import ./images/docker.nix (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }));
         });
     in
     recursiveUpdate multiSystemOutputs anySystemOutputs;

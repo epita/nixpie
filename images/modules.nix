@@ -23,7 +23,7 @@ imageName:
 
     nixpkgs = {
       inherit (pkgset) pkgs;
-      overlays = [ self.overlay self.overrides.${system} ];
+      overlays = [ self.overrides.${system} ] ++ (lib.attrValues self.overlays);
     };
 
     nix.registry = {
