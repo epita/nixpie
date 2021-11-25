@@ -42,7 +42,7 @@ changedImages=""
 
 echoInfo "Starting pipeline generation..."
 
-if [ -z "${CI_MERGE_REQUEST_IID:-}" ]; then
+if [ -z "${CI_MERGE_REQUEST_IID:-}" ] || [ -n "${ALL_IMAGES:-}" ]; then
   echoWarn "Pipeline is not attached to a merge request."
   echoWarn "All images will be rebuilt."
   changedImages="${images}"

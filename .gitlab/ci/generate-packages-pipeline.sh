@@ -40,7 +40,7 @@ changedPkgs=""
 
 echoInfo "Starting pipeline generation..."
 
-if [ -z "${CI_MERGE_REQUEST_IID:-}" ]; then
+if [ -z "${CI_MERGE_REQUEST_IID:-}" ] || [ -n "${ALL_PACKAGES:-}" ]; then
   echoWarn "Pipeline is not attached to a merge request."
   echoWarn "All packages will be rebuilt."
   changedPkgs="${pkgs}"
