@@ -3,11 +3,11 @@
     "docker-nixpkgs": {
       "flake": false,
       "locked": {
-        "lastModified": 1631525111,
-        "narHash": "sha256-dJKw280B1Hp0f6tSkBtkY0nrMT0DR/bmerrS3cQdBjI=",
+        "lastModified": 1637564496,
+        "narHash": "sha256-egqDtSI3x3xRExpzq81lQPD/06wI/Sk1j/gelqmJrA0=",
         "owner": "nix-community",
         "repo": "docker-nixpkgs",
-        "rev": "df7f64139a0b2384fb2448dc2a406815f8d03867",
+        "rev": "f6c1358e7a83a87f8d76fdc3c8c4127c5fec9ae7",
         "type": "github"
       },
       "original": {
@@ -34,11 +34,11 @@
     },
     "futils": {
       "locked": {
-        "lastModified": 1634851050,
-        "narHash": "sha256-N83GlSGPJJdcqhUxSCS/WwW5pksYf3VP1M13cDRTSVA=",
+        "lastModified": 1637014545,
+        "narHash": "sha256-26IZAc5yzlD9FlDT54io1oqG/bBoyka+FJk5guaX4x4=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "c91f3de5adaf1de973b797ef7485e441a65b8935",
+        "rev": "bba5dcc8e0b20ab664967ad83d24d64cb64ec4f4",
         "type": "github"
       },
       "original": {
@@ -100,27 +100,27 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1635719588,
-        "narHash": "sha256-pWjdy0NheM97NsPE6+jUnr5LYyeA0sBGTdw4mfXMGZQ=",
+        "lastModified": 1640887906,
+        "narHash": "sha256-Eupk1UlNicCD2UNZuEKt6yhE6kFWAxXM/HyziOjG9CA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f0869b1a2c0b150aac26e10bb5c2364ffb2e804f",
+        "rev": "8a053bc2255659c5ca52706b9e12e76a8f50dbdd",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-21.05",
+        "ref": "nixos-21.11",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "nixpkgsMaster": {
       "locked": {
-        "lastModified": 1637284845,
-        "narHash": "sha256-NiTssvauIK5PhA6SmzRk5q4TwfNs8B4TUKUlzU8OARw=",
+        "lastModified": 1637802441,
+        "narHash": "sha256-DmeDWJ/RBrKwgeJ7C3Lpqx936y574fW6X70LUE4dggA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5a26cb7b3fefecdf782cee124bb9d11d6de5f6c2",
+        "rev": "093503b3cc9459306217e7944fb174fabaa5a185",
         "type": "github"
       },
       "original": {
@@ -148,11 +148,11 @@
     },
     "nixpkgsUnstable": {
       "locked": {
-        "lastModified": 1635781173,
-        "narHash": "sha256-nTA2y2jIJiVj5RawHUNhlZUIy5J/Q2CA6YP4T1qBkLo=",
+        "lastModified": 1637593665,
+        "narHash": "sha256-R7jKS7A+0tZS8qD5pBr1UFcMiTdsw5bfoxgXbYsoWhM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "7053541084bf5ce2921ef307e5585d39d7ba8b3f",
+        "rev": "98747f27ecfee70c8c97b195cbb94df80a074dda",
         "type": "github"
       },
       "original": {
@@ -170,11 +170,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1630892898,
-        "narHash": "sha256-Gm2t7T6BI4qxqARWqGyPH9FMtFA3tKXV92MHqcXY2M0=",
+        "lastModified": 1633837625,
+        "narHash": "sha256-jjvzfICQTRWdrLRU2bFfELnv0KhPoIM9C3GGgqiaFH4=",
         "ref": "master",
-        "rev": "92c5f675c72569a28b47adbf04790864f2cb191c",
-        "revCount": 56,
+        "rev": "9fb9afce516e0014293b31b19197e676a4c7c847",
+        "revCount": 57,
         "type": "git",
         "url": "https://gitlab.cri.epita.fr/cri/packages/nuc-led-setter.git"
       },

@@ -6,10 +6,11 @@
   '';
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11"; # change me to nixos-21.11 once it exists
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
+    # TODO: deprecate me
     nixpkgsMaths.url = "github:rissson/nixpkgs/nixos-maths-21.05";
 
     machine-state = {
