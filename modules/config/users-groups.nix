@@ -66,7 +66,7 @@ in
           auth  optional                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   program=${config.services.openafsClient.packages.programs}/bin/aklog nopag
           auth  required                    pam_unix.so                                               try_first_pass nullok
           auth  optional                    pam_permit.so
-          auth  required                    pam_env.so                                                conffile=${config.system.build.pamEnvironment} readenv=0
+          auth  required                    pam_env.so                                                conffile=/etc/pam/environment readenv=0
 
           # Account management.
           account   sufficient  ${pkgs.pam_krb5}/lib/security/pam_krb5.so
@@ -89,7 +89,7 @@ in
           session   optional                    ${pkgs.systemd}/lib/security/pam_systemd.so
           session   required                    pam_unix.so
           session   optional                    pam_permit.so
-          session   required                    pam_env.so                                                conffile=${config.system.build.pamEnvironment} readenv=0
+          session   required                    pam_env.so                                                conffile=/etc/pam/environment readenv=0
         '';
 
         i3lock.text = config.security.pam.services.login.text;
