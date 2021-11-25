@@ -5,94 +5,94 @@ include:
   - template: Workflows/MergeRequest-Pipelines.gitlab-ci.yml
   - local: .gitlab/ci/templates.yml
 
-generate checks generators:
-  extends: .generate-generators
+generate checks pipelines:
+  extends: .generate-pipelines
   script:
     - .gitlab/ci/generate-checks-pipeline.sh | tee pipeline.yml
 
-generate checks generators for forks:
+generate checks pipelines for forks:
   extends:
-    - generate checks generators
+    - generate checks pipelines
     - .fork-default
 
-generate images generators:
-  extends: .generate-generators
+generate images pipelines:
+  extends: .generate-pipelines
   script:
     - .gitlab/ci/generate-images-pipeline.sh | tee pipeline.yml
 
-generate images generators for forks:
+generate images pipelines for forks:
   extends:
-    - generate images generators
+    - generate images pipelines
     - .fork-default
 
-generate packages generators:
-  extends: .generate-generators
+generate packages pipelines:
+  extends: .generate-pipelines
   script:
     - .gitlab/ci/generate-packages-pipeline.sh | tee pipeline.yml
 
-generate packages generators for forks:
+generate packages pipelines for forks:
   extends:
-    - generate packages generators
+    - generate packages pipelines
     - .fork-default
 
-trigger checks generators:
+trigger checks pipelines:
   extends: .trigger
   needs:
-    - generate checks generators
+    - generate checks pipelines
   trigger:
     include:
-      - job: generate checks generators
+      - job: generate checks pipelines
         artifact: pipeline.yml
 
-trigger checks generators for forks:
+trigger checks pipelines for forks:
   extends:
-    - trigger checks generators
+    - trigger checks pipelines
     - .rules-fork-default
   needs:
-    - generate checks generators for forks
+    - generate checks pipelines for forks
   trigger:
     include:
-      - job: generate checks generators for forks
+      - job: generate checks pipelines for forks
         artifact: pipeline.yml
 
-trigger images generators:
+trigger images pipelines:
   extends: .trigger
   needs:
-    - generate images generators
+    - generate images pipelines
   trigger:
     include:
-      - job: generate images generators
+      - job: generate images pipelines
         artifact: pipeline.yml
 
-trigger images generators for forks:
+trigger images pipelines for forks:
   extends:
-    - trigger images generators
+    - trigger images pipelines
     - .rules-fork-default
   needs:
-    - generate images generators for forks
+    - generate images pipelines for forks
   trigger:
     include:
-      - job: generate images generators for forks
+      - job: generate images pipelines for forks
         artifact: pipeline.yml
 
-trigger packages generators:
+trigger packages pipelines:
   extends: .trigger
   needs:
-    - generate packages generators
+    - generate packages pipelines
   trigger:
     include:
-      - job: generate packages generators
+      - job: generate packages pipelines
         artifact: pipeline.yml
 
-trigger packages generators for forks:
+trigger packages pipelines for forks:
   extends:
-    - trigger packages generators
+    - trigger packages pipelines
     - .rules-fork-default
   needs:
-    - generate packages generators for forks
+    - generate packages pipelines for forks
   trigger:
     include:
-      - job: generate packages generators for forks
+      - job: generate packages pipelines for forks
         artifact: pipeline.yml
 
 # Lint

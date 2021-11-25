@@ -46,7 +46,7 @@ stages:
     paths:
       - pipeline.yml
 
-.generate-generators:
+.generate-pipelines:
   extends: .generate
   artifacts:
     paths:
