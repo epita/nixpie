@@ -39,6 +39,8 @@ in
     security.wrappers = mkIf cfg.allowUsers {
       sss_ssh_authorizedkeys = {
         source = "${pkgs.sssd}/bin/sss_ssh_authorizedkeys";
+        owner = "root";
+        group = "root";
       };
     };
 
