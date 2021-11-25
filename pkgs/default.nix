@@ -15,9 +15,6 @@ rec {
   libfff = final.callPackage ./development/libraries/libfff { };
   m68k = final.qt5.callPackage ./development/tools/m68k { };
   nixpie-utils = final.callPackage ./nixpie-utils { };
-  # available in 21.11
-  ocamlPackages_junit = final.ocamlPackages.callPackage ./development/ocaml-modules/junit { };
-  ocamlPackages_junit_alcotest = final.ocamlPackages.callPackage ./development/ocaml-modules/junit/alcotest.nix { junit = ocamlPackages_junit; };
   nolimips = final.callPackage ./development/tools/nolimips { };
   pam_afs_session = final.callPackage ./os-specific/linux/pam_afs_session { };
   pharaoh = final.callPackage ./development/tools/pharaoh { };

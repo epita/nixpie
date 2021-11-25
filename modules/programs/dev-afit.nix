@@ -10,8 +10,9 @@
     alcotest
     astring
     cmdliner
-    # conf_gmp
     fmt
+    junit
+    junit_alcotest
     ocaml-syntax-shims
     ocamlbuild
     ptime
@@ -25,8 +26,5 @@
     uuidm
     uutf
     zarith
-
-    pkgs.ocamlPackages_junit
-    pkgs.ocamlPackages_junit_alcotest
   ];
 }
