@@ -12,8 +12,9 @@
     ninja
 
     # compilers
-    clang_12
+    # Putting gcc before clang means that `which cc` will be `gcc` instead of `clang`
     gcc
+    clang_12
     llvmPackages_12.llvm
     llvmPackages_12.lld
 
