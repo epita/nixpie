@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -10,4 +10,6 @@
 
   cri.programs.packages = with config.cri.programs.packageBundles; [ dev ];
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
+
+  environment.systemPackages = with pkgs; [ ciscoPacketTracer8 ];
 }
