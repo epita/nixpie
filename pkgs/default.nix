@@ -5,6 +5,7 @@ rec {
   # torchtext = final.python3Packages.callPackage ./development/python-modules/torchtext { };
 
   bison-epita = final.callPackage ./development/tools/bison-epita { };
+  ciscoPacketTracer8 = final.callPackage ./applications/networking/cisco-packet-tracer { };
   clang-format-epita = final.callPackage ./development/tools/clang-format-epita { };
   clonezilla = final.callPackage ./tools/system/clonezilla { };
   exam-start = final.callPackage ./exam-start { };
