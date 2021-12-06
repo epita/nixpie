@@ -16,6 +16,9 @@
   networking.firewall.enable = lib.mkForce true;
   networking.nftables.enable = lib.mkForce false;
 
+  # Enable XFCE
+  cri.xfce.enable = true;
+
   environment.systemPackages = with pkgs; [
     postgresql
     dbeaver
