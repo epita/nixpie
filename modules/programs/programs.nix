@@ -60,6 +60,7 @@ in
     ./dev-sdl.nix
     ./dev-spider.nix
     ./dev-sql.nix
+    ./dev-thl.nix
     ./dev-tiger.nix
     ./fuse.nix
     ./games.nix
