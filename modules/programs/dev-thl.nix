@@ -2,6 +2,8 @@
 
 {
   cri.programs.packageBundles.devThl = with pkgs; [
+    bison
+    flex
     graphviz
   ];
 
