@@ -20,17 +20,12 @@ let
       in
       flakeModules ++ [ core global self.nixosModules.profiles.tests ];
   }).makeTest test).overrideAttrs (oldAttrs: {
-    # See https://github.com/NixOS/nixpkgs/blob/release-21.05/nixos/lib/testing-python.nix
-    # We override the return of `runTests` to output HTML and XML
-
-    buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ pkgs.libxslt ];
+    # See https://github.com/NixOS/nixpkgs/blob/nixos-21.11/nixos/lib/testing-python.nix
+    # We override the return of `runTests` to output XML
 
     buildCommand = ''
       mkdir -p $out
       LOGFILE=$out/log.xml tests='exec(os.environ["testScript"])' ${oldAttrs.passthru.driver}/bin/nixos-test-driver
-
-      # Generate a pretty-printed log.
-      xsltproc --output $out/log.html ${./log/log2html.xsl} $out/log.xml
     '';
   });
 
