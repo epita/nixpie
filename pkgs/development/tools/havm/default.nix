@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://www.lrde.epita.fr/~tiger/download/${pname}-${version}.tar.gz";
-    sha256 = "1438b8159f2b8c6a919059513ad709b2ffa692cecc9885d0195e1b66bc2442b0";
+    sha256 = "sha256-DtpW2mtve93hAWanWHSozYG4R/fOgvsbaaAItCNQx68=";
   };
 
   nativeBuildInputs = [
