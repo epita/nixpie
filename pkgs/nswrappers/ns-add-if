@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -e
+
+usage() {
+  echo "Usage: ${0} NAME NS1 NS2"
+}
+
+if [[ "${EUID}" -ne 0 ]]; then
+  echo "This command need to be run as root."
+  exit 1
+fi
+
+if [[ "${#}" -ne 3 ]]; then
+  usage
+  exit 1
+fi
+
+IFN="${1}"
+NS1="${2}"
+NS2="${3}"
+
+ip link add "${IFN}-1-${NS1}" type veth peer name "${IFN}-2-${NS2}"
+ip link set dev "${IFN}-1-${NS1}" netns "${NS1}" up
+ip link set dev "${IFN}-2-${NS2}" netns "${NS2}" up
+
+ip netns exec "${NS1}" ethtool -K "${IFN}-1-${NS1}" tx off > /dev/null
+ip netns exec "${NS2}" ethtool -K "${IFN}-2-${NS2}" tx off > /dev/null
+
+echo "Interface '${IFN}-1-${NS1}' created in namespace '${NS1}'."
+echo "Interface '${IFN}-2-${NS2}' created in namespace '${NS2}'."

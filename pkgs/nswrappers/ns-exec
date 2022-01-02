@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+usage() {
+  echo "Usage: ${0} NS CMD [ARG1 [ARG2...]]"
+}
+
+if [[ "${#}" -lt 2 ]]; then
+  usage
+  exit 1
+fi
+
+NS="${1}"
+shift
+
+exec ip netns exec "${NS}" capsh \
+  --caps="cap_net_admin,cap_net_raw+eip cap_setpcap,cap_setuid,cap_setgid+ep" \
+  --keep=1 --user="$(logname)" --addamb="cap_net_admin,cap_net_raw" -- -c "${*}"

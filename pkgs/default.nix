@@ -16,6 +16,7 @@ rec {
   m68k = final.qt5.callPackage ./development/tools/m68k { };
   nixpie-utils = final.callPackage ./nixpie-utils { };
   nolimips = final.callPackage ./development/tools/nolimips { };
+  nswrappers = final.callPackage ./nswrappers { };
   pam_afs_session = final.callPackage ./os-specific/linux/pam_afs_session { };
   pharaoh = final.callPackage ./development/tools/pharaoh { };
   sddm-epita-themes = final.callPackage ./applications/display-managers/sddm/sddm-epita-themes.nix { };

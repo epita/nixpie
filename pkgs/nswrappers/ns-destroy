@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+usage() {
+  echo "Usage: ${0} NAME1 [NAME2...]"
+}
+
+if [[ "${EUID}" -ne 0 ]]; then
+  echo "This command need to be run as root."
+  exit 1
+fi
+
+if [[ "${#}" -eq 0 ]]; then
+  usage
+  exit 1
+fi
+
+for ns in "$@"; do
+  ip netns delete "${ns}" &> /dev/null && echo "Namespace '${ns}' removed."
+done
