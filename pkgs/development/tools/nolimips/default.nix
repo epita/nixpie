@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://www.lrde.epita.fr/~tiger/download/${pname}-${version}.tar.gz";
-    sha256 = "3a36df701c0266d14fd2eb33f185c0d2537cc6cd234b8235f66921f69ed51dcf";
+    sha256 = "sha256-RPizR991vR+pvSGt1+Coy45cNIMGUgc4vKCI9xB+Bgg=";
   };
 
   doCheck = true;
