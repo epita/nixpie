@@ -34,6 +34,7 @@ let
     gtest = ./gtest.nix;
     login-epita = ./login-epita.nix;
     node-exporter = ./node-exporter.nix;
+    nswrappers = ./nswrappers.nix;
     spider = ./spider.nix;
     version = ./version.nix;
   };

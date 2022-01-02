@@ -3,6 +3,8 @@
   ldap = ./config/ldap.nix;
   users = ./config/users-groups.nix;
 
+  nswrappers = ./nswrappers.nix;
+
   label = ./misc/label.nix;
 
   programs = ./programs/programs.nix;
