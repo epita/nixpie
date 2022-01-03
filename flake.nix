@@ -128,6 +128,7 @@
               checkList = builtins.attrNames self.checks.${system};
               imageList = builtins.attrNames self.nixosConfigurations;
               pkgsList = builtins.attrNames (lib.filterAttrs (name: _: !lib.hasSuffix "-docker" name) self.packages.${system});
+              dockerList = builtins.attrNames (lib.filterAttrs (name: _: lib.hasSuffix "-docker" name) self.packages.${system});
               mkListApp = list: {
                 type = "app";
                 program = toString (pkgs.writeShellScript "list.sh" (lib.concatMapStringsSep "\n" (el: "echo '${el}'") list));
@@ -135,6 +136,7 @@
             in
             {
               list-checks = mkListApp checkList;
+              list-docker = mkListApp dockerList;
               list-images = mkListApp imageList;
               list-pkgs = mkListApp pkgsList;
 

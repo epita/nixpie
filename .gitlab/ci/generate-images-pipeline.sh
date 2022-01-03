@@ -99,7 +99,10 @@ ${image}:deploy:
     - nix -L build "\$buildExpression"
     - cat "\${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
     - nix_run awscli s3 --endpoint-url "\${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "\$(readlink -f ./result)" "s3://\${AWS_PXE_IMAGES_BUCKET}"
+EOF
 
+if nix_run list-docker | grep "${image}" > /dev/null; then
+cat <<EOF
 ${image}:docker:
   extends: .docker
   needs:
@@ -107,6 +110,7 @@ ${image}:docker:
   variables:
     IMAGE: ${image}
 EOF
+fi
 fi
 done
 
