@@ -90,6 +90,7 @@ in
           session   required                    pam_unix.so
           session   optional                    pam_permit.so
           session   required                    pam_env.so                                                conffile=/etc/pam/environment readenv=0
+          session   required                    pam_loginuid.so
         '';
 
         i3lock.text = config.security.pam.services.login.text;
