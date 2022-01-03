@@ -16,6 +16,7 @@ in
       ethtool
       libpcap
       nswrappers
+      wireshark
     ];
 
     security.sudo.extraRules = [{
