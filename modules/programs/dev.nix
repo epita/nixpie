@@ -40,7 +40,7 @@
     ltrace
     pharaoh
     pkg-config
-    readline
+    readline81
     rr
     shellcheck
     strace
