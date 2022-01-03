@@ -37,21 +37,13 @@ in
 
   boot.supportedFilesystems = [ "nfs" ]; # To create dumps
 
+  boot.kernelParams = [ "exec_url=htop.sh" ];
+
   users.users.root.password = lib.mkForce "";
 
-  systemd.services."autovt@tty1" = {
-    after = [ "systemd-logind.service" "multi-user.target" ];
-    serviceConfig.ExecStart = [
-      "" # override upstream default with an empty ExecStart
-      ''
-        @${pkgs.util-linux}/sbin/agetty agetty \
-        --autologin root \
-        --login-program ${pkgs.bash}/bin/bash \
-        --login-options ${execScript} \
-        --noclear --keep-baud \
-        %I 115200,38400,9600 $TERM
-      ''
-    ];
-    restartIfChanged = false;
+  services.getty = {
+    loginProgram = "${pkgs.bash}/bin/bash";
+    loginOptions = "${execScript}";
+    autologinUser = "root";
   };
 }
