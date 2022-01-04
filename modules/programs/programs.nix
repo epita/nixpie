@@ -65,6 +65,7 @@ in
     ./fuse.nix
     ./games.nix
     ./gpgpu.nix
+    ./latex-exam.nix
     ./opengl.nix
   ];
 
