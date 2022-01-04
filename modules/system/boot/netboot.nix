@@ -64,7 +64,7 @@ with lib;
     fileSystems = {
       "/" = {
         fsType = "tmpfs";
-        options = [ "mode=0755" ];
+        options = [ "mode=0755" "size=80%" ];
       };
 
       # In stage 1, mount a tmpfs on top of /nix/store (the squashfs
