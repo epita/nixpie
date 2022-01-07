@@ -51,6 +51,7 @@
 
           # accept any localhost traffic
           iifname lo accept
+          ip daddr 127.0.0.0/8 accept
 
           # accept traffic originated from us
           ct state {established, related} accept
@@ -81,18 +82,38 @@
           # Salt
           ip daddr {10.224.4.0/24,10.224.21.0/24} tcp dport {4505,4506} accept
 
-          # Jetbrains license server
-          ip daddr 52.30.108.61 tcp dport https accept
-
           # Intellij + Gradle
-          # plugins.jetbrains.com
+
           # repo1.maven.org
+          ip daddr {199.232.192.209,199.232.196.209} tcp dport https accept
+
           # services.gradle.org
-          ip daddr {52.208.50.140,151.101.120.209,104.16.171.166,104.16.172.166,104.16.173.166,104.16.174.166,104.16.175.166} tcp dport https accept
+          ip daddr {104.18.190.9,104.18.191.9} tcp dport https accept
 
           # api.nuget.org
           ip daddr 152.199.23.209 tcp dport {http,https} accept
 
+          # Jetbrains license server
+          ip daddr 52.30.108.61 tcp dport https accept
+
+          # www.jetbrains.com
+          ip daddr {18.200.1.3,18.200.1.21} tcp dport https accept
+
+          # download.jetbrains.com
+          ip daddr {52.30.174.243,52.50.241.213} tcp dport https accept
+
+          # plugins.jetbrains.com, download-cdn.jetbrains.com, frameworks.jetbrains.com (CloudFront)
+          ip daddr {99.84.0.0/16,99.86.0.0/16,13.249.0.0/16} tcp dport https accept
+
+          # vortex.data.microsoft.com
+          ip daddr 40.77.226.250 tcp dport https accept
+
+          # marketplace.visualstudio.com
+          ip daddr 13.107.42.18 tcp dport https accept
+
+          # ocsp.pki.goog
+          ip daddr 142.250.75.227 tcp dport {http,https} accept
+          
           drop
         }
 
