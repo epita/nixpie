@@ -20,7 +20,7 @@ in
     ];
 
     security.sudo.extraRules = [{
-      groups = [ 15000 ]; # students
+      users = [ "ALL" ];
       commands = [
         { command = "${pkgs.nswrappers}/bin/ns-init"; options = [ "NOPASSWD" ]; }
         { command = "${pkgs.nswrappers}/bin/ns-add-if"; options = [ "NOPASSWD" ]; }
