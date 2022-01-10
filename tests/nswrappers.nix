@@ -17,5 +17,7 @@
     start_all()
     machine.succeed("su - alice -c 'sudo ns-init test-ns'")
     machine.succeed("ip netns ls | grep test-ns")
+    machine.succeed("su - epita  -c 'sudo ns-init test2-ns'")
+    machine.succeed("ip netns ls | grep test22-ns")
   '';
 }
