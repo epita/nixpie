@@ -55,6 +55,7 @@ in
     ./dev-asm.nix
     ./dev-csharp.nix
     ./dev-gtk.nix
+    ./dev-java.nix
     ./dev-ocaml.nix
     ./dev-rust.nix
     ./dev-sdl.nix
