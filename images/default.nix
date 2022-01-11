@@ -46,6 +46,7 @@ let
     "nixos-gpgpu" = { };
     "nixos-lan" = { };
     "nixos-maths" = { };
+    "nixos-net" = { };
     "nixos-pie" = { };
     "nixos-spe" = { };
     "nixos-sup" = { };

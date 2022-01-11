@@ -11,7 +11,5 @@
   cri.programs.packages = with config.cri.programs.packageBundles; [ dev devSQL devThl ];
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev devThl ];
 
-  environment.systemPackages = with pkgs; [ ciscoPacketTracer8 ];
-
   cri.nswrappers.enable = true;
 }
