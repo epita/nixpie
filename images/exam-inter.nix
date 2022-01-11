@@ -9,7 +9,7 @@
   netboot.enable = true;
   cri.sddm.title = lib.mkForce "Exam Inter";
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [ dev devSQL ];
+  cri.programs.packages = with config.cri.programs.packageBundles; [ dev devSQL devJava ];
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
 
   # Restore internet access
@@ -21,5 +21,12 @@
 
   environment.systemPackages = with pkgs; [
     dbeaver
+    postman
+    vscode
   ];
+
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk11;
+  };
 }
