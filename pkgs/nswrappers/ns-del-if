@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 usage() {
-  echo "Usage: ${0} NAME NS"
+  echo "Usage: ${0} NAME NS1 NS2"
 }
 
 if [[ "${EUID}" -ne 0 ]]; then
@@ -9,13 +9,14 @@ if [[ "${EUID}" -ne 0 ]]; then
   exit 1
 fi
 
-if [[ "${#}" -ne 2 ]]; then
+if [[ "${#}" -ne 3 ]]; then
   usage
   exit 1
 fi
 
 IFN="${1}"
-NS="${2}"
+NS1="${2}"
+NS2="${3}"
 
-ip link del "${IFN}-1-${NS}" 2> /dev/null
-ip link del "${IFN}-2-${NS}" 2> /dev/null
+ip link del "${IFN}-1-${NS1}" 2> /dev/null
+ip link del "${IFN}-2-${NS2}" 2> /dev/null
