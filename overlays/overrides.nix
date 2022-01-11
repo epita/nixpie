@@ -6,6 +6,7 @@ final: prev: {
     discord
     firefox
     firefox-unwrapped
+    steam
     teams
     wrapFirefox
     ;

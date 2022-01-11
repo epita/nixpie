@@ -13,4 +13,6 @@
     games
   ];
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
+
+  programs.steam.enable = true;
 }
