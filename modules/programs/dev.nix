@@ -61,5 +61,6 @@
   cri.programs.pythonPackageBundles.dev = pythonPackages: with pythonPackages; [
     ipython
     pytest
+    pyyaml
   ];
 }
