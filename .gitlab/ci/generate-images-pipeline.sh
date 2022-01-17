@@ -97,9 +97,11 @@ ${image}:deploy:
   script:
     - buildExpression=".#nixosConfigurations.${image}.config.system.build.toplevel-netboot"
     - nix -L build "\$buildExpression"
+    - storePath="\$(readlink -f ./result)"
     - cat "\${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
-    - nix_run awscli s3 --endpoint-url "\${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "\$(readlink -f ./result)" "s3://\${AWS_PXE_IMAGES_BUCKET}"
-    - nix store delete "\$(readlink -f ./result)"
+    - nix_run awscli s3 --endpoint-url "\${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "\$storePath" "s3://\${AWS_PXE_IMAGES_BUCKET}"
+    - rm -f ./result
+    - nix store delete "\$storePath"
 EOF
 
 if nix_run list-docker | grep "${image}" > /dev/null; then
