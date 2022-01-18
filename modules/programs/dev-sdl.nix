@@ -19,5 +19,8 @@
     SDL2_ttf
 
     libGLU
+
+    alsa-lib
+    libpulseaudio
   ];
 }
