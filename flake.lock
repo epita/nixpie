@@ -170,11 +170,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1633837625,
-        "narHash": "sha256-jjvzfICQTRWdrLRU2bFfELnv0KhPoIM9C3GGgqiaFH4=",
+        "lastModified": 1642873836,
+        "narHash": "sha256-GdqrI+Cqui4w2o9KUs6J7zDzCd29YyfFpV7lgZynUZg=",
         "ref": "master",
-        "rev": "9fb9afce516e0014293b31b19197e676a4c7c847",
-        "revCount": 57,
+        "rev": "e9c4501f52006eea067bcfb6e096188059fbd2b0",
+        "revCount": 62,
         "type": "git",
         "url": "https://gitlab.cri.epita.fr/cri/packages/nuc-led-setter.git"
       },
