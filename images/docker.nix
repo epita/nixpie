@@ -44,7 +44,7 @@ in
         destination = "/etc/nix/nix.conf";
         text = ''
           experimental-features = nix-command flakes ca-references
-          substituters = http://cache.nixos.org http://s3.cri.epita.fr/cri-nix-cache.s3.cri.epita.fr
+          substituters = https://cache.nixos.org http://s3.cri.epita.fr/cri-nix-cache.s3.cri.epita.fr
           trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= cache.nix.cri.epita.fr:qDIfJpZWGBWaGXKO3wZL1zmC+DikhMwFRO4RVE6VVeo=
         '';
       })

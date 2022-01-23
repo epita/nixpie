@@ -26,7 +26,7 @@ with lib;
       experimental-features = nix-command flakes ca-references
     '';
 
-    binaryCaches = [ "https://cache.nix.cri.epita.fr" ];
+    binaryCaches = [ "https://s3.cri.epita.fr/cri-nix-cache.s3.cri.epita.fr" ];
     binaryCachePublicKeys = [ "cache.nix.cri.epita.fr:qDIfJpZWGBWaGXKO3wZL1zmC+DikhMwFRO4RVE6VVeo=" ];
   };
 
