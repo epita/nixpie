@@ -83,7 +83,7 @@ in
           ip daddr 10.224.4.2 tcp dport {http,https} accept
 
           # Git Exam CRI
-          ip daddr 10.224.4.2 tcp dport ssh accept
+          ip daddr 10.224.21.122 tcp dport ssh accept
 
           # Ingress k8s prod-1
           ip daddr 10.224.21.80 tcp dport {http,https} accept

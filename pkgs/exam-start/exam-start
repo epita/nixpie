@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import requests
 import sh
 import json
 
@@ -10,7 +11,7 @@ from datetime import datetime
 from requests import Session
 from requests_gssapi import HTTPSPNEGOAuth, exceptions as spnego_exceptions
 
-EXAM_GIT_SERVER = "exam.pie.cri.epita.fr"
+EXAM_GIT_SERVER = "git.exam.pie.cri.epita.fr"
 EXAM_GIT_REMOTE = f"{{login}}@{EXAM_GIT_SERVER}:submissions/{{token}}/{{login}}"
 EXAM_API_BASE = 'https://exam.pie.cri.epita.fr/api'
 
@@ -99,6 +100,9 @@ class Exam:
     class UnexpectedResponse(RuntimeError):
         pass
 
+    class InvalidExam(RuntimeError):
+        pass
+
     class InvalidToken(ValueError):
         pass
 
@@ -115,17 +119,23 @@ class Exam:
         self._data = {}
         self._http = session
 
-        r = self._http.post(f'{EXAM_API_BASE}/exams/{self.token}/start_time/')
-        if r.status_code == 201:
+        r = self._http.post(f'{EXAM_API_BASE}/exams/{self.token}/start/')
+        if r.status_code == 200:
             self._data = r.json()
         elif r.status_code == 404:
             raise self.InvalidToken
+        elif r.status_code == 403:
+            try:
+                message = ', '.join(r.json().get("errors", ['no reason given by the server']))
+            except json.decoder.JSONDecodeError:
+                message = f'invalid response: {r.text}'
+            raise self.InvalidExam(message)
         else:
             raise self.UnexpectedResponse(r.status_code)
 
     @property
     def allow_submission(self):
-        return self._data.get('exam', {}).get('allow_submission', False)
+        return self._data.get('allow_submission', False)
 
     def clone_repo(self):
         try:
@@ -143,13 +153,11 @@ class Exam:
             raise self.CloneError
 
     def get_archive(self):
-        r = self._http.get(f'{EXAM_API_BASE}/exams/{self.token}/get_archive/')
-        if r.status_code == 403:
-            try:
-                message = ', '.join(r.json().get('errors', ['no reason given by the server']))
-            except json.decoder.JSONDecodeError:
-                message = f'invalid response: {r.text}'
-            raise self.CannotFetchArchive(message)
+        if not self._data.get('zipfile', None):
+            return
+        r = requests.get(self._data.get('zipfile'))
+        if r.status_code == 404:
+            raise self.CannotFetchArchive("File does not exists")
         if r.status_code != 200:
             raise self.UnexpectedResponse(r.status_code)
         with open(self.ARCHIVE_PATH, 'wb') as f:
@@ -174,7 +182,7 @@ class Exam:
                 )
                 sh.git(
                     '-C', self.SUBMISSION_PATH,
-                    'add', '--all'
+                    'add', '--all', '--force',
                 )
             sh.git(
                 '-C', self.SUBMISSION_PATH,
