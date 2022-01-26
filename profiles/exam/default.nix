@@ -94,6 +94,7 @@ in
           ip daddr 91.243.117.185 tcp dport {ldap,ldaps} accept
 
           # s3.cri.epita.fr
+          ip daddr 10.224.21.208 tcp dport {http,https} accept
           ip daddr 91.243.117.208 tcp dport {http,https} accept
 
           # NTP
