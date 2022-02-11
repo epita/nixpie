@@ -56,6 +56,7 @@ in
     ./dev-csharp.nix
     ./dev-gtk.nix
     ./dev-java.nix
+    ./dev-lisp.nix
     ./dev-ocaml.nix
     ./dev-rust.nix
     ./dev-sdl.nix

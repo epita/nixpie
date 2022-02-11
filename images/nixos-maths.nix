@@ -16,7 +16,10 @@ in
   netboot.enable = true;
   cri.sddm.title = "NixOS Maths";
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [ dev ];
+  cri.programs.packages = with config.cri.programs.packageBundles; [
+    dev
+    devLisp
+  ];
 
   cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [
     dev
