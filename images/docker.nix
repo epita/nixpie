@@ -18,11 +18,11 @@ let
       mkdir -p /tmp
     '';
     config = {
-      # See profiles/core/default.nix and modules/programs/programs.nix
+      # See profiles/core/default.nix and modules/packages/default.nix
       Env =
         let
-          OCAMLPATH = concatMapStringsSep ":" (pkg: "${pkg}/lib/ocaml/${pkgs.ocaml.version}/site-lib/") (flatten config.cri.programs.ocamlPackages);
-          CAML_LD_LIBRARY_PATH = concatMapStringsSep ":" (pkg: "${pkg}/lib/ocaml/${pkgs.ocaml.version}/site-lib/stublibs") (flatten config.cri.programs.ocamlPackages);
+          OCAMLPATH = config.environment.variables.OCAMLPATH;
+          CAML_LD_LIBRARY_PATH = config.environment.variables.CAML_LD_LIBRARY_PATH;
         in
         [
           "NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu=-I/include"

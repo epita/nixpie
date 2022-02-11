@@ -83,8 +83,16 @@ with lib;
     package = pkgs.vim_configurable;
   };
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [ core fuse ];
-  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ core ];
+  cri.packages = {
+    pkgs = {
+      core.enable = true;
+      fuse.enable = true;
+    };
+
+    python = {
+      core.enable = true;
+    };
+  };
 
   documentation = {
     enable = true;

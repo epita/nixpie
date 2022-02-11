@@ -8,9 +8,11 @@
     ./nixos-pie.nix
   ];
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [
-    latexExam
-  ];
+  cri.packages = {
+    pkgs = {
+      latexExam.enable = true;
+    };
+  };
 
   cri.sddm.title = lib.mkForce "Exam PIE";
 }

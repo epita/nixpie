@@ -13,7 +13,10 @@ let
 in
 {
   machine = { config, pkgs, ... }: {
-    cri.programs.packages = with config.cri.programs.packageBundles; [ dev devSpider ];
+    cri.packages.pkgs = {
+      dev.enable = true;
+      spider.enable = true;
+    };
   };
 
   testScript = ''

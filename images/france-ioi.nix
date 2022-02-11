@@ -16,9 +16,11 @@ in
   cri.sddm.title = "France IOI";
   cri.xfce.enable = true;
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [
-    dev
-    franceIOIPkgs
-  ];
-  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
+  environment.systemPackages = franceIOIPkgs;
+
+  cri.packages = {
+    pkgs = {
+      dev.enable = true;
+    };
+  };
 }

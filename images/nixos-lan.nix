@@ -8,11 +8,12 @@
   netboot.enable = true;
   cri.sddm.title = "NixOS LAN";
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [
-    dev
-    games
-  ];
-  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
+  cri.packages = {
+    pkgs = {
+      dev.enable = true;
+      games.enable = true;
+    };
+  };
 
   programs.steam.enable = true;
 }

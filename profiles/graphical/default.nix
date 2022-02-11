@@ -25,7 +25,7 @@ in
     sound.enable = true;
   };
 
-  cri.programs.packages = with config.cri.programs.packageBundles; desktop;
+  cri.packages.pkgs.desktop.enable = true;
 
   services.xserver = {
     enable = true;

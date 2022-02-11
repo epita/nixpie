@@ -9,8 +9,13 @@
   netboot.enable = true;
   cri.sddm.title = lib.mkForce "Exam Inter";
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [ dev devSQL devJava ];
-  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
+  cri.packages = {
+    pkgs = {
+      dev.enable = true;
+      sql.enable = true;
+      java.enable = true;
+    };
+  };
 
   # Restore internet access
   networking.firewall.enable = lib.mkForce true;
@@ -26,7 +31,6 @@
   ];
 
   programs.java = {
-    enable = true;
-    package = pkgs.jdk11;
+    package = lib.mkForce pkgs.jdk11;
   };
 }

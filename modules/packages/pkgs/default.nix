@@ -1,0 +1,26 @@
+{
+  imports = [
+    ./afit.nix
+    ./asm.nix
+    ./core.nix
+    ./csharp.nix
+    ./desktop.nix
+    ./dev.nix
+    ./fuse.nix
+    ./games.nix
+    ./gpgpu.nix
+    ./gtk.nix
+    ./java.nix
+    ./latex-exam.nix
+    ./lisp.nix
+    ./ocaml.nix
+    ./opengl.nix
+    ./podman.nix
+    ./rust.nix
+    ./sdl.nix
+    ./spider.nix
+    ./sql.nix
+    ./thl.nix
+    ./tiger.nix
+  ];
+}

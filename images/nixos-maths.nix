@@ -16,34 +16,34 @@ in
   netboot.enable = true;
   cri.sddm.title = "NixOS Maths";
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [
-    dev
-    devLisp
+  cri.packages = {
+    pkgs = {
+      dev.enable = true;
+      lisp.enable = true;
+    };
+  };
+
+  cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
+    jupyterlab
+    numpy
+    matplotlib
+    scikitimage
+    scipy
   ];
 
-  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [
-    dev
-    (p: with p; [
-      jupyterlab
-      numpy
-      matplotlib
-      scikitimage
-      scipy
-    ])
-    (_: with pkgsMaths.python3Packages; [
-      annoy
-      beir
-      datasets
-      fasttext
-      gensim
-      hnswlib
-      ipywidgets
-      nltk
-      pytorch
-      scikit-learn
-      spacy
-      tqdm
-      transformers
-    ])
+  cri.packages.pythonPackages.nixosMathsCustomOverrides = _: with pkgsMaths.python3Packages; [
+    annoy
+    beir
+    datasets
+    fasttext
+    gensim
+    hnswlib
+    ipywidgets
+    nltk
+    pytorch
+    scikit-learn
+    spacy
+    tqdm
+    transformers
   ];
 }

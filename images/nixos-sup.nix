@@ -17,13 +17,14 @@ in
   cri.sddm.title = "NixOS SUP";
   cri.xfce.enable = true;
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [
-    dev
-    devOcaml
-    devAfit
-    devCsharp
-    nixosSupPkgs
-  ];
-  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
-  cri.programs.ocamlPackages = with config.cri.programs.ocamlPackageBundles; [ dev devAfit ];
+  cri.packages = {
+    pkgs = {
+      dev.enable = true;
+      ocaml.enable = true;
+      afit.enable = true;
+      csharp.enable = true;
+    };
+  };
+
+  environment.systemPackages = nixosSupPkgs;
 }

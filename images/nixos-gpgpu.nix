@@ -25,13 +25,13 @@
     "/targets"
   ];
 
-  cri.programs.packages = with config.cri.programs.packageBundles; [
-    dev
-    gpgpu
-    opengl
-  ];
-
-  cri.programs.pythonPackages = with config.cri.programs.pythonPackageBundles; [ dev ];
+  cri.packages = {
+    pkgs = {
+      dev.enable = true;
+      gpgpu.enable = true;
+      opengl.enable = true;
+    };
+  };
 
   environment.variables = {
     CUDA_PATH = "${pkgs.cudatoolkit}";

@@ -7,7 +7,7 @@
 
   label = ./misc/label.nix;
 
-  programs = ./programs/programs.nix;
+  packages = ./packages;
   yubikey = ./programs/yubikey.nix;
 
   machine-state = ./services/admin/machine-state.nix;
