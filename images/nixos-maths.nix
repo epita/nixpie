@@ -24,6 +24,7 @@ in
   };
 
   cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
+    jupyter
     jupyterlab
     numpy
     matplotlib
