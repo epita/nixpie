@@ -22,6 +22,7 @@ let
     if [ "$PAM_TYPE" = "close_session" ]; then
       if [ $(id -u) -ne 0 ]; then
         ${pkgs.procps}/bin/pkill -9 -u "$PAM_USER"
+        ${pkgs.findutils}/bin/find /tmp -uid $(id -u "$PAM_USER") -delete
       fi
     fi
 
