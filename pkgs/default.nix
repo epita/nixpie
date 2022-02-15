@@ -18,6 +18,7 @@ rec {
   nolimips = final.callPackage ./development/tools/nolimips { };
   nswrappers = final.callPackage ./nswrappers { };
   pam_afs_session = final.callPackage ./os-specific/linux/pam_afs_session { };
+  pam_subuid = final.callPackage ./os-specific/linux/pam_subuid { };
   pharaoh = final.callPackage ./development/tools/pharaoh { };
   sddm-epita-themes = final.callPackage ./applications/display-managers/sddm/sddm-epita-themes.nix { };
   term_size = final.callPackage ./tools/misc/term_size { };
