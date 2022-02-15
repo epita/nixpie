@@ -91,6 +91,7 @@ in
           session   optional                    pam_permit.so
           session   required                    pam_env.so                                                conffile=/etc/pam/environment readenv=0
           session   required                    pam_loginuid.so
+          session   optional                    ${pkgs.pam_subuid}/lib/security/pam_subuid.so
         '';
 
         i3lock.text = config.security.pam.services.login.text;
