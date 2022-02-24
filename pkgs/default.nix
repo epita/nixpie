@@ -20,5 +20,6 @@ rec {
   pam_subuid = final.callPackage ./os-specific/linux/pam_subuid { };
   pharaoh = final.callPackage ./development/tools/pharaoh { };
   sddm-epita-themes = final.callPackage ./applications/display-managers/sddm/sddm-epita-themes.nix { };
+  squarify = final.python3Packages.callPackage ./development/python-modules/squarify { };
   term_size = final.callPackage ./tools/misc/term_size { };
 }
