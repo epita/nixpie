@@ -22,4 +22,5 @@ rec {
   sddm-epita-themes = final.callPackage ./applications/display-managers/sddm/sddm-epita-themes.nix { };
   squarify = final.python3Packages.callPackage ./development/python-modules/squarify { };
   term_size = final.callPackage ./tools/misc/term_size { };
+  wikipedia = final.python3Packages.callPackage ./development/python-modules/wikipedia { };
 }
