@@ -30,6 +30,16 @@ in
     matplotlib
     scikitimage
     scipy
+    graphviz
+    ipdb
+    networkx
+    pandas
+    plotly
+    seaborn
+    scikit-learn
+    pkgs.squarify
+    termcolor
+    pkgs.wikipedia
   ];
 
   cri.packages.pythonPackages.nixosMathsCustomOverrides = _: with pkgsMaths.python3Packages; [
