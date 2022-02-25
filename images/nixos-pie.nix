@@ -15,6 +15,7 @@
       podman.enable = true;
       sql.enable = true;
       thl.enable = true;
+      tiger.enable = true;
     };
   };
 
