@@ -7,9 +7,18 @@
 
   config = lib.mkIf config.cri.packages.pkgs.tiger.enable {
     environment.systemPackages = with pkgs; [
-      bison-epita
+      autoconf
+      automake
+      bison
+      boost
+      flex
+      gnum4
+      gnumake
       havm
+      libtool
+      llvmPackages_12.llvm
       nolimips
+      perl
     ];
   };
 }
