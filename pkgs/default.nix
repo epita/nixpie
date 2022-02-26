@@ -11,6 +11,7 @@ rec {
   exec-tools = final.callPackage ./exec-tools { };
   havm = final.callPackage ./development/tools/havm { };
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
+  jupyter-dash = final.python3Packages.callPackage ./development/python-modules/jupyter-dash { };
   jupyter_contrib_core = final.python3Packages.callPackage ./development/python-modules/jupyter_contrib_core { };
   jupyter_contrib_nbextensions = final.python3Packages.callPackage ./development/python-modules/jupyter_contrib_nbextensions { };
   jupyter_highlight_selected_word = final.python3Packages.callPackage ./development/python-modules/jupyter_highlight_selected_word { };
