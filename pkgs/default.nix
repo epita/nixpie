@@ -12,6 +12,7 @@ rec {
   havm = final.callPackage ./development/tools/havm { };
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
   jupyter_contrib_core = final.python3Packages.callPackage ./development/python-modules/jupyter_contrib_core { };
+  jupyter_contrib_nbextensions = final.python3Packages.callPackage ./development/python-modules/jupyter_contrib_nbextensions { };
   jupyter_highlight_selected_word = final.python3Packages.callPackage ./development/python-modules/jupyter_highlight_selected_word { };
   jupyter_latex_envs = final.python3Packages.callPackage ./development/python-modules/jupyter_latex_envs { };
   jupyter_nbextensions_configurator = final.python3Packages.callPackage ./development/python-modules/jupyter_nbextensions_configurator { };
