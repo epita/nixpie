@@ -13,6 +13,7 @@ rec {
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
   jupyter_contrib_core = final.python3Packages.callPackage ./development/python-modules/jupyter_contrib_core { };
   jupyter_highlight_selected_word = final.python3Packages.callPackage ./development/python-modules/jupyter_highlight_selected_word { };
+  jupyter_latex_envs = final.python3Packages.callPackage ./development/python-modules/jupyter_latex_envs { };
   libfff = final.callPackage ./development/libraries/libfff { };
   m68k = final.qt5.callPackage ./development/tools/m68k { };
   nixpie-utils = final.callPackage ./nixpie-utils { };
