@@ -24,22 +24,38 @@ in
   };
 
   cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
+    beautifulsoup4
+    dash
+    folium
+    graphviz
+    imageio
+    ipdb
+    ipython
+    ipywidgets
     jupyter
     jupyterlab
-    numpy
+    lxml
     matplotlib
+    networkx
+    numpy
+    openpyxl
+    pandas
+    pandas-datareader
+    pkgs.jupyter-dash
+    pkgs.jupyter_contrib_nbextensions
+    pkgs.jupyter_latex_envs
+    pkgs.nbtranslate
+    pkgs.squarify
+    pkgs.wikipedia
+    plotly
+    scikit-learn
     scikitimage
     scipy
-    graphviz
-    ipdb
-    networkx
-    pandas
-    plotly
     seaborn
-    scikit-learn
-    pkgs.squarify
+    seaborn
     termcolor
-    pkgs.wikipedia
+    xarray
+    xlrd
   ];
 
   cri.packages.pythonPackages.nixosMathsCustomOverrides = _: with pkgsMaths.python3Packages; [
