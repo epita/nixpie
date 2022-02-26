@@ -19,6 +19,7 @@ rec {
   jupyter_nbextensions_configurator = final.python3Packages.callPackage ./development/python-modules/jupyter_nbextensions_configurator { };
   libfff = final.callPackage ./development/libraries/libfff { };
   m68k = final.qt5.callPackage ./development/tools/m68k { };
+  nbtranslate = final.python3Packages.callPackage ./development/python-modules/nbtranslate { };
   nixpie-utils = final.callPackage ./nixpie-utils { };
   nolimips = final.callPackage ./development/tools/nolimips { };
   nswrappers = final.callPackage ./nswrappers { };
