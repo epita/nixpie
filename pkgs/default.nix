@@ -11,6 +11,7 @@ rec {
   exec-tools = final.callPackage ./exec-tools { };
   havm = final.callPackage ./development/tools/havm { };
   intel_nuc_led = final.callPackage ./os-specific/linux/intel_nuc_led { inherit (final.linuxPackages) kernel; };
+  jupyter_contrib_core = final.python3Packages.callPackage ./development/python-modules/jupyter_contrib_core { };
   libfff = final.callPackage ./development/libraries/libfff { };
   m68k = final.qt5.callPackage ./development/tools/m68k { };
   nixpie-utils = final.callPackage ./nixpie-utils { };
