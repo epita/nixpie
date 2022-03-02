@@ -16,6 +16,7 @@
       gnumake
       havm
       libtool
+      libxslt
       llvmPackages_12.llvm
       nolimips
       perl
