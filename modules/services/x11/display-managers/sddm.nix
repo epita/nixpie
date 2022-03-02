@@ -3,7 +3,7 @@
 with lib;
 
 let
-  sddm-epita-themes = pkgs.sddm-epita-themes.override {
+  sddm-epita-simplyflat = pkgs.sddm-epita-simplyflat.override {
     extraThemeConfig = ''
       logo=epita.png
       title="-- ${config.cri.sddm.title} --"
@@ -40,8 +40,8 @@ in
         enable = true;
         autoNumlock = true;
         autoLogin.relogin = true;
-        theme = "epita-simplyblack";
-        settings.Theme.ThemeDir = "${sddm-epita-themes}/share/sddm/themes";
+        theme = "epita-simplyflat";
+        settings.Theme.ThemeDir = "${sddm-epita-simplyflat}/share/sddm/themes";
       };
     };
 
