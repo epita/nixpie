@@ -55,6 +55,7 @@ let
     "exam-inter" = { };
     "exam-pie" = { };
     "exam-prepa" = { };
+    "exam-maths" = { };
 
     "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };
