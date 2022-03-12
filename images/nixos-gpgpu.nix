@@ -41,7 +41,7 @@
     let
       system = "x86_64-linux";
 
-      nixpie = import (builtins.fetchTarball "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie/-/archive/master/nixpie-master.tar.gz");
+      nixpie = import (builtins.fetchTarball "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie/-/archive/main/nixpie-main.tar.gz");
 
       inherit (nixpie.inputs.nixpkgs) lib;
       inherit (lib) attrValues;

@@ -28,7 +28,7 @@ stages:
     - echo "[default]" > ~/.aws/config
     - source .gitlab/ci/utils.sh
     # Fix nix errors about dirty tree
-    - git switch -t origin/master
+    - git switch -t origin/main
     - git reset --hard $CI_COMMIT_SHA
 
 .rules-fork-default:
