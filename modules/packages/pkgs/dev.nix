@@ -19,8 +19,13 @@
       ninja
 
       # compilers
-      # Putting gcc before clang means that `which cc` will be `gcc` instead of `clang`
+      # Putting gcc before clang means that `which cc` will be `gcc` instead of
+      # `clang`
       gcc
+      # gcc-unwrapped with lower priority than gcc so `gcov` is available and
+      # `gcc` is still wrapped
+      (lib.setPrio (gcc.meta.priority + 1) gcc-unwrapped)
+
       clang_12
       llvmPackages_12.llvm
       llvmPackages_12.lld
