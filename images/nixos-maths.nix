@@ -48,6 +48,7 @@ in
     pkgs.squarify
     pkgs.wikipedia
     plotly
+    pygame
     scikit-learn
     scikitimage
     scipy
