@@ -7,11 +7,11 @@
     ./desktop.nix
     ./dev.nix
     ./fuse.nix
-    ./js.nix
     ./games.nix
     ./gpgpu.nix
     ./gtk.nix
     ./java.nix
+    ./js.nix
     ./latex-exam.nix
     ./lisp.nix
     ./ocaml.nix

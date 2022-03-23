@@ -12,6 +12,7 @@
     pkgs = {
       dev.enable = true;
       java.enable = true;
+      js.enable = true;
       podman.enable = true;
       sql.enable = true;
       thl.enable = true;
