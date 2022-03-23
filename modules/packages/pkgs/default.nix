@@ -7,6 +7,7 @@
     ./desktop.nix
     ./dev.nix
     ./fuse.nix
+    ./js.nix
     ./games.nix
     ./gpgpu.nix
     ./gtk.nix
