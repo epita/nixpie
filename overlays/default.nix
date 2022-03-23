@@ -1,3 +1,1 @@
-{
-  cudatoolkit = import ./cudatoolkit.nix;
-}
+{ }

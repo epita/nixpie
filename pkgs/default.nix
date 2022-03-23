@@ -10,6 +10,7 @@ rec {
   ciscoPacketTracer8 = callPackage ./applications/networking/cisco-packet-tracer { };
   clang-format-epita = callPackage ./development/tools/clang-format-epita { };
   clonezilla = callPackage ./tools/system/clonezilla { };
+  cudatoolkit = callPackage ./development/compilers/cudatoolkit/default.nix { inherit (prev) cudatoolkit_11_5; };
   exam-start = callPackage ./exam-start { };
   exec-tools = callPackage ./exec-tools { };
   geany = callPackage ./applications/editors/geany { inherit (prev) geany; };
