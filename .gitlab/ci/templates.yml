@@ -80,6 +80,7 @@ stages:
   needs:
     - build
   allow_failure: true
+  resource_group: deploy
   rules:
     - when: manual
 
