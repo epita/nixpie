@@ -3,14 +3,23 @@
 {
   options = {
     cri.packages.pkgs.csharp.enable = lib.options.mkEnableOption "dev C# CRI package bundle";
+    cri.packages.pkgs.csharp.dotnetPackage = lib.options.mkOption {
+      type = lib.types.package;
+      default = pkgs.dotnet-sdk_5;
+      description = "CRI dotnet SDK package";
+    };
   };
 
   config = lib.mkIf config.cri.packages.pkgs.csharp.enable {
     environment.systemPackages = with pkgs; [
-      dotnet-sdk_5
+      config.cri.packages.pkgs.csharp.dotnetPackage
       jetbrains.rider
       mono
       msbuild
     ];
+
+    environment.variables = {
+      DOTNET_ROOT = "${config.cri.packages.pkgs.csharp.dotnetPackage}";
+    };
   };
 }
