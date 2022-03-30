@@ -31,6 +31,7 @@ let
 
   tests = {
     criterion = ./criterion.nix;
+    dotnet = ./dotnet.nix;
     gtest = ./gtest.nix;
     login-epita = ./login-epita.nix;
     node-exporter = ./node-exporter.nix;
