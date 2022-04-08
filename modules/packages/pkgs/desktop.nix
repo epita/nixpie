@@ -12,6 +12,7 @@
       (wrapFirefox firefox-unwrapped {
         extraPrefs = ''
           pref("network.negotiate-auth.trusted-uris", "cri.epita.fr,.cri.epita.fr");
+          pref("network.trr.excluded-domains", "cri.epita.fr");
         '';
       })
 
