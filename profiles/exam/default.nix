@@ -30,7 +30,7 @@ in
 
   services.xserver.windowManager.i3 = {
     extraSessionCommands = lib.mkAfter ''
-      ${pkgs.rxvt-unicode}/bin/urxvt -e ${pkgs.exam-start}/bin/exam-start &
+      ${pkgs.i3}/bin/i3-sensible-terminal -e ${pkgs.exam-start}/bin/exam-start &
     '';
   };
 
