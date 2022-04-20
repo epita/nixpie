@@ -7,7 +7,6 @@
 
   config = lib.mkIf config.cri.packages.pkgs.spider.enable {
     environment.systemPackages = with pkgs; [
-      boost
       libev
       openssl
     ];
