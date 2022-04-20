@@ -14,6 +14,7 @@
       java.enable = true;
       js.enable = true;
       podman.enable = true;
+      spider.enable = true;
       sql.enable = true;
       thl.enable = true;
       tiger.enable = true;
