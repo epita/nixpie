@@ -4,7 +4,6 @@ let
   testSuccess = pkgs.writeText "success.c" ''
     #include <ev.h>
     #include <openssl/ssl.h>
-    #include <boost/iterator/iterator_facade.hpp>
 
     int main() {
       return 0;
