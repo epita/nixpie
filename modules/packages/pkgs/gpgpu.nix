@@ -6,6 +6,13 @@
   };
 
   config = lib.mkIf config.cri.packages.pkgs.gpgpu.enable {
+    security.wrappers.nvprof = {
+      owner = "root";
+      group = "root";
+      capabilities = "cap_sys_admin+ep";
+      source = "${pkgs.cudatoolkit}/bin/nvprof";
+    };
+
     environment.systemPackages = with pkgs; [
       # OpenCV
       clinfo
