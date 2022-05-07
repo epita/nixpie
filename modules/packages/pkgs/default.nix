@@ -18,6 +18,7 @@
     ./opengl.nix
     ./podman.nix
     ./prolog.nix
+    ./r.nix
     ./rust.nix
     ./sdl.nix
     ./spider.nix
