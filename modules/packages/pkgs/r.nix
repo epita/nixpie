@@ -8,6 +8,7 @@
   config = lib.mkIf config.cri.packages.pkgs.r.enable {
     environment.systemPackages = with pkgs; [
       rWrapper
+      rstudioWrapper
     ];
   };
 }
