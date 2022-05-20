@@ -99,6 +99,8 @@
 
   libfff = ../development/libraries/libfff;
 
+  spot-lrde = ../development/libraries/spot-lrde;
+
   ### OS-SPECIFIC
 
   # TODO: move this elsewhere
