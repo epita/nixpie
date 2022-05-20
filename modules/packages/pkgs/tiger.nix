@@ -20,7 +20,7 @@
       llvmPackages_12.llvm
       nolimips
       perl
-      pkgsi686Linux.llvmPackages_11.clang
+      clang32-alias
     ];
   };
 }
