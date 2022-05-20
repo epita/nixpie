@@ -21,6 +21,8 @@
 
   ### DEVELOPMENT / COMPILERS
 
+  clang32-alias = ../development/compilers/clang32-alias;
+
   cudatoolkit = {
     path = ../development/compilers/cudatoolkit;
     args = final: prev: { inherit (prev) cudatoolkit_11_5; };
