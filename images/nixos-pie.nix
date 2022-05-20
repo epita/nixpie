@@ -8,6 +8,10 @@
   netboot.enable = true;
   cri.sddm.title = "NixOS PIE";
 
+  environment.systemPackages = with pkgs; [
+    spot-lrde
+  ];
+
   cri.packages = {
     pkgs = {
       dev.enable = true;
