@@ -63,6 +63,8 @@
             (attrValues self.overlays) ++
             (optional withOverrides self.overrides.${system}) ++ [
               (import "${docker-nixpkgs}/overlay.nix")
+
+              machine-state.overlay
             ];
         };
 

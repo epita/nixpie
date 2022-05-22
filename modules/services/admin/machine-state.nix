@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.cri.machine-state;
-  machine-state = inputs.machine-state.packages.${pkgs.system}.machine-state;
 in
 {
   options = {
@@ -14,7 +13,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.dbus.packages = [ machine-state ];
+    services.dbus.packages = [ pkgs.machine-state ];
 
     systemd.services.machine-state = {
       description = "DBus object representing current machine state";
@@ -39,7 +38,7 @@ in
 
       script = ''
         export MACHINE_STATE_IP="$(${pkgs.nixpie-utils}/bin/get_ip.sh)"
-        ${machine-state}/bin/machine-state
+        ${pkgs.machine-state}/bin/machine-state
       '';
     };
   };
