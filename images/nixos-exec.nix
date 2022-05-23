@@ -9,6 +9,8 @@ let
     if [ -x ${pkgs.exec-tools}/bin/''${EXEC_URL} ]; then
       ${pkgs.exec-tools}/bin/''${EXEC_URL}
     else
+      # Wait for network to be ready
+      ${pkgs.nixpie-utils}/bin/get_ip.sh
       ${pkgs.wget}/bin/wget "''${EXEC_URL}" -O /tmp/script.sh
       chmod +x /tmp/script.sh
       /tmp/script.sh
