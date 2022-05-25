@@ -41,6 +41,7 @@
       scrot
 
       # misc
+      alacritty
       bc
       dialog
       gnome3.zenity
