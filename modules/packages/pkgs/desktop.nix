@@ -6,6 +6,7 @@
   };
 
   config = lib.mkIf config.cri.packages.pkgs.desktop.enable {
+
     environment.systemPackages = with pkgs; [
       # browsers
       chromium
@@ -41,6 +42,7 @@
       scrot
 
       # misc
+      alacritty
       bc
       dialog
       gnome3.zenity
