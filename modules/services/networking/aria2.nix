@@ -14,6 +14,13 @@ with lib;
   };
 
   config = mkIf config.cri.aria2.enable {
+    users.groups.aria2.gid = config.ids.gids.aria2;
+    users.users.aria2 = {
+      description = "aria2 user";
+      uid = config.ids.uids.aria2;
+      group = "aria2";
+    };
+
     networking.firewall = {
       allowedTCPPortRanges = [{ from = 6881; to = 6999; }];
       allowedUDPPortRanges = [{ from = 6881; to = 6999; }];
@@ -26,6 +33,7 @@ with lib;
 
       serviceConfig = {
         Type = "simple";
+        User = "aria2";
       };
 
       script = ''
