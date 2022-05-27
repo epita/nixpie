@@ -13,6 +13,7 @@
   ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.opengl.extraPackages = with pkgs; [ mesa.drivers ];
 
   boot.extraModprobeConfig = ''
     options nvidia NVreg_RestrictProfilingToAdminUsers=0 NVreg_DeviceFileMode=0666
