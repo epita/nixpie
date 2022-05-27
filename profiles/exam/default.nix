@@ -135,6 +135,9 @@ in
           # ocsp.pki.goog
           ip daddr 142.250.75.227 tcp dport {http,https} accept
 
+          # Allow traffic from aria2 user
+          meta skuid ${config.ids.uids.aria2} accept
+
           drop
         }
 
