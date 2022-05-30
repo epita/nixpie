@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -12,7 +12,7 @@
     linuxPackages.nvidia_x11
   ];
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = lib.mkBefore [ "nvidia" ];
   hardware.opengl.extraPackages = with pkgs; [ mesa.drivers ];
 
   boot.extraModprobeConfig = ''
