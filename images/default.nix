@@ -44,6 +44,7 @@ let
   hosts = lib.mapAttrs nixosSystem {
     "nixos-exec" = { };
     "nixos-gpgpu" = { };
+    "nixos-image" = { };
     "nixos-lan" = { };
     "nixos-maths" = { };
     "nixos-net" = { };
