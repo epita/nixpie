@@ -24,6 +24,10 @@ in
     };
   };
 
+  environment.systemPackages = with pkgs; [
+    libreoffice
+  ];
+
   cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
     beautifulsoup4
     dash
