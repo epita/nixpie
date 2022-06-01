@@ -53,6 +53,7 @@ let
     "nixos-sup" = { };
     "nixos-test" = { };
 
+    "exam-asm" = { };
     "exam-inter" = { };
     "exam-pie" = { };
     "exam-prepa" = { };
