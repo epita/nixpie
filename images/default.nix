@@ -50,6 +50,7 @@ let
     "nixos-net" = { };
     "nixos-pie" = { };
     "nixos-spe" = { };
+    "nixos-sql" = { };
     "nixos-sup" = { };
     "nixos-test" = { };
 
@@ -57,6 +58,7 @@ let
     "exam-pie" = { };
     "exam-prepa" = { };
     "exam-maths" = { };
+    "exam-sql" = { };
 
     "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };
