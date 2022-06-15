@@ -34,6 +34,7 @@ let
               "${modulesPath}/virtualisation/qemu-vm.nix"
               {
                 netboot.enable = lib.mkVMOverride false;
+                networking.nameservers = lib.mkVMOverride [ "1.1.1.1" ];
               }
             ];
           }).config.system.build.vm;
