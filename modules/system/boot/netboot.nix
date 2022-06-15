@@ -166,6 +166,7 @@ with lib;
       network.udhcpc.extraArgs = [ "-t 10" "-A 10" ];
       extraUtilsCommands = ''
         copy_bin_and_libs ${pkgs.aria2}/bin/aria2c
+        copy_bin_and_libs ${pkgs.dumptorrent}/bin/dumptorrent
         copy_bin_and_libs ${pkgs.rng-tools}/bin/rngd
         copy_bin_and_libs ${pkgs.e2fsprogs}/bin/mke2fs
         copy_bin_and_libs ${pkgs.e2fsprogs}/bin/mkfs.ext4
@@ -202,6 +203,7 @@ with lib;
 
         imageName="${imageName}"
         torrentFile="$imageName.torrent"
+        torrentFilePath="/${config.system.build.torrent.name}"
         squashfsName="$imageName.squashfs"
 
         torrentDir=${config.netboot.torrent.mountPoint}
@@ -225,6 +227,27 @@ with lib;
           mount -t tmpfs tmpfs $torrentDir
         fi
 
+        # Compute needed space to download squashfs in cache
+        torrentSize=$(dumptorrent "$torrentFilePath" | grep Size | awk '{ print $2 }')
+        downloadedImageSize=$(stat -c %s $torrentDir/$squashfsName 2>/dev/null || echo 0)
+        neededSpace=$(((torrentSize - downloadedImageSize + 1000) / 1024))
+        getAvailableCacheSpace() {
+            df -P "$torrentDir" | tail -n1 | awk '{ print $4 }'
+        }
+        availableCacheSpace=$(getAvailableCacheSpace)
+
+        # Delete images until there is enough space to download our squashfs
+        # Images are deleted starting from the oldest
+        while [ "$availableCacheSpace" -lt "$neededSpace" ] && ls -l "$torrentDir" | grep -q 'squashfs$'; do
+          oldestImage=$(stat -c "%Y %n" "$torrentDir"/*.squashfs | sort | head -1 | sed 's/[0-9]\+ //')
+          oldestImageSize=$(stat -c "%s" "''${oldestImage%.*}".* | awk '{s+=$1} END {printf "%.0f", s}')
+          echo "Deleting $oldestImage to free up $oldestImageSize bytes"
+          rm -f  -- "''${oldestImage%.*}".*
+          sync
+
+          availableCacheSpace=$(getAvailableCacheSpace)
+        done
+
         rngd >&2
 
         aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"
@@ -234,7 +257,7 @@ with lib;
         aria2_noseed="--seed-time=0 --seed-ratio=0"
         aria2_opts="$aria2_base $aria2_tracker $aria2_summary $aria2_nodht $aria2_noseed"
 
-        cp /${config.system.build.torrent.name} $torrentDir/$torrentFile
+        cp "$torrentFilePath" $torrentDir/$torrentFile
 
         aria2c $aria2_opts --dir="$torrentDir" --index-out=1="$squashfsName" $torrentDir/$torrentFile > /dev/console
 
