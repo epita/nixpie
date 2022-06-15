@@ -46,6 +46,10 @@ in
     };
   };
 
+  environment.variables = {
+    TERMINAL = "${pkgs.alacritty}/bin/alacritty";
+  };
+
   xdg.mime.defaultApplications = {
     "x-scheme-handler/http" = "firefox.desktop";
     "x-scheme-handler/https" = "firefox.desktop";

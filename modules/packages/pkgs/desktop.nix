@@ -6,6 +6,7 @@
   };
 
   config = lib.mkIf config.cri.packages.pkgs.desktop.enable {
+
     environment.systemPackages = with pkgs; [
       # browsers
       chromium
