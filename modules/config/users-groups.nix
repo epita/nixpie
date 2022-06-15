@@ -63,7 +63,9 @@ in
           # Authentication management.
           auth  [default=ignore success=1]  pam_succeed_if.so                                         quiet uid <= 1000
           auth  sufficient                  ${pkgs.pam_krb5}/lib/security/pam_krb5.so                 minimum_uid=1000
+        '' + (if config.cri.afs.enable then ''
           auth  optional                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   program=${config.services.openafsClient.packages.programs}/bin/aklog nopag
+        '' else "") + ''
           auth  required                    pam_unix.so                                               try_first_pass nullok
           auth  optional                    pam_permit.so
           auth  required                    pam_env.so                                                conffile=/etc/pam/environment readenv=0
@@ -84,7 +86,9 @@ in
           session   required                    ${pkgs.pam}/lib/security/pam_mkhomedir.so                 silent skel=${config.security.pam.makeHomeDir.skelDirectory} umask=0077
           session   [default=ignore success=3]  pam_succeed_if.so                                         uid <= 1000
           session   required                    ${pkgs.pam_krb5}/lib/security/pam_krb5.so
+        '' + (if config.cri.afs.enable then ''
           session   required                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   afs_cells=cri.epita.fr always_aklog minimum_uid=1000 program=${config.services.openafsClient.packages.programs}/bin/aklog nopag
+        '' else "") + ''
           session   required                    pam_exec.so                                               ${pam_epita}
           session   optional                    ${pkgs.systemd}/lib/security/pam_systemd.so
           session   required                    pam_unix.so
