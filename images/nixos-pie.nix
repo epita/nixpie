@@ -12,6 +12,10 @@
     spot-lrde
   ];
 
+  cri.packages.pythonPackages.nixosPieCustom = p: with p; [
+    osmnx
+  ];
+
   cri.packages = {
     pkgs = {
       dev.enable = true;
