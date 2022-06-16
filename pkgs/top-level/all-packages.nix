@@ -25,7 +25,7 @@
 
   cudatoolkit = {
     path = ../development/compilers/cudatoolkit;
-    args = final: prev: { inherit (prev) cudatoolkit_11_5; };
+    args = final: prev: { inherit (prev) cudaPackages_11_5; };
   };
 
   havm = ../development/compilers/havm;

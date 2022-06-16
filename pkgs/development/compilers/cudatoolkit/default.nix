@@ -9,10 +9,10 @@
 , nss
 , nspr
 , linuxPackages
-, cudatoolkit_11_5
+, cudaPackages_11_5
 }:
 
-(cudatoolkit_11_5.override (old: rec {
+(cudaPackages_11_5.cudatoolkit.override (old: rec {
   gcc = stdenv.cc;
 })).overrideAttrs (old: rec {
   nativeBuildInputs = old.nativeBuildInputs ++ [ libsForQt5.wrapQtAppsHook ];
