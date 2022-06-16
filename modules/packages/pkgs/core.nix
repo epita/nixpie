@@ -26,7 +26,7 @@
       rsync
       screen
       tcpdump
-      telnet
+      inetutils
       term_size
       tmux
       tree

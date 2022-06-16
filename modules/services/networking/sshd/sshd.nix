@@ -23,7 +23,7 @@ in
       enable = true;
       passwordAuthentication = false;
       forwardX11 = true;
-      challengeResponseAuthentication = false;
+      kbdInteractiveAuthentication = false;
       extraConfig = mkBefore
         ((if cfg.allowUsers then ''
           AllowUsers *

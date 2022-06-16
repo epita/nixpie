@@ -16,7 +16,6 @@ with lib;
       pulseaudio = {
         enable = true;
         package = mkIf config.cri.bluetooth.enable pkgs.pulseaudioFull;
-        extraModules = optional config.cri.bluetooth.enable pkgs.pulseaudio-modules-bt;
       };
     };
 
