@@ -6,7 +6,7 @@
   '';
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11"; # change me to nixos-21.11 once it exists
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
@@ -108,7 +108,7 @@
         {
           checks = (import ./tests (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }));
 
-          devShell = pkgs.mkShell {
+          devShells.default = pkgs.mkShell {
             name = "nixpie";
             buildInputs = with pkgs; [
               awscli
