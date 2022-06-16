@@ -1,5 +1,5 @@
 {
-  machine = {
+  nodes.machine = {
     imports = [ ../profiles/graphical ];
   };
 

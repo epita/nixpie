@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  machine = { config, pkgs, ... }: {
+  nodes.machine = { config, pkgs, ... }: {
     cri.nswrappers.enable = true;
 
     users.users.alice = {

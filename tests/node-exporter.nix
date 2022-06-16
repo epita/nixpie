@@ -1,6 +1,6 @@
 {
   # node-exporter should be enabled by default
-  machine = { };
+  nodes.machine = { };
 
   testScript = ''
     machine.wait_for_unit("prometheus-node-exporter.service")

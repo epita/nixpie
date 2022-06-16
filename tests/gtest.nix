@@ -31,7 +31,7 @@ let
   '';
 in
 {
-  machine = { config, pkgs, ... }: {
+  nodes.machine = { config, pkgs, ... }: {
     cri.packages.pkgs.dev.enable = true;
   };
 

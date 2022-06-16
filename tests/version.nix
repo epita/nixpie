@@ -2,7 +2,7 @@
 
 # This also acts as a canary test.
 {
-  machine = { };
+  nodes.machine = { };
 
   testScript = ''
     machine.wait_for_unit("default.target")
