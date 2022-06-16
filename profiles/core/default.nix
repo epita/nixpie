@@ -23,7 +23,7 @@ with lib;
     trustedUsers = [ "root" "@wheel" ];
 
     extraOptions = ''
-      experimental-features = nix-command flakes ca-references
+      experimental-features = nix-command flakes
     '';
 
     binaryCaches = [ "https://s3.cri.epita.fr/cri-nix-cache.s3.cri.epita.fr" ];
@@ -149,4 +149,6 @@ with lib;
   };
 
   programs.udevil.enable = true;
+
+  system.stateVersion = "22.05";
 }
