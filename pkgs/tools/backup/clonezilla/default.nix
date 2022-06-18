@@ -122,6 +122,7 @@ buildFHSUserEnv {
     (partclone.overrideAttrs (old: {
       buildInputs = old.buildInputs ++ [ ncurses ];
       configureFlags = old.configureFlags ++ [ "--enable-ncursesw" ];
+      hardeningDisable = [ "format" ]; #FIXME: I don't know why this is necessary
     }))
     parted
     partimage
