@@ -63,9 +63,9 @@ in
           # Authentication management.
           auth  [default=ignore success=1]  pam_succeed_if.so                                         quiet uid <= 1000
           auth  sufficient                  ${pkgs.pam_krb5}/lib/security/pam_krb5.so                 minimum_uid=1000
-        '' + (if config.cri.afs.enable then ''
+        '' + (optionalString config.cri.afs.enable ''
           auth  optional                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   program=${config.services.openafsClient.packages.programs}/bin/aklog nopag
-        '' else "") + ''
+        '') + ''
           auth  required                    pam_unix.so                                               try_first_pass nullok
           auth  optional                    pam_permit.so
           auth  required                    pam_env.so                                                conffile=/etc/pam/environment readenv=0
