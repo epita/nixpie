@@ -44,6 +44,7 @@
       netcat-gnu
       rlwrap
       rxvt-unicode
+      xfce.thunar
       xorg.xeyes
       xorg.xinit
       xorg.xkill
