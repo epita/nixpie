@@ -147,4 +147,6 @@ with lib;
       enableSSHSupport = false;
     };
   };
+
+  programs.udevil.enable = true;
 }

@@ -30,7 +30,6 @@
       term_size
       tmux
       tree
-      udevil
       usbutils
       utillinux
       unzip
