@@ -15,7 +15,9 @@
 
       # CUDA
       binutils
-      cudatoolkit
+      cudaPackages_11_5.cudatoolkit
+      cudaPackages_11_5.nsight_systems
+      cudaPackages_11_5.nsight_compute
       freeglut
       gperf
       gitRepo
