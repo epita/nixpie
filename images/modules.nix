@@ -19,6 +19,7 @@ imageName:
       "nixpkgs=${nixpkgs}"
       "nixpkgs-unstable=${nixpkgsUnstable}"
       "nixpkgs-master=${nixpkgsMaster}"
+      "nixpie=${self}"
     ];
 
     nixpkgs = {
