@@ -30,16 +30,7 @@ imageName:
       nixpkgs.flake = nixpkgs;
       nixpkgsUnstable.flake = nixpkgsUnstable;
       nixpkgsMaster.flake = nixpkgsMaster;
-      nixpie = {
-        from = {
-          id = "nixpie";
-          type = "indirect";
-        };
-        to = {
-          type = "git";
-          url = "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie.git";
-        };
-      };
+      nixpie.flake = self;
     };
 
     environment.etc."nixos-version".text = if (self ? rev) then self.rev else "";
