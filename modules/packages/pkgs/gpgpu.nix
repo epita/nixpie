@@ -6,6 +6,8 @@
   };
 
   config = lib.mkIf config.cri.packages.pkgs.gpgpu.enable {
+    hardware.opengl.setLdLibraryPath = true;
+
     environment.systemPackages = with pkgs; [
       # OpenCV
       clinfo
