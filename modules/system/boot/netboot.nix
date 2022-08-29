@@ -155,6 +155,7 @@ with lib;
         "af_packet"
         "xennet"
         "e1000e"
+        "igc"
       ];
       kernelModules = [
         "loop"
