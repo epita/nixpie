@@ -17,7 +17,7 @@ in
     boot.extraModulePackages = [ pkgs.intel_nuc_led ];
 
     systemd.services.nuc-led-setter = {
-      description = "DBus object representing current machine state";
+      description = "Read the current lock status and set the NUC's led accordingly";
       wantedBy = [ "multi-user.target" ];
       after = (optional config.cri.machine-state.enable "machine-state.service");
       path = [ pkgs.kmod ];
