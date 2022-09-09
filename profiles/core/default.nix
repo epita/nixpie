@@ -72,7 +72,6 @@ with lib;
     aria2.enable = true;
     machine-state.enable = true;
     node-exporter.enable = true;
-    nuc-led-setter.enable = true;
     salt.enable = true;
     sshd.enable = true;
     users.enable = true;

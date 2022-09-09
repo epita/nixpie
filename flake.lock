@@ -62,21 +62,6 @@
         "type": "github"
       }
     },
-    "futils_3": {
-      "locked": {
-        "lastModified": 1629481132,
-        "narHash": "sha256-JHgasjPR0/J1J3DRm4KxM4zTyAj4IOJY8vIl75v/kPI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "997f7efcb746a9c140ce1f13c72263189225f482",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "machine-state": {
       "inputs": {
         "futils": "futils_2",
@@ -162,27 +147,6 @@
         "type": "github"
       }
     },
-    "nuc-led-setter": {
-      "inputs": {
-        "futils": "futils_3",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1643059125,
-        "narHash": "sha256-Dd1F5sGnbMrR8IlNcD7ZIaXyDtnAviRYchQWT2E914g=",
-        "ref": "refs/heads/master",
-        "rev": "30f95a378c1a17c7b0d867f70740c2cbc1d7dc64",
-        "revCount": 63,
-        "type": "git",
-        "url": "https://gitlab.cri.epita.fr/cri/packages/nuc-led-setter.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://gitlab.cri.epita.fr/cri/packages/nuc-led-setter.git"
-      }
-    },
     "root": {
       "inputs": {
         "docker-nixpkgs": "docker-nixpkgs",
@@ -192,8 +156,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgsMaster": "nixpkgsMaster",
         "nixpkgsMaths": "nixpkgsMaths",
-        "nixpkgsUnstable": "nixpkgsUnstable",
-        "nuc-led-setter": "nuc-led-setter"
+        "nixpkgsUnstable": "nixpkgsUnstable"
       }
     }
   },

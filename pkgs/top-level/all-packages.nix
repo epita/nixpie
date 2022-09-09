@@ -98,12 +98,6 @@
 
   ### OS-SPECIFIC
 
-  # TODO: move this elsewhere
-  intel_nuc_led = {
-    path = ../os-specific/linux/intel_nuc_led;
-    args = final: prev: { inherit (final.linuxPackages) kernel; };
-  };
-
   pam_afs_session = ../os-specific/linux/pam_afs_session;
 
   pam_subuid = ../os-specific/linux/pam_subuid;

@@ -19,12 +19,6 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
-    nuc-led-setter = {
-      url = "git+https://gitlab.cri.epita.fr/cri/packages/nuc-led-setter.git";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
 
     docker-nixpkgs = {
       url = "github:nix-community/docker-nixpkgs";
@@ -48,7 +42,6 @@
     , nixpkgsMaths
 
     , machine-state
-    , nuc-led-setter
 
     , docker-nixpkgs
 
