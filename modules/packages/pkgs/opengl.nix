@@ -10,6 +10,7 @@
       blender
       freeglut
       glew
+      glfw
       libGL
       libGLU
     ];
