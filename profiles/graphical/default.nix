@@ -48,6 +48,7 @@ in
   xdg.mime.defaultApplications = {
     "x-scheme-handler/http" = "firefox.desktop";
     "x-scheme-handler/https" = "firefox.desktop";
+    "x-scheme-handler/mailto" = "thunderbird.desktop";
     "text/html" = "firefox.desktop";
     "application/x-extension-htm" = "firefox.desktop";
     "application/x-extension-html" = "firefox.desktop";
