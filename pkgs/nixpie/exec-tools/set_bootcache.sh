@@ -26,6 +26,7 @@ else
 fi
 
 echo "Setting partitions on ${DISK_NAME}"
+echo "  - EFI (2G)"
 echo "  - bootcache (32G)"
 echo "  - nix-store-rw (32G)"
 echo "ALL THIS DISK CONTENT WILL BE ERASED!"
@@ -37,14 +38,19 @@ sleep 10
 sgdisk --zap-all "${DISK_NAME}"
 sgdisk --clear "${DISK_NAME}"
 
-sgdisk --new 1:2M:+32G "${DISK_NAME}"
-sgdisk --change-name 1:bootcache "${DISK_NAME}"
+sgdisk --new 1:2M:+2G "${DISK_NAME}"
+sgdisk --change-name 1:EFI "${DISK_NAME}"
+sgdisk --typecode 1:ef00 "${DISK_NAME}"
 
 sgdisk --new 2:0:+32G "${DISK_NAME}"
-sgdisk --change-name 2:nix-store-rw "${DISK_NAME}"
+sgdisk --change-name 2:bootcache "${DISK_NAME}"
+
+sgdisk --new 3:0:+32G "${DISK_NAME}"
+sgdisk --change-name 3:nix-store-rw "${DISK_NAME}"
 
 partx --update "${DISK_NAME}"
 sleep 5
 
+mkfs.vfat -n EFI /dev/disk/by-partlabel/EFI
 mkfs.ext4 -F -L bootcache /dev/disk/by-partlabel/bootcache
 mkfs.ext4 -F -L nix-store-rw /dev/disk/by-partlabel/nix-store-rw
