@@ -23,6 +23,7 @@
   sddm = ./services/x11/display-managers/sddm.nix;
   redshift = ./services/x11/redshift.nix;
   i3 = ./services/x11/window-managers/i3.nix;
+  idle-shutdown = ./services/misc/idle-shutdown;
 
   netboot = ./system/boot/netboot.nix;
 }
