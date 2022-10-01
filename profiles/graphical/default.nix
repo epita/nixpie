@@ -23,6 +23,7 @@ in
     redshift.enable = true;
     sddm.enable = true;
     sound.enable = true;
+    idle-shutdown.enable = true;
   };
 
   cri.packages.pkgs.desktop.enable = true;
