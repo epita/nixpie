@@ -48,6 +48,7 @@
       flex
       gdb
       lcov
+      leodagan
       libfff
       ltrace
       pharaoh
