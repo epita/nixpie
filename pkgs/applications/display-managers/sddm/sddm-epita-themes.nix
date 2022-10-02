@@ -8,8 +8,8 @@ stdenv.mkDerivation {
   version = "1.0-2";
 
   src = fetchurl {
-    url = "http://static.cri.epita.net/pkg/epita-themes-sddm.tgz";
-    sha256 = "o12U7GHXoyqVKiTOgYf0ElmfHeArMHuLuyLHkePn+Ic=";
+    url = "https://gitlab.cri.epita.fr/cri/packages/epita-themes-sddm/-/archive/master/epita-themes-sddm-master.tar.gz";
+    sha256 = "927c005b3700db120edc4588316e4c2a20a4c4678f5adc0fce354ac229043e33";
   };
 
   unpackPhase = ''
