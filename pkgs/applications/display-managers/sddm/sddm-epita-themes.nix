@@ -1,5 +1,8 @@
 { lib, stdenv, fetchurl, extraThemeConfig ? "" }:
 
+let
+  themes = [ "epita-simplyblack" ];
+in
 stdenv.mkDerivation {
   pname = "sddm-epita-themes";
   version = "1.0-2";
@@ -13,13 +16,15 @@ stdenv.mkDerivation {
     tar xf $src
   '';
 
-  installPhase = ''
-    install -d $out/share/sddm/themes/epita-simplyblack
-    install -Dm644 \
-      epita-simplyblack/* \
-      $out/share/sddm/themes/epita-simplyblack
-    echo "${extraThemeConfig}" >> $out/share/sddm/themes/epita-simplyblack/theme.conf
-  '';
+  installPhase = lib.concatMapStrings
+    (theme: ''
+      install -d $out/share/sddm/themes/${theme}
+      install -Dm644 \
+        ${theme}/* \
+        $out/share/sddm/themes/${theme}
+        echo "${extraThemeConfig}" >> $out/share/sddm/themes/${theme}/theme.conf
+    '')
+    themes;
 
   meta = with lib; {
     platforms = platforms.unix;
