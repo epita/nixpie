@@ -134,7 +134,8 @@ in
         };
 
         "root" = {
-          hashedPassword = "$6$tpp1raK3wZhH$8O.KfGHijOYyJPNcRMhy6q6WtDfut9oMu/v9mUj3tWQfKfYOkv87bzdYKz/2OsHZza3vsbx8hXTbPmtIBYmK.1";
+          hashedPassword = "$6$Fon8AuLkzs7ZjiID$URNhr52P6QzxJN9fCQgWl/IoIAxTZQ9xQKXVy20BWz9ZRqKK22MGG3vLFc485MhgoNghePqq8xw5aTRZJmWqz0";
+          initialHashedPassword = "$6$Fon8AuLkzs7ZjiID$URNhr52P6QzxJN9fCQgWl/IoIAxTZQ9xQKXVy20BWz9ZRqKK22MGG3vLFc485MhgoNghePqq8xw5aTRZJmWqz0";
 
           openssh.authorizedKeys.keys = [
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMg8mhQrU/IVKy+uglEqkH/+K5kLrQPALk6bWh8GFegA antoined"
