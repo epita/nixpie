@@ -1,7 +1,7 @@
 { lib, stdenv, fetchurl, extraThemeConfig ? "" }:
 
 let
-  themes = [ "epita-simplyblack" ];
+  themes = [ "epita-simplyblack" "epita-acu-2023" ];
 in
 stdenv.mkDerivation {
   pname = "sddm-epita-themes";
@@ -9,7 +9,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "http://static.cri.epita.net/pkg/epita-themes-sddm.tgz";
-    sha256 = "0icgbrzh9n5g8y6f3hhyianh3rw2i8igcawp6djzh6kv05fb3k1h";
+    sha256 = "o12U7GHXoyqVKiTOgYf0ElmfHeArMHuLuyLHkePn+Ic=";
   };
 
   unpackPhase = ''
