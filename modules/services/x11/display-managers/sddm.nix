@@ -28,6 +28,11 @@ in
           description = "User to use for autologin";
         };
       };
+      theme = mkOption {
+        type = types.str;
+        default = "epita-simplyblack";
+        description = "SDDM theme";
+      };
     };
   };
 
@@ -37,10 +42,10 @@ in
         inherit (config.cri.sddm.autoLogin) enable user;
       };
       sddm = {
+        inherit (config.cri.sddm) theme;
         enable = true;
         autoNumlock = true;
         autoLogin.relogin = true;
-        theme = "epita-simplyblack";
         settings.Theme.ThemeDir = "${sddm-epita-themes}/share/sddm/themes";
       };
     };
