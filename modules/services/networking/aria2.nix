@@ -38,5 +38,50 @@ with lib;
         ${pkgs.aria2}/bin/aria2c $aria2_opts --check-integrity --input-file=${config.cri.aria2.seedlist}
       '';
     };
+
+    systemd.services.pieupdate = {
+      after = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+
+      serviceConfig = {
+        Type = "oneshot";
+      };
+
+      script = ''
+        shopt -s nullglob
+
+        torrentDir=${config.netboot.torrent.mountPoint}
+
+        for torrent in $torrentDir/*.torrent; do
+          oldChksum=$(sha1sum "$torrent")
+          torrentFile=$(basename "$torrent")
+          echo "Fetching $torrentFile"
+          ${pkgs.curl}/bin/curl "${config.netboot.torrent.webseed.url}/$torrentFile" \
+            -o "$torrentFile"
+          newChksum=$(sha1sum "$torrent")
+
+          if [ "$oldChksum" != "$newChksum" ]; then
+            echo "Detected a change"
+            restart=1
+          fi
+        done
+
+        if [ -n restart ]; then
+          echo "Restarting aria2"
+          ${pkgs.systemd}/bin/systemctl restart aria2
+        fi
+      '';
+    };
+
+    systemd.timers.pieupdate = {
+      after = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+
+      timerConfig = {
+        Unit = "pieupdate.service";
+        OnCalendar = "*-*-* *:00:00";
+        RandomizedDelaySec = "60";
+      };
+    };
   };
 }
