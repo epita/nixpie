@@ -55,6 +55,7 @@ let
     "nixos-sql" = { };
     "nixos-sup" = { };
     "nixos-test" = { };
+    "nixos-immersion" = { };
 
     "exam-inter" = { };
     "exam-pie" = { };
