@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # delay in seconds before shutdown after no user is logged
-DELAY="${DELAY:-600}"
+DELAY="${DELAY:-7200}"
 IDLE_SINCE_PATH="/run/nixpie-idle-shutdown"
 
 if ! grep -q 'sm\.cri\.epita\.fr' /etc/resolv.conf ; then
