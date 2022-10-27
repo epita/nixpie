@@ -1,13 +1,5 @@
 { config, pkgs, inputs, system, ... }:
 
-let
-  pkgsMaths = import inputs.nixpkgsMaths {
-    inherit system;
-    config = {
-      allowUnfree = true;
-    };
-  };
-in
 {
   imports = [
     ../profiles/graphical
@@ -62,21 +54,5 @@ in
     termcolor
     xarray
     xlrd
-  ];
-
-  cri.packages.pythonPackages.nixosMathsCustomOverrides = _: with pkgsMaths.python3Packages; [
-    annoy
-    beir
-    datasets
-    fasttext
-    gensim
-    hnswlib
-    ipywidgets
-    nltk
-    pytorch
-    scikit-learn
-    spacy
-    tqdm
-    transformers
   ];
 }

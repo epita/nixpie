@@ -10,9 +10,6 @@
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
-    # TODO: deprecate me
-    nixpkgsMaths.url = "github:rissson/nixpkgs/nixos-maths-21.05";
-
     machine-state = {
       url = "git+https://gitlab.cri.epita.fr/cri/packages/machine-state.git";
       inputs = {
@@ -38,8 +35,6 @@
     , nixpkgs
     , nixpkgsUnstable
     , nixpkgsMaster
-
-    , nixpkgsMaths
 
     , machine-state
 
