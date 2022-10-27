@@ -46,6 +46,7 @@
     pkgs.wikipedia
     plotly
     pygame
+    pytorch
     scikit-learn
     scikitimage
     scipy
