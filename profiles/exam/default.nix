@@ -109,37 +109,40 @@ in
           ip daddr {10.224.4.0/24,10.224.21.0/24} tcp dport {4505,4506} accept
           ip daddr {10.201.5.0/24,10.201.5.0/24} tcp dport {4505,4506} accept
 
+          # idle-shutdown
+          ip protocol icmp icmp type echo-request meta skuid 0 accept
+
           # Intellij + Gradle
 
           # repo1.maven.org
-          ip daddr {199.232.192.209,199.232.196.209} tcp dport https accept
+          ip daddr {151.101.240.209} tcp dport https accept
 
           # services.gradle.org
           ip daddr {104.18.190.9,104.18.191.9} tcp dport https accept
 
           # api.nuget.org
-          ip daddr 152.199.23.209 tcp dport {http,https} accept
+          ip daddr {13.107.237.42,13.107.238.42} tcp dport {http,https} accept
 
           # Jetbrains license server
           ip daddr 52.30.108.61 tcp dport https accept
 
           # www.jetbrains.com
-          ip daddr {18.200.1.3,18.200.1.21} tcp dport https accept
+          ip daddr {52.222.149.128,52.222.149.16,52.222.149.27,52.222.149.65} tcp dport https accept
 
           # download.jetbrains.com
-          ip daddr {52.30.174.243,52.50.241.213} tcp dport https accept
+          ip daddr {52.30.174.243,54.72.98.183} tcp dport https accept
 
-          # plugins.jetbrains.com, download-cdn.jetbrains.com, frameworks.jetbrains.com (CloudFront)
-          ip daddr {99.84.0.0/16,99.86.0.0/16,13.249.0.0/16} tcp dport https accept
+          # www.jetbrains.com, plugins.jetbrains.com, download-cdn.jetbrains.com, frameworks.jetbrains.com (CloudFront)
+          ip daddr {52.84.174.0/24,52.222.149.0/24} tcp dport https accept
 
           # vortex.data.microsoft.com
-          ip daddr 40.77.226.250 tcp dport https accept
+          ip daddr 104.43.200.36 tcp dport https accept
 
           # marketplace.visualstudio.com
           ip daddr 13.107.42.18 tcp dport https accept
 
           # ocsp.pki.goog
-          ip daddr 142.250.75.227 tcp dport {http,https} accept
+          ip daddr 216.58.214.67 tcp dport {http,https} accept
 
           drop
         }
