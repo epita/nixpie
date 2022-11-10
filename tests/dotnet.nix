@@ -5,7 +5,7 @@ let
     <Project Sdk="Microsoft.NET.Sdk">
       <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
       </PropertyGroup>
     </Project>
   '';
@@ -31,6 +31,6 @@ in
     machine.succeed("cp ${csproject} ${csproject.name}")
     machine.succeed("cp ${program} ${program.name}")
     machine.succeed("dotnet build")
-    machine.succeed("./bin/Debug/net5.0/Test")
+    machine.succeed("./bin/Debug/net7.0/Test")
   '';
 }

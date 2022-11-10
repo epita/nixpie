@@ -1,3 +1,7 @@
 { pkgsUnstable, pkgsMaster }:
 
-final: prev: { }
+final: prev: {
+  inherit (pkgsUnstable)
+    dotnet-sdk_7
+    ;
+}

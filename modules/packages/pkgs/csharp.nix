@@ -5,7 +5,7 @@
     cri.packages.pkgs.csharp.enable = lib.options.mkEnableOption "dev C# CRI package bundle";
     cri.packages.pkgs.csharp.dotnetPackage = lib.options.mkOption {
       type = lib.types.package;
-      default = pkgs.dotnet-sdk_5;
+      default = pkgs.dotnet-sdk_7;
       description = "CRI dotnet SDK package";
     };
   };
