@@ -20,7 +20,13 @@
       claws-mail
       irssi
       msmtp
-      thunderbird
+      # Thunderbird 102 breaks NNTP, disabling the new JS implementation while
+      # bug is opened: https://bugzilla.mozilla.org/show_bug.cgi?id=1787533
+      (wrapThunderbird thunderbird-unwrapped {
+        extraPrefs = ''
+          pref("mailnews.nntp.jsmodule", false);
+        '';
+      })
       weechat
 
       # editors
