@@ -91,4 +91,9 @@ EOF
 fi
 done
 
+if [ "$(du -s . | awk '{ print $1 }')" -ge 5000000 ]; then
+    echoInfo "Artifact is too large, removing diffs"
+    rm -rf "${DIFF_DIR}"
+fi
+
 echoSuccess "All done!"

@@ -53,8 +53,18 @@ function diffDrv() {
 
   if [ "$(wc -l < "${diffFile}")" -gt "${allowedDifferences}" ]; then
     nix_diff --color always "${drvSrc}" "${drvDst}" >&2
-    return 0
+    returncode=0
   else
-    return 1
+    returncode=1
   fi
+
+  if [ "$(stat -c %s "${diffFile}")" -ge 500000 ]; then
+      echo "This diff is too large to be exported." > "${diffFile}"
+  fi
+
+  if [ "$(stat -c %s "${diffFile}.env")" -ge 500000 ]; then
+      echo "This diff is too large to be exported." > "${diffFile}.env"
+  fi
+
+  return "$returncode"
 }
