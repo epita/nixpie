@@ -5,8 +5,8 @@ set -euo pipefail
 IMAGE_NAME=$(cat /proc/cmdline | sed "s/.*dump_image=\([^ ]*\).*/\1/")
 DISK_NAME=$(cat /proc/cmdline | sed "s/.*dump_disk=\([^ ]*\).*/\1/")
 
-NFS_SERVER=clone-store.pie.cri.epita.fr
-NFS_DIR=/
+NFS_SERVER="${NFS_SERVER:-clone-store.pie.cri.epita.fr}"
+NFS_DIR="${NFS_DIR:-/}"
 
 echo "Creating dump ${IMAGE_NAME}..."
 
