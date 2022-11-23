@@ -18,6 +18,7 @@
 
   environment.systemPackages = with pkgs; [
     libreoffice
+    gnuplot
   ];
 
   cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
