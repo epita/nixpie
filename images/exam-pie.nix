@@ -11,7 +11,6 @@
   cri.packages = {
     pkgs = {
       latexExam.enable = true;
-      prolog.enable = lib.mkForce false;
     };
   };
 
