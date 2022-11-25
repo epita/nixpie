@@ -101,6 +101,7 @@ in
         '';
 
         i3lock.text = config.security.pam.services.login.text;
+        xfce4-screensaver.text = config.security.pam.services.login.text;
         sddm.text = config.security.pam.services.login.text;
         sshd.text = config.security.pam.services.login.text;
       };
