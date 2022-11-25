@@ -10,5 +10,9 @@
       jetbrains.datagrip
       postgresql
     ];
+
+    environment.pathsToLink = [
+      "/share/postgresql"
+    ];
   };
 }
