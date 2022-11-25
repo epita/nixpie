@@ -32,7 +32,7 @@
     print("opening terminal")
     machine.succeed("su - epita -c 'urxvt &'")
     machine.sleep(2)
-    machine.send_chars("term_size 20\nwhoami\n")
+    machine.send_chars("term_size 20\nwhoami\necho epita@machine\n")
     machine.wait_for_text("epita@machine")
     machine.screenshot("terminal")
   '';
