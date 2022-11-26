@@ -26,6 +26,7 @@ let
     buildCommand = ''
       mkdir -p $out
       LOGFILE=$out/log.xml tests='exec(os.environ["testScript"])' ${oldAttrs.passthru.driver}/bin/nixos-test-driver
+      cp *.png "$out" || true # don't crash if there is no screenshot
     '';
   });
 
