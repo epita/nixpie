@@ -6,7 +6,10 @@
   enableOCR = true;
 
   testScript = ''
+
+
     machine.wait_for_unit("graphical.target")
+    machine.screenshot("sddm")
     print("waiting for login screen")
     # hostname should be machine anyway
     machine.wait_for_text("Welcome to machine")
@@ -15,6 +18,7 @@
     # go back to the login field
     machine.send_key("shift-tab")
     machine.send_chars("epita")
+    machine.sleep(2)
     machine.screenshot("sddm")
     machine.send_chars("\n")
     print("logged in")
@@ -28,12 +32,23 @@
     machine.wait_for_text("-> <Win>")
     machine.screenshot("i3meta")
     machine.send_chars("\n")
-
-    print("opening terminal")
-    machine.succeed("su - epita -c 'i3-sensible-terminal &'")
     machine.sleep(2)
-    machine.send_chars("term_size 20\nwhoami\necho epita@machine\n")
+    print("i3 configured")
+
+    print("open dmenu")
+    machine.send_key('meta_l-d')
+    # no visual queue (text to small)
+    machine.sleep(2)
+    machine.screenshot("dmenu")
+
+    print("launch terminal ")
+    machine.send_chars("i3-sensible-terminal\n")
     machine.wait_for_text("epita@machine")
     machine.screenshot("terminal")
+
+    print("try run a command")
+    machine.send_chars("whoami && pwd\n")
+    machine.wait_for_text("/home/epita")
+    machine.screenshot("commands")
   '';
 }
