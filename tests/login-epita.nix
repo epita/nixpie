@@ -18,7 +18,7 @@
     # go back to the login field
     machine.send_key("shift-tab")
     machine.send_chars("epita")
-    machine.sleep(2)
+    machine.sleep(30)
     machine.screenshot("sddm")
     machine.send_chars("\n")
     print("logged in")
@@ -32,13 +32,13 @@
     machine.wait_for_text("-> <Win>")
     machine.screenshot("i3meta")
     machine.send_chars("\n")
-    machine.sleep(2)
+    machine.sleep(30)
     print("i3 configured")
 
     print("open dmenu")
     machine.send_key('meta_l-d')
     # no visual queue (text to small)
-    machine.sleep(2)
+    machine.sleep(30)
     machine.screenshot("dmenu")
 
     print("launch terminal ")
