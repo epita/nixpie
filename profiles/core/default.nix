@@ -151,5 +151,7 @@ with lib;
 
   programs.udevil.enable = true;
 
+  services.lldpd.enable = true;
+
   system.stateVersion = "22.05";
 }
