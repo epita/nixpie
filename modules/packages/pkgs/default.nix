@@ -6,6 +6,7 @@
     ./csharp.nix
     ./desktop.nix
     ./dev.nix
+    ./devFunctional.nix
     ./fuse.nix
     ./games.nix
     ./gpgpu.nix
