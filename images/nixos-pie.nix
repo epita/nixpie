@@ -19,6 +19,7 @@
   cri.packages = {
     pkgs = {
       dev.enable = true;
+      devFunctional.enable = true;
       java.enable = true;
       js.enable = true;
       podman.enable = true;
