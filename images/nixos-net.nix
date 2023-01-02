@@ -11,6 +11,7 @@
   cri.packages = {
     pkgs = {
       dev.enable = true;
+      net.enable = true;
     };
   };
 
