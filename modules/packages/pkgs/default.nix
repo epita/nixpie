@@ -15,6 +15,7 @@
     ./js.nix
     ./latex-exam.nix
     ./lisp.nix
+    ./net.nix
     ./ocaml.nix
     ./opengl.nix
     ./podman.nix
