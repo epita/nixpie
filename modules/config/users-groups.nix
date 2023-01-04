@@ -87,7 +87,7 @@ in
           session   [default=ignore success=3]  pam_succeed_if.so                                         uid <= 1000
           session   required                    ${pkgs.pam_krb5}/lib/security/pam_krb5.so
         '' + (if config.cri.afs.enable then ''
-          session   required                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   afs_cells=cri.epita.fr always_aklog minimum_uid=1000 program=${config.services.openafsClient.packages.programs}/bin/aklog nopag
+          session   required                    ${pkgs.pam_afs_session}/lib/security/pam_afs_session.so   afs_cells=${config.services.openafsClient.cellName} always_aklog minimum_uid=1000 program=${config.services.openafsClient.packages.programs}/bin/aklog nopag
         '' else ''
           session   [default=ignore]            pam_deny.so
         '') + ''
