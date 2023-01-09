@@ -1,12 +1,11 @@
 {
-  # name = "nixpie";
   description = ''
     collection of Nix packages, NixOS modules and configurations used on
     EPITA's PIE
   '';
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
