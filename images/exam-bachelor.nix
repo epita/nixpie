@@ -5,8 +5,8 @@
     ../profiles/graphical
     ../profiles/exam
 
-    ./nixos-sql.nix
+    ./nixos-bachelor.nix
   ];
 
-  cri.sddm.title = lib.mkForce "Exam SQL";
+  cri.sddm.title = lib.mkForce "Exam Bachelor";
 }

@@ -52,17 +52,16 @@ let
     "nixos-net" = { };
     "nixos-pie" = { };
     "nixos-spe" = { };
-    "nixos-sql" = { };
     "nixos-sup" = { };
     "nixos-test" = { };
     "nixos-immersion" = { };
     "nixos-bachelor" = { };
 
+    "exam-bachelor" = { };
     "exam-inter" = { };
     "exam-pie" = { };
     "exam-prepa" = { };
     "exam-maths" = { };
-    "exam-sql" = { };
 
     "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };
