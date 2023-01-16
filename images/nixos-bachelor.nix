@@ -21,46 +21,46 @@ let
     '';
   };
   phpdev-init = pkgs.writeScriptBin "phpdev-init" ''
-    set -e
+        set -e
 
-    MYSQL_DATADIR="$HOME/.mysql_data"
-    MYSQL_CONF="$HOME/.my.cnf"
-    MYSQL_SOCK="$HOME/.mysqld.sock"
-    MYSQL_PID="$HOME/.mysqld.pid"
-    PHPDEV_DIR="$HOME/phpdev"
+        MYSQL_DATADIR="$HOME/.mysql_data"
+        MYSQL_CONF="$HOME/.my.cnf"
+        MYSQL_SOCK="$HOME/.mysqld.sock"
+        MYSQL_PID="$HOME/.mysqld.pid"
+        PHPDEV_DIR="$HOME/phpdev"
 
-    mkdir -p "$MYSQL_DATADIR" "$PHPDEV_DIR"
+        mkdir -p "$MYSQL_DATADIR" "$PHPDEV_DIR"
 
-    cat > "$MYSQL_CONF" <<EOF
-[mysqld]
-bind-address=127.0.0.1
-datadir=$MYSQL_DATADIR/mysql
-port=3306
-pid-file	= "$MYSQL_PID"
-socket		= "$MYSQL_SOCK"
-EOF
+        cat > "$MYSQL_CONF" <<EOF
+    [mysqld]
+    bind-address=127.0.0.1
+    datadir=$MYSQL_DATADIR/mysql
+    port=3306
+    pid-file  = "$MYSQL_PID"
+    socket    = "$MYSQL_SOCK"
+    EOF
 
-    MYSQLD_OPTIONS="--datadir=$MYSQL_DATADIR"
+        MYSQLD_OPTIONS="--datadir=$MYSQL_DATADIR"
 
-    if ! test -e "$MYSQL_DATADIR/mysql"; then
-          ${pkgs.mariadb}/bin/mysql_install_db --defaults-file=$MYSQL_CONF "$MYSQLD_OPTIONS"
-          touch "$MYSQL_DATADIR/mysql_init"
-    fi
+        if ! test -e "$MYSQL_DATADIR/mysql"; then
+              ${pkgs.mariadb}/bin/mysql_install_db --defaults-file=$MYSQL_CONF "$MYSQLD_OPTIONS"
+              touch "$MYSQL_DATADIR/mysql_init"
+        fi
 
-    mysqld --defaults-file=$MYSQL_CONF "$MYSQLD_OPTIONS" &
-    sleep 5
-    mysql -S "$MYSQL_SOCK" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; flush privileges;"
+        mysqld --defaults-file=$MYSQL_CONF "$MYSQLD_OPTIONS" &
+        sleep 5
+        mysql -S "$MYSQL_SOCK" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; flush privileges;"
 
-    php -S 127.0.0.1:8080 -t "$PHPDEV_DIR" &
-    php -S 127.0.0.1:8081 -t "${phpMyAdmin}" &
+        php -S 127.0.0.1:8080 -t "$PHPDEV_DIR" &
+        php -S 127.0.0.1:8081 -t "${phpMyAdmin}" &
 
-    echo "READY!"
-    echo "  phpMyAdmin: http://localhost:8081"
-    echo "  dev server: http://localhost:8080"
-    echo "  MySQL running at 127.0.0.1:3306, user: root, password: root"
-    echo "You can start developing in the phpdev folder"
+        echo "READY!"
+        echo "  phpMyAdmin: http://localhost:8081"
+        echo "  dev server: http://localhost:8080"
+        echo "  MySQL running at 127.0.0.1:3306, user: root, password: root"
+        echo "You can start developing in the phpdev folder"
 
-    sleep infinity
+        sleep infinity
   '';
 in
 {
