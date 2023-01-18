@@ -11,23 +11,27 @@ with lib;
 let
   inherit (pkgset) pkgs;
 
-  makeTest = test: ((import "${nixpkgs}/nixos/lib/testing-python.nix" {
-    inherit system pkgs;
-    specialArgs = import ../images/special-args.nix inputs "testing-image";
-    extraConfigurations =
-      let
-        inherit (import ../images/modules.nix inputs "testing-image") core global flakeModules;
-      in
-      flakeModules ++ [ core global self.nixosModules.profiles.tests ];
-  }).makeTest test).overrideAttrs (oldAttrs: {
-    # See https://github.com/NixOS/nixpkgs/blob/nixos-21.11/nixos/lib/testing-python.nix
-    # We override the return of `runTests` to output XML
+  imageName = "testing-image";
 
-    buildCommand = ''
-      mkdir -p $out
-      LOGFILE=$out/log.xml tests='exec(os.environ["testScript"])' ${oldAttrs.passthru.driver}/bin/nixos-test-driver
-    '';
-  });
+  modules = import ../images/modules.nix inputs imageName;
+
+  makeTest = test: lib.nixos.runTest {
+    node.specialArgs = import ../images/special-args.nix inputs imageName;
+
+    defaults = {
+      imports = modules.flakeModules ++ [
+        modules.core
+        modules.global
+        self.nixosModules.profiles.tests
+      ];
+
+      documentation.nixos.enable = mkForce false;
+    };
+
+    imports = [ test ];
+
+    hostPkgs = pkgs;
+  };
 
   tests = {
     criterion = ./criterion.nix;
@@ -42,9 +46,9 @@ let
 in
 mapAttrs
   (name: testPath:
-    let
-      f = import testPath;
-      test = if isFunction f then f (recursiveUpdate inputs { inherit pkgs; }) else f;
-    in
-    makeTest ({ inherit name; } // test))
+  let
+    f = import testPath;
+    test = if isFunction f then f (recursiveUpdate inputs { inherit pkgs; }) else f;
+  in
+  makeTest ({ inherit name; } // test))
   tests
