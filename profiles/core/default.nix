@@ -12,22 +12,23 @@ with lib;
 
   nix = {
     package = pkgs.nixFlakes;
-    systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-    autoOptimiseStore = false;
+    settings = {
+      sandbox = true;
+      trusted-users = [ "root" "@wheel" ];
+      system-features = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      substituters = [ "https://s3.cri.epita.fr/cri-nix-cache.s3.cri.epita.fr" ];
+      trusted-public-keys = [ "cache.nix.cri.epita.fr:qDIfJpZWGBWaGXKO3wZL1zmC+DikhMwFRO4RVE6VVeo=" ];
+      auto-optimise-store = false;
+    };
+
     gc.automatic = false;
     optimise.automatic = false;
-
-    useSandbox = true;
-
-    trustedUsers = [ "root" "@wheel" ];
 
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
 
-    binaryCaches = [ "https://s3.cri.epita.fr/cri-nix-cache.s3.cri.epita.fr" ];
-    binaryCachePublicKeys = [ "cache.nix.cri.epita.fr:qDIfJpZWGBWaGXKO3wZL1zmC+DikhMwFRO4RVE6VVeo=" ];
   };
 
   networking = {
