@@ -14,14 +14,12 @@ stdenv.mkDerivation rec {
   buildInputs = [ pam ];
   nativeBuildInputs = [ meson ninja ];
 
-  configurePhase = "meson setup . build --prefix=$out";
-  buildPhase = ''
+  prePatch = ''
     substituteInPlace pam.c \
       --replace '"usermod"' '"${shadow}/bin/usermod"'
-
-    meson compile -C build
+    substituteInPlace subxid.h \
+      --replace 'struct xid xid_' 'extern struct xid xid_'
   '';
-  installPhase = "meson install -C build";
 
   meta = with lib; {
     homepage = "https://github.com/yrro/pam_subuid";
