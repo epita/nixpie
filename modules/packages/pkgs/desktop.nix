@@ -9,12 +9,13 @@
     environment.systemPackages = with pkgs; [
       # browsers
       chromium
-      (wrapFirefox firefox-unwrapped {
-        extraPrefs = ''
-          pref("network.negotiate-auth.trusted-uris", "cri.epita.fr,.cri.epita.fr");
-          pref("network.trr.excluded-domains", "cri.epita.fr");
-        '';
-      })
+      (if config.krb5.enable then
+        (wrapFirefox firefox-unwrapped {
+          extraPrefs = ''
+            pref("network.negotiate-auth.trusted-uris", ".${lib.toLower config.krb5.libdefaults.default_realm}");
+            pref("network.trr.excluded-domains", "${lib.toLower config.krb5.libdefaults.default_realm}");
+          '';
+        }) else firefox-unwrapped)
 
       # communication
       claws-mail

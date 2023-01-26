@@ -1,6 +1,5 @@
 { pkgs, config, lib, ... }:
 
-with lib;
 let
   Xresources = pkgs.writeText "Xresources" ''
     *.scrollBar       : false
@@ -70,7 +69,8 @@ in
     };
   };
 
-  environment.etc."chromium/policies/recommended/spnego.json".text = builtins.toJSON {
-    AuthServerWhitelist = "cri.epita.fr";
-  };
+  environment.etc."chromium/policies/recommended/spnego.json".text = lib.mkIf config.krb5.enable (builtins.toJSON {
+    AuthServerWhitelist = lib.toLower config.krb5.libdefaults.default_realm;
+    AuthServerAllowlist = lib.toLower config.krb5.libdefaults.default_realm;
+  });
 }
