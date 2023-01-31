@@ -3,6 +3,7 @@
     ./afit.nix
     ./asm.nix
     ./core.nix
+    ./cpp.nix
     ./csharp.nix
     ./desktop.nix
     ./dev.nix
