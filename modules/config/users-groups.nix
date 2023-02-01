@@ -142,6 +142,7 @@ in
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMg8mhQrU/IVKy+uglEqkH/+K5kLrQPALk6bWh8GFegA antoined"
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEAm9U9aupzJB6ArxxnUJkKEzPRnOsYOCRzJc18i+oHt charles"
             "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxxAN/65MNm34RnxXn1uzl7re/cyMGkQimkxdEu1ZOgvBVWUV0iwFedWtmUo3sKpZDW8aVcBdwFd5E+fLGiKK+1BXkLZFj8vPcdNe1EL1L4dfqiAE9dh/wU1+TJbFx2Snxapa6VXpVep3YOUBETT6oC7J48u7o/U5+C9yLvgGRQiDd39hBbITcCKsPkPJTv/VtyonTqZz7k44y3juGATqRSmHEZeVSaFcipEPzH4FroEu1aan8X1mnB578bLy8rEtQ7c8it2L0Pf05IFlNO2gYPAQclzk5rCtKY0U1RdgzdBgt84CZXaJ5wkqmsNC1QhE6+0LgtkwTapIPhO24qBn00CPd/ElOom/hOwEUeUi5y4VUwnFWM3cb9bDK9EneumV4iQsGsIXgp9BFIbywEuS/LdfMsQwBTFoANGMQ1skg4dh+hxt8KdTygjSeh2hK7ZDlyHbnmifUk13SSKnCXHbanvvzuatWgonDtwniPqsay75debSOrEcB+D6fjie9pi7+6N8YP+iC0IZLb1JboN69piwiyIB64HlIE8f3t2cGVrjtKsU/BgtBkIfeiknHezuyqT6sD8uMGZZd2zQkl/Lav9imcrH/H+g48BSvdXWtvlKqqD2K1YvBdLk6n1cFMuHQ8g4CIQXbLds29G55O2Zxo2eyS3IlmVOCDsD8KnhP/Q== nicolas"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKmGrJMWaJ5k+D7FfWth1cVepyV/JXHlSKgMoP33YdAK leo"
           ];
         };
       };
