@@ -70,7 +70,10 @@ in
 
   netboot.enable = true;
   cri = {
-    sddm.title = "NixOS Bachelor";
+    sddm = {
+      title = "NixOS Bachelor";
+      defaultSession = "xfce";
+    };
     xfce.enable = true;
 
     packages = {
