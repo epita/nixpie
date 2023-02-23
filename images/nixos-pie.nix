@@ -18,6 +18,7 @@
 
   cri.packages = {
     pkgs = {
+      cpp.enable = true;
       dev.enable = true;
       devFunctional.enable = true;
       java.enable = true;
