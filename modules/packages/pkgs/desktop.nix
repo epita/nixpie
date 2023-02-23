@@ -65,8 +65,6 @@
 
       # back to home
       discord
-      slack
-      teams
     ];
   };
 }
