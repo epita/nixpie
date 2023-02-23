@@ -12,6 +12,7 @@
       bison
       boost
       flex
+      reflex
       gnum4
       gnumake
       havm

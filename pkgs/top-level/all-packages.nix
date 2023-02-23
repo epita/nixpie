@@ -23,6 +23,8 @@
 
   clang32-alias = ../development/compilers/clang32-alias;
 
+  reflex = ../development/compilers/reflex;
+
   havm = ../development/compilers/havm;
 
   m68k = {
