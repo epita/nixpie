@@ -55,6 +55,7 @@
       xorg.xkill
       xsel
       xterm
+      x11vnc
 
       # pdf reader
       evince
