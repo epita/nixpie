@@ -19,6 +19,7 @@
       lsof
       man-pages
       man-pages-posix
+      mtr
       pciutils
       pipenv
       procps
