@@ -44,7 +44,7 @@ with lib;
       };
       fallbackNameservers = mkOption {
         type = types.listOf types.str;
-        default = [ "10.224.21.53" "1.1.1.1" ];
+        default = [ "1.1.1.1" ];
         description = "List of backup nameservers to use.";
       };
       home.enable = mkEnableOption "home partition mounting";
