@@ -35,6 +35,7 @@ let
               {
                 netboot.enable = lib.mkVMOverride false;
                 networking.nameservers = lib.mkVMOverride [ "1.1.1.1" ];
+                cri.users.checkEpitaUserAllowed = false;
               }
             ];
           }).config.system.build.vm;

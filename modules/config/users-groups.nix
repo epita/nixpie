@@ -27,6 +27,19 @@ let
 
     exit 0
   '' else "exit 0");
+  pam_allowed_epita_user = pkgs.writeShellScript "pam_allowed_epita_user" (if config.cri.users.checkEpitaUserAllowed then ''
+    export PATH="${pkgs.coreutils}/bin:/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
+
+    if [ "$PAM_USER" = "epita" ]; then
+      curl --fail-with-body --silent https://fleet.pie.cri.epita.fr/pxe/epita-user-allowed/
+      if [ $? -ne 0 ]; then
+        echo "You are not allowed to login as epita user."
+        exit 1
+      fi
+    fi
+
+    exit 0
+  '' else "exit 0");
 in
 {
   options = {
@@ -36,6 +49,11 @@ in
         type = types.bool;
         default = true;
         description = "Whether to create `epita` user (no password).";
+      };
+      checkEpitaUserAllowed = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to check if `epita` user is allowed to login.";
       };
     };
 
@@ -71,6 +89,7 @@ in
           auth  required                    pam_env.so                                                conffile=/etc/pam/environment readenv=0
 
           # Account management.
+          account   required    pam_exec.so                           ${pam_allowed_epita_user}
           account   sufficient  ${pkgs.pam_krb5}/lib/security/pam_krb5.so
           account   required    pam_unix.so
           account   optional    pam_permit.so
