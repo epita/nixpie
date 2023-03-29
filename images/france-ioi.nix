@@ -2,8 +2,13 @@
 
 let
   franceIOIPkgs = with pkgs; [
+    codeblocksFull
+    ddd
+    eclipses.eclipse-sdk
     gnome.gedit
     gource
+    libsForQt5.kate
+    sublime3
     vscode
   ];
 in
@@ -21,6 +26,7 @@ in
   cri.packages = {
     pkgs = {
       dev.enable = true;
+      java.enable = true;
     };
   };
 }
