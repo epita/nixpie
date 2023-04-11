@@ -46,6 +46,7 @@
     pkgs.squarify
     pkgs.wikipedia
     plotly
+    pycryptodome
     pygame
     pytorch
     scikit-learn
