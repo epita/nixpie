@@ -4,7 +4,7 @@
 }:
 
 let
-  clang32 = pkgsi686Linux.llvmPackages_13.clang;
+  clang32 = pkgsi686Linux.llvmPackages_14.clang;
 in
 (runCommand "clang32-alias" { } ''
   mkdir -p $out/bin
