@@ -76,6 +76,7 @@ in
     packages = {
       pkgs = {
         dev.enable = true;
+        rust.enable = true;
       };
       python = {
         dev.enable = true;
