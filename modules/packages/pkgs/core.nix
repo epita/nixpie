@@ -20,6 +20,7 @@
       man-pages
       man-pages-posix
       mtr
+      ncdu
       pciutils
       pipenv
       procps
