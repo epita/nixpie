@@ -11,6 +11,7 @@
       gns3-server
       inetutils
       pkgsi686Linux.dynamips
+      tigervnc
       vpcs
     ];
 
