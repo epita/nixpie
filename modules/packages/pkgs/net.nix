@@ -9,8 +9,9 @@
     environment.systemPackages = with pkgs; [
       gns3-gui
       gns3-server
-      pkgsi686Linux.dynamips
       inetutils
+      pkgsi686Linux.dynamips
+      vpcs
     ];
 
     virtualisation.virtualbox.host.enable = true;
