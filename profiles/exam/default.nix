@@ -18,6 +18,12 @@ let
     git commit -m "Submission" --allow-empty
     git push origin master
   '';
+
+  proxypac = pkgs.writeTextDir "wpad.dat" ''
+    function FindProxyForURL (url, host) {
+      return 'PROXY localhost:3128; DIRECT';
+    }
+  '';
 in
 {
   cri.afs.enable = false;
@@ -80,26 +86,14 @@ in
           ip daddr 10.224.21.53 udp dport domain accept
           ip daddr 10.201.5.53 udp dport domain accept
 
-          # Reverse CRI
-          ip daddr 10.224.4.2 tcp dport {http,https} accept
-          ip daddr 10.201.5.2 tcp dport {http,https} accept
-
-          # Git Exam CRI
-          ip daddr 10.224.21.122 tcp dport ssh accept
-          ip daddr 10.201.5.122 tcp dport ssh accept
-
-          # Ingress k8s prod-1
-          ip daddr 10.224.21.80 tcp dport {http,https} accept
-          ip daddr 10.201.5.80 tcp dport {http,https} accept
-
           # kerberos.pie.cri.epita.fr
           ip daddr 91.243.117.186 tcp dport {kerberos,kerberos-adm} accept
           # ldap.pie.cri.epita.fr
           ip daddr 91.243.117.185 tcp dport {ldap,ldaps} accept
 
-          # s3.cri.epita.fr
-          ip daddr 10.224.21.208 tcp dport {http,https} accept
-          ip daddr 91.243.117.208 tcp dport {http,https} accept
+          # Git Exam CRI
+          ip daddr 10.224.21.122 tcp dport ssh accept
+          ip daddr 10.201.5.122 tcp dport ssh accept
 
           # NTP
           ip daddr 10.224.4.2 udp dport ntp accept
@@ -109,40 +103,8 @@ in
           ip daddr {10.224.4.0/24,10.224.21.0/24} tcp dport {4505,4506} accept
           ip daddr {10.201.5.0/24,10.201.5.0/24} tcp dport {4505,4506} accept
 
-          # idle-shutdown
-          ip protocol icmp icmp type echo-request meta skuid 0 accept
-
-          # Intellij + Gradle
-
-          # repo1.maven.org
-          ip daddr {151.101.240.209} tcp dport https accept
-
-          # services.gradle.org
-          ip daddr {104.18.190.9,104.18.191.9} tcp dport https accept
-
-          # api.nuget.org
-          ip daddr {13.107.237.42,13.107.238.42} tcp dport {http,https} accept
-
-          # Jetbrains license server
-          ip daddr 52.30.108.61 tcp dport https accept
-
-          # www.jetbrains.com
-          ip daddr {52.222.149.128,52.222.149.16,52.222.149.27,52.222.149.65} tcp dport https accept
-
-          # download.jetbrains.com
-          ip daddr {52.30.174.243,54.72.98.183} tcp dport https accept
-
-          # www.jetbrains.com, plugins.jetbrains.com, download-cdn.jetbrains.com, frameworks.jetbrains.com (CloudFront)
-          ip daddr {52.84.174.0/24,52.222.149.0/24} tcp dport https accept
-
-          # vortex.data.microsoft.com
-          ip daddr 104.43.200.36 tcp dport https accept
-
-          # marketplace.visualstudio.com
-          ip daddr 13.107.42.18 tcp dport https accept
-
-          # ocsp.pki.goog
-          ip daddr 216.58.214.67 tcp dport {http,https} accept
+          meta skuid root accept
+          tcp dport {http, https} meta skuid squid accept
 
           drop
         }
@@ -159,5 +121,80 @@ in
     serviceConfig = {
       Restart = "on-failure";
     };
+  };
+
+  services.squid = {
+    enable = true;
+    proxyAddress = "127.0.0.1";
+    configText = ''
+      # Reverse CRI
+      acl whitelistip dst 10.224.4.2
+      acl whitelistip dst 10.201.5.2
+
+      # Ingress k8s prod-1
+      acl whitelistip dst 10.224.21.80
+      acl whitelistip dst 10.201.5.80
+
+      # s3.cri.epita.fr
+      acl whitelistip dst 91.243.117.208
+
+      # Intellij + Gradle
+      acl whitelistdomain dstdomain repo1.maven.org
+      acl whitelistdomain dstdomain services.gradle.org
+      acl whitelistdomain dstdomain api.nuget.org
+
+      acl whitelistdomain dstdomain www.jetbrains.com
+      acl whitelistdomain dstdomain plugins.jetbrains.com
+      acl whitelistdomain dstdomain download.jetbrains.com
+      acl whitelistdomain dstdomain download-cdn.jetbrains.com
+      acl whitelistdomain dstdomain frameworks.jetbrains.com
+      acl whitelistdomain dstdomain vortex.data.microsoft.com
+      acl whitelistdomain dstdomain marketplace.visualstudio.com
+
+      acl whitelistdomain dstdomain ocsp.pki.goog
+
+      acl Safe_ports port 80          # http
+      acl Safe_ports port 443         # https
+
+      http_access deny !Safe_ports
+      http_access allow whitelistip
+      http_access allow whitelistdomain
+
+      # Application logs to syslog, access and store logs have specific files
+      cache_log       syslog
+      access_log      stdio:/var/log/squid/access.log
+      cache_store_log stdio:/var/log/squid/store.log
+
+      # Required by systemd service
+      pid_filename    /run/squid.pid
+
+      # Run as user and group squid
+      cache_effective_user squid squid
+
+      # And finally deny all other access to this proxy
+      http_access deny all
+
+      # Squid normally listens to port 3128
+      http_port 3128
+
+      # Leave coredumps in the first cache dir
+      coredump_dir /var/cache/squid
+
+      cache_mgr tickets@forge.epita.fr
+    '';
+  };
+
+  networking.proxy = {
+    httpProxy = "http://127.0.0.1:3128";
+    httpsProxy = "http://127.0.0.1:3128";
+  };
+
+  networking.hosts = {
+    "127.0.0.1" = [ "wpad" ];
+  };
+
+  services.lighttpd = {
+    enable = true;
+    document-root = proxypac;
   };
 }
