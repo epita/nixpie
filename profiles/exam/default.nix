@@ -184,6 +184,11 @@ in
     '';
   };
 
+  systemd.services.squid = {
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+  };
+
   networking.proxy = {
     httpProxy = "http://127.0.0.1:3128";
     httpsProxy = "http://127.0.0.1:3128";
