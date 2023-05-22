@@ -65,6 +65,9 @@ in
           # accept SSH connections (required for a server)
           tcp dport 22 accept
 
+          # accept node-exporter
+          tcp dport 9100 accept
+
           # Allow ICMP
           ip protocol icmp accept
 
