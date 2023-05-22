@@ -192,6 +192,24 @@ in
     after = [ "network-online.target" ];
   };
 
+  systemd.services.dns-online = {
+    description = "wait for DNS to be online";
+    after = [ "nss-lookup.target" ];
+    before = [ "network-online.target" ];
+    wantedBy = [ "network-online.target" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      TimeoutSec = 60;
+    };
+
+    script = ''
+      while ! ${pkgs.host}/bin/host -t A cri.epita.fr; do
+        sleep 1;
+      done
+    '';
+  };
+
   networking.proxy = {
     httpProxy = "http://127.0.0.1:3128";
     httpsProxy = "http://127.0.0.1:3128";
