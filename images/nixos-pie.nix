@@ -25,6 +25,7 @@
       js.enable = true;
       podman.enable = true;
       prpa.enable = true;
+      prolog.enable = true;
       spider.enable = true;
       sql.enable = true;
       thl.enable = true;
