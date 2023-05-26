@@ -13,6 +13,7 @@
   ];
 
   cri.packages.pythonPackages.nixosPieCustom = p: with p; [
+    networkx
     osmnx
   ];
 
