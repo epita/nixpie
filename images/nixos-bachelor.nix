@@ -62,6 +62,15 @@ let
 
         sleep infinity
   '';
+  burp-hackvector = pkgs.fetchurl {
+    url = "https://github.com/hackvertor/hackvertor/releases/download/Latest_Hackvertor_release/hackvertor-all.jar";
+    sha256 = "sha256-lXNONpuhb0RXSFgtKB94u4JhUczJ/qU7gw9VK7Un6HU=";
+  };
+  burp-getplugins = pkgs.writeScriptBin "get-burp-plugins" ''
+    mkdir burp-plugins
+    ln -s ${burp-hackvector} burp-plugins/hackvector.jar
+    echo "Plugins were linked in the burp-plugins directory. You now have to import them in Burp manually."
+  '';
 in
 {
   imports = [
@@ -95,6 +104,12 @@ in
     mariadb
     php
     phpdev-init
+    wfuzz
+    ffuf
+    nmap
+    nikto
+    burpsuite
+    burp-getplugins
   ];
 
   cri.packages.pythonPackages.nixosBachelorCustom = p: with p; [
@@ -103,5 +118,6 @@ in
     scikit-learn
     matplotlib
     networkx
+    patator
   ];
 }
