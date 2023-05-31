@@ -51,6 +51,7 @@ let
     "nixos-lan" = { };
     "nixos-maths" = { };
     "nixos-net" = { };
+    "nixos-nts" = { };
     "nixos-pie" = { };
     "nixos-spe" = { };
     "nixos-sup" = { };

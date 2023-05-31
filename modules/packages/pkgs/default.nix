@@ -18,6 +18,7 @@
     ./latex-exam.nix
     ./lisp.nix
     ./net.nix
+    ./nts.nix
     ./ocaml.nix
     ./opengl.nix
     ./podman.nix
