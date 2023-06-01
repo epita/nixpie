@@ -10,7 +10,7 @@
       burpsuite
       wfuzz
       # ffuzz
-      # dirbuster
+      dirbuster
       gobuster
       thc-hydra
       sqlmap

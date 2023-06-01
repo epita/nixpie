@@ -43,6 +43,8 @@
 
   clang-format-epita = ../development/tools/clang-format-epita;
 
+  dirbuster = ../development/tools/dirbuster;
+
   pharaoh = ../development/tools/pharaoh;
 
   ### DEVELOPMENT / PYTHON MODULES
