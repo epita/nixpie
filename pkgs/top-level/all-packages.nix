@@ -43,6 +43,8 @@
 
   clang-format-epita = ../development/tools/clang-format-epita;
 
+  dirbuster = ../development/tools/dirbuster;
+
   leodagan = {
     path = ../development/tools/leodagan;
     callPackage = final: prev: final.python3Packages.callPackage;
