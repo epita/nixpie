@@ -57,12 +57,14 @@ let
     "nixos-test" = { };
     "nixos-immersion" = { };
     "nixos-bachelor" = { };
+    "nixos-scia" = { };
 
     "exam-bachelor" = { };
     "exam-inter" = { };
     "exam-pie" = { };
     "exam-prepa" = { };
     "exam-maths" = { };
+    "exam-scia" = { };
 
     "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };

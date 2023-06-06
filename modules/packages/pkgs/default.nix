@@ -25,6 +25,7 @@
     ./prpa.nix
     ./r.nix
     ./rust.nix
+    ./scala.nix
     ./sdl.nix
     ./spider.nix
     ./sql.nix

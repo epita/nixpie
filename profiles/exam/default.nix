@@ -154,6 +154,10 @@ in
       acl whitelistdomain dstdomain vortex.data.microsoft.com
       acl whitelistdomain dstdomain marketplace.visualstudio.com
 
+      # Scala maven repositories
+      acl whitelistdomain dstdomain repo.scala-sbt.org
+      acl whitelistdomain dstdomain repo.typesafe.com
+
       acl whitelistdomain dstdomain ocsp.pki.goog
 
       acl Safe_ports port 80          # http
