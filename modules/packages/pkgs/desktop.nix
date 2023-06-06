@@ -47,7 +47,7 @@
       hicolor-icon-theme
       keepassxc
       mlocate
-      netcat-gnu
+      netcat-openbsd
       rlwrap
       rxvt-unicode
       xorg.xeyes
