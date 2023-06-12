@@ -9,7 +9,7 @@
     environment.systemPackages = with pkgs; [
       burpsuite
       wfuzz
-      # ffuzz
+      ffuf
       dirbuster
       gobuster
       thc-hydra
