@@ -21,6 +21,11 @@ let
   firefox-burp = pkgs.writeScriptBin "firefox-burp" ''
     ${pkgs.firefox}/bin/firefox --profile "${firefoxBurpProfile}"
   '';
+  nts-start = pkgs.writeScriptBin "nts-start" ''
+    ${firefox-burp}/bin/firefox-burp &
+    ${pkgs.firefox}/bin/firefox &
+    ${pkgs.burpsuite}/bin/burpsuite &
+  '';
 in
 {
   options = {
@@ -49,6 +54,7 @@ in
       hashcat
 
       firefox-burp
+      nts-start
     ];
 
     virtualisation.oci-containers.containers = {
