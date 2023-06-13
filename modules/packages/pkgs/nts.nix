@@ -6,6 +6,21 @@ let
     rev = "39657bcc05d9dc1637bf30dd0dea0dc70b8ad751";
     sha256 = "yVxb5GaQDuCsyjIV+oZzNUEFoq6gMPeaIeQviwGdAgY=";
   };
+  firefoxBurpProfile = "$HOME/.firefox-burps-profile";
+  prefsJs = pkgs.writeText "pref.js" ''
+    user_pref("network.proxy.allow_hijacking_localhost", true);
+    user_pref("network.proxy.backup.ssl", "");
+    user_pref("network.proxy.backup.ssl_port", 0);
+    user_pref("network.proxy.http", "127.0.0.1");
+    user_pref("network.proxy.http_port", 8080);
+    user_pref("network.proxy.share_proxy_settings", true);
+    user_pref("network.proxy.ssl", "127.0.0.1");
+    user_pref("network.proxy.ssl_port", 8080);
+    user_pref("network.proxy.type", 1);
+  '';
+  firefox-burp = pkgs.writeScriptBin "firefox-burp" ''
+    ${pkgs.firefox}/bin/firefox --profile "${firefoxBurpProfile}"
+  '';
 in
 {
   options = {
@@ -15,7 +30,11 @@ in
   config = lib.mkIf config.cri.packages.pkgs.nts.enable {
 
     cri.users.sessionOpenScript = ''
-      ln -s ${SecLists} $HOME/SecLists
+      ln -s ${SecLists} "$HOME/SecLists" || true
+      mkdir -p ${firefoxBurpProfile}
+      if [ ! -f "${firefoxBurpProfile}/prefs.js" ]; then
+        cp ${prefsJs} "${firefoxBurpProfile}/prefs.js"
+      fi
     '';
 
     environment.systemPackages = with pkgs; [
@@ -28,6 +47,8 @@ in
       sqlmap
       john
       hashcat
+
+      firefox-burp
     ];
 
     virtualisation.oci-containers.containers = {
