@@ -1,11 +1,23 @@
 { config, lib, pkgs, ... }:
-
+let
+  SecLists = pkgs.fetchFromGitHub {
+    owner = "danielmiessler";
+    repo = "SecLists";
+    rev = "39657bcc05d9dc1637bf30dd0dea0dc70b8ad751";
+    sha256 = "yVxb5GaQDuCsyjIV+oZzNUEFoq6gMPeaIeQviwGdAgY=";
+  };
+in
 {
   options = {
     cri.packages.pkgs.nts.enable = lib.options.mkEnableOption "NTS CRI package bundle";
   };
 
   config = lib.mkIf config.cri.packages.pkgs.nts.enable {
+
+    cri.users.sessionOpenScript = ''
+      ln -s ${SecLists} $HOME/SecLists
+    '';
+
     environment.systemPackages = with pkgs; [
       burpsuite
       wfuzz

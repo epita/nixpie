@@ -3,7 +3,7 @@
 with lib;
 let
   session_open = pkgs.writeShellScript "session_open" config.cri.users.sessionOpenScript;
-  pam_epita = pkgs.writeShellScript "pam_epita" (if true || config.cri.afs.enable then ''
+  pam_epita = pkgs.writeShellScript "pam_epita" (if config.cri.afs.enable then ''
     export PATH="${pkgs.coreutils}/bin:/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
 
     if [ "$PAM_TYPE" = "open_session" ]; then
