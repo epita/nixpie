@@ -158,6 +158,12 @@ in
       acl whitelistdomain dstdomain repo.scala-sbt.org
       acl whitelistdomain dstdomain repo.typesafe.com
 
+      # Electif BLSC SmartPy
+      acl whitelistdomain dstdomain smartpy.io
+      acl whitelistdomain dstdomain fonts.googleapis.com
+      acl whitelistdomain dstdomain cdn.jsdelivr.net
+      acl whitelistdomain dstdomain fonts.gstatic.com
+
       acl whitelistdomain dstdomain ocsp.pki.goog
 
       acl Safe_ports port 80          # http
