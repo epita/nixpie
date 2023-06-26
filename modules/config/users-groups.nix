@@ -61,7 +61,7 @@ in
       sessionOpenScript = mkOption {
         type = types.lines;
         default = "";
-        description = "Extra script to run durring each session openning.";
+        description = "Extra script to run during each session opening.";
       };
     };
 
