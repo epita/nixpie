@@ -36,7 +36,7 @@ in
 
     cri.users.sessionOpenScript = ''
       ln -s ${SecLists} "$HOME/SecLists" || true
-      mkdir -p
+      mkdir -p ${firefoxBurpProfile}
       if [ ! -f "${firefoxBurpProfile}/prefs.js" ]; then
         cp ${prefsJs} "${firefoxBurpProfile}/prefs.js"
       fi
