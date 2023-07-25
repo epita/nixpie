@@ -5,7 +5,7 @@
   '';
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
@@ -52,6 +52,10 @@
           inherit system;
           config = {
             allowUnfree = true;
+            permittedInsecurePackages = [
+              "openssl-1.1.1u"
+            ];
+
           };
           overlays =
             (attrValues self.overlays) ++

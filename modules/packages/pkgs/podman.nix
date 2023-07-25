@@ -25,7 +25,7 @@ in
           # By default, containers in the same network can't reach each others via their name.
           # We need to enable the 'dnsname' for this in the default network, on whom every other network
           # is based on.
-          defaultNetwork.dnsname.enable = true;
+          defaultNetwork.settings.dns_enabled = true;
         };
 
         containers = {

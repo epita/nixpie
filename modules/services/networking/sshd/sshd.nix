@@ -21,9 +21,11 @@ in
   config = mkIf cfg.enable {
     services.openssh = {
       enable = true;
-      passwordAuthentication = false;
-      forwardX11 = true;
-      kbdInteractiveAuthentication = false;
+      settings = {
+        X11Forwarding = true;
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+      };
       extraConfig = mkBefore
         ((if cfg.allowUsers then ''
           AllowUsers *

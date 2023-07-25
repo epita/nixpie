@@ -48,12 +48,12 @@
       flex
       gdb
       lcov
-      leodagan
+      #leodagan
       libfff
       ltrace
       pharaoh
       pkg-config
-      readline81
+      readline
       rr
       shellcheck
       strace

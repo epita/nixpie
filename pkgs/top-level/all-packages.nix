@@ -43,10 +43,10 @@
 
   clang-format-epita = ../development/tools/clang-format-epita;
 
-  leodagan = {
+  /*leodagan = {
     path = ../development/tools/leodagan;
     callPackage = final: prev: final.python3Packages.callPackage;
-  };
+  };*/
 
   pharaoh = ../development/tools/pharaoh;
 

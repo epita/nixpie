@@ -15,7 +15,7 @@ with lib;
     environment.systemPackages = with pkgs; [
       yubikey-manager
       yubikey-personalization
-      yubioath-desktop
+      yubioath-flutter
     ];
   };
 }

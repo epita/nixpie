@@ -50,6 +50,9 @@ in
   # server, in which case you might not have a firewall at all.
   networking.nftables = {
     enable = true;
+    preCheckRuleset = ''
+      sed 's/skuid squid/skuid nobody/g' -i ruleset.conf
+    '';
     ruleset = ''
       table inet filter {
         # Block all incomming connections traffic except SSH and "ping".

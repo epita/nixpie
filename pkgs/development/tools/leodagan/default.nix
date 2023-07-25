@@ -1,4 +1,4 @@
-{ lib, pkgs, buildPythonPackage }:
+{ lib, buildPythonPackage, poetry-core, python3, click, click-completion, rich }:
 
 buildPythonPackage rec {
   pname = "leodagan";
@@ -6,11 +6,11 @@ buildPythonPackage rec {
   format = "pyproject";
 
   propagatedBuildInputs = [
-    pkgs.poetry
-    pkgs.python3
-    pkgs.python3Packages.click
-    pkgs.python3Packages.click-completion
-    pkgs.python3Packages.rich
+    poetry-core
+    python3
+    click
+    click-completion
+    rich
   ];
 
   src = builtins.fetchurl {
