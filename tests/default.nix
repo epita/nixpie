@@ -37,8 +37,7 @@ let
     criterion = ./criterion.nix;
     dotnet = ./dotnet.nix;
     gtest = ./gtest.nix;
-    # Not working, again.
-    # login-epita = ./login-epita.nix;
+    login-epita = ./login-epita.nix;
     node-exporter = ./node-exporter.nix;
     nswrappers = ./nswrappers.nix;
     spider = ./spider.nix;
