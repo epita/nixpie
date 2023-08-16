@@ -13,6 +13,7 @@ with lib;
   cri = {
     machine-state.enable = mkForce false;
     salt.enable = mkForce false;
+    users.checkEpitaUserAllowed = false;
   };
 
   # Disabled in tests by default in NixOS, but we enable it in
