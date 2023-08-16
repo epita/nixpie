@@ -30,7 +30,8 @@
     machine.send_chars("\n")
 
     print("opening terminal")
-    machine.succeed("su - epita -c 'i3-sensible-terminal &'")
+    machine.sleep(2)
+    machine.send_key('meta_l-ret')
     machine.sleep(2)
     machine.send_chars("term_size 20\nwhoami\necho epita@machine\n")
     machine.wait_for_text("epita@machine")
