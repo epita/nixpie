@@ -6,10 +6,11 @@
   ];
 
   netboot.enable = true;
+  cri.sddm.theme = "epita-bde-2024";
   cri.sddm.title = "NixOS PIE";
 
   environment.systemPackages = with pkgs; [
-    spot-lrde
+    # spot-lrde
   ];
 
   cri.packages.pythonPackages.nixosPieCustom = p: with p; [
