@@ -58,6 +58,7 @@ let
     "nixos-immersion" = { };
     "nixos-bachelor" = { };
     "nixos-scia" = { };
+    "nixos-laptop-install" = { };
 
     "exam-bachelor" = { };
     "exam-inter" = { };

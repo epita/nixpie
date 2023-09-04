@@ -1,5 +1,8 @@
 ---
 
+variables:
+  ALL_IMAGES: "1"
+
 include:
   # Overriden in .rules-default but left here for reference
   - template: Workflows/MergeRequest-Pipelines.gitlab-ci.yml
