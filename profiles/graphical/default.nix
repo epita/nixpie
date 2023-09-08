@@ -32,8 +32,6 @@ in
     enable = true;
     autorun = true;
 
-    videoDrivers = [ "radeon" "cirrus" "vesa" "vmware" "modesetting" "intel" ];
-
     layout = "us,fr,gb";
     displayManager = {
       setupCommands = ''
