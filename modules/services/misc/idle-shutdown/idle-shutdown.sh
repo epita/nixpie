@@ -31,15 +31,5 @@ if [ "$(( CURRENT_TIME - IDLE_SINCE ))" -lt "$DELAY" ] ; then
   exit
 fi
 
-echo "Machine has been idling for too long, checking if it can shutdown"
-IP_NET=$(get_ip.sh | cut -d. -f1-3)
-UP_COUNT=0
-for ip in $(seq -f "${IP_NET}.%g" 2 250); do
-    if ping -c 1 -q -W 1 "$ip" &>/dev/null ; then
-        UP_COUNT=$((UP_COUNT + 1))
-        if [ "$UP_COUNT" -ge 3 ] ; then
-            poweroff
-        fi
-    fi
-done
-echo "Did not find enough up machines. Not powering off."
+echo "Machine has been idling for too long, shutting down"
+poweroff

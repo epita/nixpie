@@ -13,7 +13,6 @@ in
   config = lib.mkIf cfg.enable {
     systemd.services.idle-shutdown = {
       description = "Poweroff computer when idling";
-      path = with pkgs; [ nixpie-utils iputils ];
       serviceConfig = {
         Type = "oneshot";
         ExecStart = "${pkgs.bash}/bin/bash ${./idle-shutdown.sh}";
