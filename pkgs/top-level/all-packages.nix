@@ -123,6 +123,13 @@
 
   ciscoPacketTracer8 = ../applications/networking/cisco-packet-tracer;
 
+  # TODO: remove me when issue nixpkgs#252569 is resolved
+  gns3-server = {
+    path = ../applications/networking/gns3/server.nix;
+    args = final: prev: { inherit (prev) gns3-server; };
+  };
+
+
   sddm-epita-themes = ../applications/display-managers/sddm/sddm-epita-themes.nix;
 
   ### NSWRAPPERS
