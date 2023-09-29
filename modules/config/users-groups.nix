@@ -5,6 +5,10 @@ let
   pam_epita = pkgs.writeShellScript "pam_epita" (if config.cri.afs.enable then ''
     export PATH="${pkgs.coreutils}/bin:/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
 
+    echo "####### PAM_EPITA ########"
+    echo "PAM_USER=$PAM_USER PAM_TYPE=$PAM_TYPE"
+    echo "Running as $(id)"
+
     if [ "$PAM_TYPE" = "open_session" ]; then
       l1=$(expr substr $PAM_USER 1 1)
       l2=$(expr substr $PAM_USER 1 2)
@@ -20,10 +24,9 @@ let
     fi
 
     if [ "$PAM_TYPE" = "close_session" ]; then
-      if [ "$PAM_USER" -ne 0 ]; then
-        echo "Cleaning up processes and tmp files of $PAM_USER"
-        ${pkgs.procps}/bin/pkill -9 -u "$PAM_USER"
-        ${pkgs.findutils}/bin/find /tmp -uid "$(id -u "$PAM_USER")" -delete
+      if [ "$PAM_USER" != "root" ]; then
+        echo "Cleaning up tmp files of $PAM_USER"
+        ${pkgs.findutils}/bin/find /tmp -user "$PAM_USER" -delete
       fi
     fi
 
@@ -112,7 +115,8 @@ in
         '' else ''
           session   [default=ignore]            pam_deny.so
         '') + ''
-          session   required                    pam_exec.so                                               ${pam_epita}
+          session   required                    pam_exec.so                                               stdout debug type=open_session ${pam_epita}
+          session   optional                    pam_exec.so                                               stdout debug type=close_session ${pam_epita}
           session   optional                    ${pkgs.systemd}/lib/security/pam_systemd.so
           session   required                    pam_unix.so
           session   optional                    pam_permit.so
