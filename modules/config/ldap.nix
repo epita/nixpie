@@ -38,6 +38,8 @@ with lib;
 
         entry_cache_timeout = 600
         ldap_network_timeout = 2
+
+        ignore_group_members = True
       '';
     };
 
