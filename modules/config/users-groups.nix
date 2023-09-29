@@ -20,8 +20,10 @@ let
     fi
 
     if [ "$PAM_TYPE" = "close_session" ]; then
-      if [ $(id -u) -ne 0 ]; then
+      if [ "$PAM_USER" -ne 0 ]; then
+        echo "Cleaning up processes and tmp files of $PAM_USER"
         ${pkgs.procps}/bin/pkill -9 -u "$PAM_USER"
+        ${pkgs.findutils}/bin/find /tmp -uid "$(id -u "$PAM_USER")" -delete
       fi
     fi
 
