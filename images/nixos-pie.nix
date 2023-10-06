@@ -10,7 +10,7 @@
   cri.sddm.theme = "epita-acu-2024";
 
   environment.systemPackages = with pkgs; [
-    spot-lrde
+    #spot-lrde
   ];
 
   cri.packages.pythonPackages.nixosPieCustom = p: with p; [

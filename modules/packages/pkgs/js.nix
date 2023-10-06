@@ -9,7 +9,7 @@
     environment.systemPackages = with pkgs; [
       nodejs-18_x
       yarn
-      postman
+      #postman
     ];
   };
 }
