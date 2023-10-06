@@ -33,6 +33,7 @@
       # testing frameworks
       criterion
       gtest
+      gcovr
 
       # misc
       bintools
