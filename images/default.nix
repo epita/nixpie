@@ -58,6 +58,7 @@ let
     "nixos-bachelor" = { };
     "nixos-scia" = { };
     "nixos-majeures" = { };
+    "nixos-jpo" = { };
 
     "exam-bachelor" = { };
     "exam-pie" = { };
