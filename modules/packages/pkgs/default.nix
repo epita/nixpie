@@ -2,6 +2,7 @@
   imports = [
     ./afit.nix
     ./asm.nix
+    ./coq.nix
     ./core.nix
     ./cpp.nix
     ./csharp.nix
