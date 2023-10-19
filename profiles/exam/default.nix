@@ -103,6 +103,7 @@ in
 
           # Git Exam Forge
           ip daddr 10.224.21.123 tcp dport ssh accept
+          ip daddr 10.201.5.123 tcp dport ssh accept
 
           # NTP
           ip daddr 10.224.4.2 udp dport ntp accept
