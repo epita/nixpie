@@ -4,19 +4,13 @@ let
   submission = pkgs.writeShellScriptBin "submission" ''
     #!/bin/sh
 
-    if [ ! -f ~/.allow_submission ]; then
-      echo -e "[\033[31mERROR\033[0m] Submission script not allowed"
-      exit 1
-    fi
-
-    cd "$HOME/submission"
-
     echo "* Trying to submit"
 
     git checkout master
     git add --all
     git commit -m "Submission" --allow-empty
-    git push origin master
+    git tag -a "submission-$(git rev-parse --short HEAD)" -m "Submission"
+    git push origin master --follow-tags
   '';
 
   proxypac = pkgs.writeTextDir "wpad.dat" ''
