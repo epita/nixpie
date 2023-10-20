@@ -18,11 +18,7 @@
       })
 
       # communication
-      claws-mail
-      irssi
-      msmtp
       thunderbird
-      weechat
 
       # editors
       (emacs.pkgs.withPackages (epkgs: (with epkgs.melpaStablePackages; [
