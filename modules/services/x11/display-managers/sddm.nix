@@ -3,13 +3,14 @@
 with lib;
 
 let
-  sddm-epita-themes = pkgs.sddm-epita-themes.override {
-    extraThemeConfig = ''
-      logo=epita.png
-      title="-- ${config.cri.sddm.title} --"
-      footer="nixos-system-${config.system.name}-${config.system.nixos.label}"
-    '';
-  };
+  sddmExtraThemeConfig = ''
+    [General]
+    logo=epita.png
+    title="-- ${config.cri.sddm.title} --"
+    footer="nixos-system-${config.system.name}-${config.system.nixos.label}"
+  '';
+
+  sddmThemeConfigOverride = pkgs.writeTextDir "share/sddm/themes/${config.cri.sddm.theme}/theme.conf.user" sddmExtraThemeConfig;
 in
 {
   options = {
@@ -46,9 +47,11 @@ in
         enable = true;
         autoNumlock = true;
         autoLogin.relogin = true;
-        settings.Theme.ThemeDir = "${sddm-epita-themes}/share/sddm/themes";
       };
     };
+
+    environment.systemPackages = with pkgs; [ sddm-epita-themes ] ++
+      optionals (hasPrefix "epita-" config.cri.sddm.theme) [ sddmThemeConfigOverride ];
 
     systemd.services.display-manager = {
       after = [ "network-online.target" ];
