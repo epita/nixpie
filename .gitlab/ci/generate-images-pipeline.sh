@@ -4,60 +4,25 @@ set -euo pipefail
 
 source "${CI_PROJECT_DIR}/.gitlab/ci/utils.sh"
 
+function getChangedImages() {
+  echoInfo "Evaluating images..."
+  nix_run nix-eval-jobs --check-cache-status --flake "${CI_PROJECT_DIR}#gitlabCiJobs.images.x86_64-linux" | tee "${DIFF_DIR}/images.jsonl" 1>&2
+  jq -r '. | select(.isCached == false) | .attr' "${DIFF_DIR}/images.jsonl" | xargs
+}
+
 echoInfo "Getting ready..."
 
-IMAGES_DIFF_DIR="${DIFF_DIR}/images"
-mkdir -p "${IMAGES_DIFF_DIR}"
+mkdir -p "$DIFF_DIR"
 
 print_defaults
 
-function getImageDrvPath() {
-  repo="${1}"
-  image="${2}"
-
-  path="${repo}#nixosConfigurations.${image}.config.system.build.toplevel.drvPath"
-
-  echo "${path}"
-}
-
-function didImageChange() {
-  image="${1}"
-  diffFile="${IMAGES_DIFF_DIR}/${image}"
-  currentImageDrvPath="$(getImageDrvPath "${CI_PROJECT_DIR}" "${image}")"
-  previousImageDrvPath="$(getImageDrvPath "git+${CI_PROJECT_URL}?ref=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}" "${image}")"
-
-  currentDrv="$(nix eval --raw "${currentImageDrvPath}")"
-  previousDrv="$(nix eval --raw "${previousImageDrvPath}")" || return 0
-
-  # We allow 54 lines of differences, which is the amount that changes when
-  # only the commit SHA changes.
-  diffDrv "${previousDrv}" "${currentDrv}" "${diffFile}" 54
-}
-
-echoInfo "Listing all images..."
-images="$(nix_run list-images | xargs)"
-echoInfo "Images found: ${images}"
-
-changedImages=""
-
 echoInfo "Starting pipeline generation..."
 
-if [ -z "${CI_MERGE_REQUEST_IID:-}" ] || [ -n "${ALL_IMAGES:-}" ]; then
-  echoWarn "Pipeline is not attached to a merge request."
-  echoWarn "All images will be rebuilt."
-  changedImages="${images}"
+changedImages=""
+if [ -n "${ALL_IMAGES:-}" ]; then
+  changedImages="$(nix_run list-images | xargs)"
 else
-  echoWarn "Pipeline is attached to a merge request."
-  echoWarn "Checking what images we should rebuild..."
-  for image in ${images}; do
-    echoInfo "Checking if image ${image} changed..."
-    if didImageChange "${image}"; then
-      echoInfo "Image ${image} changed. Queued for rebuilding."
-      changedImages="${changedImages:-} ${image}"
-    else
-      echoInfo "Image ${image} did not change. Not rebuilding."
-    fi
-  done
+  changedImages="$(getChangedImages)"
 fi
 
 echoWarn "Images to be rebuilt are: ${changedImages}"
@@ -94,20 +59,24 @@ ${image}:deploy:
   extends: .deploy
   needs:
     - ${image}:build
+  variables:
+    NIXPIE_LABEL_VERSION: "$(git rev-parse --short HEAD)"
   script:
     - buildExpression=".#nixosConfigurations.${image}.config.system.build.toplevel-netboot"
-    - nix -L build "\$buildExpression"
+    - nix -L build --impure "\$buildExpression"
     - storePath="\$(readlink -f ./result)"
     - cat "\${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
     - nix_run awscli s3 --endpoint-url "\${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "\$storePath" "s3://\${AWS_PXE_IMAGES_BUCKET}"
     - rm -f ./result
-    - nix store delete "\$storePath"
+    - nix store delete --impure "\$storePath"
 EOF
 
 if nix_run list-docker | grep "${image}" > /dev/null; then
 cat <<EOF
 ${image}:docker:
   extends: .docker
+  variables:
+    NIXPIE_LABEL_VERSION: "$(git rev-parse --short HEAD)"
   needs:
     - ${image}:build
   variables:
@@ -116,10 +85,5 @@ EOF
 fi
 fi
 done
-
-if [ "$(du -s . | awk '{ print $1 }')" -ge 5000000 ]; then
-    echoInfo "Artifact is too large, removing diffs"
-    rm -rf "${DIFF_DIR}"
-fi
 
 echoSuccess "All done!"

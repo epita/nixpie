@@ -51,7 +51,6 @@ stages:
   artifacts:
     paths:
       - pipeline.yml
-      - diffs
 
 .trigger:
   extends: .rules-default
@@ -98,7 +97,7 @@ stages:
     - nix_run skopeo login registry.cri.epita.fr --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD
   script:
     - export buildExpression=".#${IMAGE}-docker"
-    - nix -L build "$buildExpression"
+    - nix -L build --impure "$buildExpression"
     - nix_run skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE:$CI_COMMIT_SHA
     - nix_run skopeo --insecure-policy copy "docker-archive:$(readlink -f ./result)" docker://$CI_REGISTRY_IMAGE/$IMAGE:latest
   allow_failure: true

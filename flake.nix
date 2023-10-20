@@ -92,6 +92,13 @@
               pkgset = pkgset system;
             }
           );
+
+        # works like hydraJobs
+        gitlabCiJobs = {
+          images.x86_64-linux = lib.mapAttrs (_: nixosConfig: nixosConfig.config.system.build.toplevel) self.nixosConfigurations;
+          packages.x86_64-linux = lib.filterAttrs (name: _: !lib.hasSuffix "-docker" name) self.packages.x86_64-linux;
+          checks.x86_64-linux = self.checks.x86_64-linux;
+        };
       };
 
       multiSystemOutputs = eachDefaultSystem (system:
@@ -108,6 +115,7 @@
               git
               pkgsMaster.nix-diff
               nixpkgs-fmt
+              nix-eval-jobs
               pre-commit
               shellcheck
             ];
@@ -137,6 +145,10 @@
               nix-diff = {
                 type = "app";
                 program = "${pkgsMaster.nix-diff}/bin/nix-diff";
+              };
+              nix-eval-jobs = {
+                type = "app";
+                program = "${pkgs.nix-eval-jobs}/bin/nix-eval-jobs";
               };
               nixpkgs-fmt = {
                 type = "app";

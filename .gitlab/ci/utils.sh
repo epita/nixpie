@@ -35,36 +35,3 @@ function nix_run() {
   shift 1
   nix run "${CI_PROJECT_DIR}#${app}" -- "${@}"
 }
-
-function nix_diff() {
-  nix_run nix-diff --line-oriented "${@}"
-}
-
-function diffDrv() {
-  drvSrc="${1}"
-  drvDst="${2}"
-  diffFile="${3}"
-  allowedDifferences="${4:-0}"
-
-  # We run multiple times to get color in output. nix-diff is pretty
-  # inexpensive so let's not care too much about this
-  nix_diff "${drvSrc}" "${drvDst}" > "${diffFile}"
-  nix_diff --environment "${drvSrc}" "${drvDst}" > "${diffFile}.env"
-
-  if [ "$(wc -l < "${diffFile}")" -gt "${allowedDifferences}" ]; then
-    nix_diff --color always "${drvSrc}" "${drvDst}" >&2
-    returncode=0
-  else
-    returncode=1
-  fi
-
-  if [ "$(stat -c %s "${diffFile}")" -ge 500000 ]; then
-      echo "This diff is too large to be exported." > "${diffFile}"
-  fi
-
-  if [ "$(stat -c %s "${diffFile}.env")" -ge 500000 ]; then
-      echo "This diff is too large to be exported." > "${diffFile}.env"
-  fi
-
-  return "$returncode"
-}

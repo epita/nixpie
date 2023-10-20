@@ -39,6 +39,7 @@ in
     nix = pkgs.nixFlakes;
     extraContents = [
       pkgs.findutils
+      pkgs.jq
       (pkgs.writeTextFile {
         name = "nix.conf";
         destination = "/etc/nix/nix.conf";

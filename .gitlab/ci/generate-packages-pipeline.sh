@@ -4,58 +4,25 @@ set -euo pipefail
 
 source "${CI_PROJECT_DIR}/.gitlab/ci/utils.sh"
 
+function getChangedPackages() {
+  echoInfo "Evaluating packages..."
+  nix_run nix-eval-jobs --check-cache-status --flake "${CI_PROJECT_DIR}#gitlabCiJobs.packages.x86_64-linux" | tee "${DIFF_DIR}/pkgs.jsonl" 1>&2
+  jq -r '. | select(.isCached == false) | .attr' "${DIFF_DIR}/pkgs.jsonl" | xargs
+}
+
 echoInfo "Getting ready..."
 
-PKGS_DIFF_DIR="${DIFF_DIR}/pkgs"
-mkdir -p "${PKGS_DIFF_DIR}"
+mkdir -p "$DIFF_DIR"
 
 print_defaults
 
-function getPkgDrvPath() {
-  repo="${1}"
-  pkg="${2}"
-
-  path="${repo}#packages.x86_64-linux.${pkg}.drvPath"
-
-  echo "${path}"
-}
-
-function didPkgChange() {
-  pkg="${1}"
-  diffFile="${PKGS_DIFF_DIR}/${pkg}"
-  currentPkgDrvPath="$(getPkgDrvPath "${CI_PROJECT_DIR}" "${pkg}")"
-  previousPkgDrvPath="$(getPkgDrvPath "git+${CI_PROJECT_URL}?ref=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}" "${pkg}")"
-
-  currentDrv="$(nix eval --raw "${currentPkgDrvPath}")"
-  previousDrv="$(nix eval --raw "${previousPkgDrvPath}")" || return 0
-
-  diffDrv "${previousDrv}" "${currentDrv}" "${diffFile}"
-}
-
-echoInfo "Listing all packages..."
-pkgs="$(nix_run list-pkgs | xargs)"
-echoInfo "Packages found: ${pkgs}"
-
-changedPkgs=""
-
 echoInfo "Starting pipeline generation..."
 
-if [ -z "${CI_MERGE_REQUEST_IID:-}" ] || [ -n "${ALL_PACKAGES:-}" ]; then
-  echoWarn "Pipeline is not attached to a merge request."
-  echoWarn "All packages will be rebuilt."
-  changedPkgs="${pkgs}"
+changedPkgs=""
+if [ -n "${ALL_PACKAGES:-}" ]; then
+  changedPkgs="$(nix_run list-pkgs | xargs)"
 else
-  echoWarn "Pipeline is attached to a merge request."
-  echoWarn "Checking what packages we should rebuild..."
-  for pkg in ${pkgs}; do
-    echoInfo "Checking if package ${pkg} changed..."
-    if didPkgChange "${pkg}"; then
-      echoInfo "Package ${pkg} changed. Queue for rebuilding."
-      changedPkgs="${changedPkgs:-} ${pkg}"
-    else
-      echoInfo "Package ${pkg} did not change. Not rebuilding."
-    fi
-  done
+  changedPkgs="$(getChangedPackages)"
 fi
 
 echoWarn "Packages to be rebuilt are: ${changedPkgs}"
@@ -90,10 +57,5 @@ cat <<EOF
 EOF
 fi
 done
-
-if [ "$(du -s . | awk '{ print $1 }')" -ge 5000000 ]; then
-    echoInfo "Artifact is too large, removing diffs"
-    rm -rf "${DIFF_DIR}"
-fi
 
 echoSuccess "All done!"
