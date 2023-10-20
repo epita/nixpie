@@ -4,10 +4,8 @@
   imports = [
     ../profiles/exam
 
-    ./nixos-sup.nix
-    ./nixos-spe.nix
+    ./nixos-prepa.nix
   ];
 
   cri.sddm.title = lib.mkForce "Exam Prepa";
-  cri.xfce.enable = lib.mkForce false;
 }

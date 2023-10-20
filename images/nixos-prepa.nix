@@ -2,20 +2,13 @@
 
 with lib;
 
-let
-  nixosSupPkgs = with pkgs; [
-    gnome.gedit
-    gource
-  ];
-in
 {
   imports = [
     ../profiles/graphical
   ];
 
   netboot.enable = true;
-  cri.sddm.title = "NixOS SUP";
-  cri.xfce.enable = true;
+  cri.sddm.title = "NixOS Prepa";
 
   cri.packages = {
     pkgs = {
@@ -23,8 +16,11 @@ in
       ocaml.enable = true;
       afit.enable = true;
       csharp.enable = true;
+      asm.enable = true;
+      gtk.enable = true;
+      rust.enable = true;
+      sdl.enable = true;
+      thl.enable = true;
     };
   };
-
-  environment.systemPackages = nixosSupPkgs;
 }

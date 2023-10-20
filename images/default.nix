@@ -52,8 +52,7 @@ let
     "nixos-maths" = { };
     "nixos-net" = { };
     "nixos-pie" = { };
-    "nixos-spe" = { };
-    "nixos-sup" = { };
+    "nixos-prepa" = { };
     "nixos-test" = { };
     "nixos-immersion" = { };
     "nixos-bachelor" = { };
@@ -69,8 +68,7 @@ let
 
     "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };
-    "nixos-spe-vm" = { isVM = true; };
-    "nixos-sup-vm" = { isVM = true; };
+    "nixos-prepa-vm" = { isVM = true; };
     "nixos-test-vm" = { isVM = true; };
 
     "france-ioi" = { };
