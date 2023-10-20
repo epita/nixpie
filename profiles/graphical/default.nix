@@ -73,6 +73,7 @@ in
   };
 
   environment.etc."chromium/policies/recommended/spnego.json".text = builtins.toJSON {
-    AuthServerWhitelist = "cri.epita.fr";
+    AuthServerAllowlist = "*cri.epita.fr,*forge.epita.fr";
+    DisableAuthNegotiateCnameLookup = true;
   };
 }
