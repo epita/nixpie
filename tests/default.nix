@@ -41,7 +41,6 @@ let
     node-exporter = ./node-exporter.nix;
     nswrappers = ./nswrappers.nix;
     spider = ./spider.nix;
-    version = ./version.nix;
   };
 in
 mapAttrs
