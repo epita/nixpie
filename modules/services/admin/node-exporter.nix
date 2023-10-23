@@ -27,7 +27,7 @@ in
 
     environment.etc."prometheus-node-exporter-textfile/nixpie.prom".text =
       let
-        versions = concatStringsSep ", " (mapAttrsToList (flake: version: ''${flake}="${version}"'') config.system.nixos.versions);
+        versions = (builtins.replaceStrings [ "_" "-" ] [ "\", " "=\"" ] config.system.nixos.label) + "\"";
       in
       ''
         nixpie_image{image="${imageName}", ${versions}} 1

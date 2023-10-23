@@ -34,7 +34,7 @@ imageName:
       nixpie.flake = self;
     };
 
-    environment.etc."nixos-version".text = if (self ? rev) then self.rev else "";
+    environment.etc."nixos-version".text = lib.maybeEnv "NIXPIE_LABEL_VERSION" "pregit";
     system.configurationRevision = null; # triggers rebuild of mandb
   };
 
