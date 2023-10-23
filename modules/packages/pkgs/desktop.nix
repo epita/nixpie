@@ -1,11 +1,31 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+let
+  cfg = config.cri.packages.pkgs.desktop;
+in
 {
   options = {
-    cri.packages.pkgs.desktop.enable = lib.options.mkEnableOption "desktop CRI package bundle";
+    cri.packages.pkgs.desktop = {
+      enable = mkEnableOption "desktop CRI package bundle";
+      firefox = {
+        toolbarBookmarks = mkOption {
+          default = [ ];
+          type = with types; listOf (attrsOf str);
+          description = "List of Firefox bookmarks to add in toolbar";
+          example = [
+            {
+              Title = "Forge ID";
+              URL = "https://cri.epita.fr";
+              Favicon = "https://s3.cri.epita.fr/cri-intranet/img/logo.png";
+            }
+          ];
+        };
+      };
+    };
   };
 
-  config = lib.mkIf config.cri.packages.pkgs.desktop.enable {
+  config = mkIf cfg.enable {
 
     environment.systemPackages = with pkgs; [
       # browsers
@@ -15,6 +35,9 @@
           pref("network.negotiate-auth.trusted-uris", "cri.epita.fr,.cri.epita.fr");
           pref("network.trr.excluded-domains", "cri.epita.fr");
         '';
+        extraPolicies = {
+          Bookmarks = builtins.map (bookmark: bookmark // { Placement = "toolbar"; }) cfg.firefox.toolbarBookmarks;
+        } // optionalAttrs (builtins.length cfg.firefox.toolbarBookmarks > 0) { DisplayBookmarksToolbar = "always"; };
       })
 
       # communication
