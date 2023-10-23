@@ -21,6 +21,20 @@ let
 in
 {
   cri.afs.enable = false;
+  cri.packages.pkgs.desktop.firefox.toolbarBookmarks = [
+    {
+      Title = "Moodle Exam";
+      URL = "https://moodle-exam.cri.epita.fr";
+    }
+    {
+      Title = "Intranet Exam";
+      URL = "https://exam.forge.epita.fr";
+    }
+    {
+      Title = "Intranet Exam - Remaining time";
+      URL = "https://exam.forge.epita.fr/_exam/session";
+    }
+  ];
 
   netboot = {
     nix-store-rw.enable = false;

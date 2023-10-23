@@ -35,9 +35,10 @@ in
           pref("network.negotiate-auth.trusted-uris", "cri.epita.fr,.cri.epita.fr");
           pref("network.trr.excluded-domains", "cri.epita.fr");
         '';
-        extraPolicies = {
+        extraPolicies = optionalAttrs (builtins.length cfg.firefox.toolbarBookmarks > 0) {
           Bookmarks = builtins.map (bookmark: bookmark // { Placement = "toolbar"; }) cfg.firefox.toolbarBookmarks;
-        } // optionalAttrs (builtins.length cfg.firefox.toolbarBookmarks > 0) { DisplayBookmarksToolbar = "always"; };
+          DisplayBookmarksToolbar = "always";
+        };
       })
 
       # communication
