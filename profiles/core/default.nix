@@ -135,6 +135,8 @@ with lib;
         GSSAPIAuthentication yes
       Host git.exam.forge.epita.fr
         GSSAPIAuthentication yes
+      Host gitlab.cri.epita.fr
+        GSSAPIAuthentication yes
       Host ssh.cri.epita.fr
         GSSAPIAuthentication yes
         GSSAPIDelegateCredentials yes
