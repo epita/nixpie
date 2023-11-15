@@ -17,8 +17,6 @@
 
   clonezilla = ../tools/backup/clonezilla;
 
-  term_size = ../tools/misc/term_size;
-
   ### DEVELOPMENT / COMPILERS
 
   clang32-alias = ../development/compilers/clang32-alias;

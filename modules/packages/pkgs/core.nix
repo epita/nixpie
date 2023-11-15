@@ -29,7 +29,6 @@
       screen
       tcpdump
       inetutils
-      term_size
       tmux
       tree
       usbutils
