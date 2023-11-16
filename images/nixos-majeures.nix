@@ -13,4 +13,8 @@
       coq.enable = true;
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    burpsuite # ticket #41353, GISTRE SECSYS
+  ];
 }
