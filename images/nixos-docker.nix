@@ -5,13 +5,11 @@
     ../profiles/graphical
   ];
 
-  cri.packages = {
-    pkgs = {
-      docker.enable = true;
-    };
+  cri = {
+    sddm.title = "NixOS Docker";
+    packages.pkgs.docker-vm.enable = true;
   };
 
   netboot.enable = true;
-  cri.sddm.title = "NixOS Docker";
 
 }

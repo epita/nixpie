@@ -10,6 +10,7 @@
     ./dev.nix
     ./devFunctional.nix
     ./docker.nix
+    ./docker-vm.nix
     ./fuse.nix
     ./games.nix
     ./gpgpu.nix

@@ -27,6 +27,27 @@ let
 
     exit 0
   '' else "exit 0");
+  pam_epita_hooks = pkgs.writeShellScript "pam_epita_hooks" (if config.cri.pam_hooks.enable then ''
+    if [ $(id -u) -ne 0 ] || [ "$PAM_USER" = "root" ]; then
+      exit 0
+    fi
+
+    if [ "$PAM_TYPE" = "open_session" ]; then
+      # Do the open session hooks
+      ${concatStringsSep "\n" (map (hook: ''
+        ${hook} || true
+      '') config.cri.pam_hooks.openSessionHooks)}
+    fi
+
+    if [ "$PAM_TYPE" = "close_session" ]; then
+      # Do the close hooks
+      ${concatStringsSep "\n" (map (hook: ''
+        ${hook} || true
+      '') config.cri.pam_hooks.closeSessionHooks)}
+    fi
+
+    exit 0
+  '' else "exit 0");
   pam_allowed_epita_user = pkgs.writeShellScript "pam_allowed_epita_user" (if config.cri.users.checkEpitaUserAllowed then ''
     export PATH="${pkgs.coreutils}/bin:/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
 
@@ -43,6 +64,25 @@ let
 in
 {
   options = {
+    cri.pam_hooks = {
+      enable = mkEnableOption "Enable pam hooks";
+      openSessionHooks = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = ''
+          Hooks to run when a session is opened. The hooks are run as root.
+          The user name can be passed with the `PAM_USER` variable.
+        '';
+      };
+      closeSessionHooks = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = ''
+          Hooks to run when a session is closed. The hooks are run as root.
+          The user name can be passed with the `PAM_USER` variable.
+        '';
+      };
+    };
     cri.users = {
       enable = mkEnableOption "Enable default users";
       createEpitaUser = mkOption {
@@ -111,6 +151,9 @@ in
           session   [default=ignore]            pam_deny.so
         '') + ''
           session   required                    pam_exec.so                                               ${pam_epita}
+        '' + (optionalString config.cri.pam_hooks.enable ''
+          session   optional                    pam_exec.so                                               ${pam_epita_hooks}
+        '') + ''
           session   optional                    ${pkgs.systemd}/lib/security/pam_systemd.so
           session   required                    pam_unix.so
           session   optional                    pam_permit.so
