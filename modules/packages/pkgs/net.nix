@@ -19,12 +19,49 @@ let
   '';
   configGNS3Server = pkgs.writeText "gns3_server.conf" ''
     [Server]
-    host = docker.local
+    path = ${pkgs.gns3-server}/bin/gns3server
+    ubridge_path = ubridge
+    host = localhost
     port = 3080
     auth = False
     user =
     password =
-    auto_start = False
+    auto_start = True
+    protocol = http
+  '';
+  configGNS3Controller = pkgs.writeText "gns3_controller.conf" ''
+    {
+      "computes": [
+          {
+              "host": "docker.local",
+              "name": "docker.local",
+              "port": 3080,
+              "protocol": "http",
+              "user": null,
+              "password": null,
+              "compute_id": "d9fc6cf4-f44c-4cbe-b328-f096cdb53bb8"
+          }
+      ],
+      "templates": [
+      ],
+      "gns3vm": {
+          "vmname": "docker.local",
+          "when_exit": "stop",
+          "headless": false,
+          "enable": true,
+          "engine": "remote",
+          "allocate_vcpus_ram": false,
+          "ram": 2048,
+          "vcpus": 1,
+          "port": 80
+      },
+      "iou_license": {
+          "iourc_content": "",
+          "license_check": true
+      },
+      "appliances_etag": null,
+      "version": "${pkgs.gns3-server.version}"
+    }
   '';
   custom-gns3-gui = pkgs.writeShellScriptBin "gns3" ''
     USER=$(whoami)
@@ -45,13 +82,21 @@ let
     fi
 
     GNS3_CONFIG_SERVER="$GNS3_CONFIG_DIR/gns3_server.conf"
+    GNS3_CONFIG_CONTROLLER="$GNS3_CONFIG_DIR/gns3_controller.conf"
     GNS3_CONFIG_GUI="$GNS3_CONFIG_DIR/gns3_gui.conf"
 
     if [ ! -f "$GNS3_CONFIG_SERVER" ]; then
+      echo ".."
       cp --no-preserve=mode,ownership ${configGNS3Server} "$GNS3_CONFIG_SERVER"
     fi
 
+    if [ ! -f "$GNS3_CONFIG_CONTROLLER" ]; then
+      echo ".."
+      cp --no-preserve=mode,ownership ${configGNS3Controller} "$GNS3_CONFIG_CONTROLLER"
+    fi
+
     if [ ! -f "$GNS3_CONFIG_GUI" ]; then
+      echo ".."
       cp --no-preserve=mode,ownership ${configGNS3Gui} "$GNS3_CONFIG_GUI"
     fi
 
@@ -119,6 +164,7 @@ in
     environment.systemPackages = with pkgs; [
       custom-gns3-gui
       fix-gns3-config
+      gns3-server
       tigervnc
     ];
   };
