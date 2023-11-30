@@ -58,6 +58,7 @@ let
     "nixos-immersion" = { };
     "nixos-bachelor" = { };
     "nixos-scia" = { };
+    "nixos-ssie" = { };
     "nixos-majeures" = { };
 
     "exam-bachelor" = { };

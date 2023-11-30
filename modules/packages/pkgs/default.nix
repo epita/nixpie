@@ -32,6 +32,7 @@
     ./sdl.nix
     ./spider.nix
     ./sql.nix
+    ./ssie.nix
     ./thl.nix
     ./tiger.nix
   ];
