@@ -9,6 +9,7 @@
     environment.systemPackages = with pkgs; [
       jetbrains.datagrip
       postgresql
+      sqlfluff
     ];
 
     environment.pathsToLink = [
