@@ -5,16 +5,11 @@
   '';
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
-    machine-state = {
-      url = "git+https://gitlab.cri.epita.fr/cri/packages/machine-state.git";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
+    machine-state.url = "git+https://gitlab.cri.epita.fr/cri/packages/machine-state.git";
 
     docker-nixpkgs = {
       url = "github:nix-community/docker-nixpkgs";
@@ -53,16 +48,17 @@
           config = {
             allowUnfree = true;
             permittedInsecurePackages = [
-              "openssl-1.1.1v"
+              "squid-5.9"
             ];
-
           };
           overlays =
             (attrValues self.overlays) ++
             (optional withOverrides self.overrides.${system}) ++ [
               (import "${docker-nixpkgs}/overlay.nix")
 
-              machine-state.overlay
+              (final: prev: {
+                machine-state = machine-state.packages.${system}.machine-state;
+              })
             ];
         };
 

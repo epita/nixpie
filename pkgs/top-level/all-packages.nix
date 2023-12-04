@@ -41,11 +41,6 @@
 
   clang-format-epita = ../development/tools/clang-format-epita;
 
-  /*leodagan = {
-    path = ../development/tools/leodagan;
-    callPackage = final: prev: final.python3Packages.callPackage;
-  };*/
-
   pharaoh = ../development/tools/pharaoh;
 
   ### DEVELOPMENT / PYTHON MODULES
@@ -55,43 +50,13 @@
     callPackage = final: prev: final.python3Packages.callPackage;
   };
 
-  jupyter_contrib_core = {
-    path = ../development/python-modules/jupyter_contrib_core;
-    callPackage = final: prev: final.python3Packages.callPackage;
-  };
-
-  jupyter_contrib_nbextensions = {
-    path = ../development/python-modules/jupyter_contrib_nbextensions;
-    callPackage = final: prev: final.python3Packages.callPackage;
-  };
-
-  jupyter_highlight_selected_word = {
-    path = ../development/python-modules/jupyter_highlight_selected_word;
-    callPackage = final: prev: final.python3Packages.callPackage;
-  };
-
   jupyter_latex_envs = {
     path = ../development/python-modules/jupyter_latex_envs;
     callPackage = final: prev: final.python3Packages.callPackage;
   };
 
-  jupyter_nbextensions_configurator = {
-    path = ../development/python-modules/jupyter_nbextensions_configurator;
-    callPackage = final: prev: final.python3Packages.callPackage;
-  };
-
   nbtranslate = {
     path = ../development/python-modules/nbtranslate;
-    callPackage = final: prev: final.python3Packages.callPackage;
-  };
-
-  squarify = {
-    path = ../development/python-modules/squarify;
-    callPackage = final: prev: final.python3Packages.callPackage;
-  };
-
-  wikipedia = {
-    path = ../development/python-modules/wikipedia;
     callPackage = final: prev: final.python3Packages.callPackage;
   };
 
@@ -120,13 +85,6 @@
   };
 
   ciscoPacketTracer8 = ../applications/networking/cisco-packet-tracer;
-
-  # TODO: remove me when issue nixpkgs#252569 is resolved
-  gns3-server = {
-    path = ../applications/networking/gns3/server.nix;
-    args = final: prev: { inherit (prev) gns3-server; };
-  };
-
 
   sddm-epita-themes = ../applications/display-managers/sddm/sddm-epita-themes.nix;
 

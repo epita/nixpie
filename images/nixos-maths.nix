@@ -40,11 +40,11 @@
     pandas
     pandas-datareader
     pkgs.jupyter-dash
-    pkgs.jupyter_contrib_nbextensions
+    #jupyter-contrib-nbextensions
     pkgs.jupyter_latex_envs
     pkgs.nbtranslate
-    pkgs.squarify
-    pkgs.wikipedia
+    squarify
+    wikipedia
     plotly
     pycryptodome
     pygame

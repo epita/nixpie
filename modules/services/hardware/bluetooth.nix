@@ -12,7 +12,7 @@ with lib;
   config = mkIf config.cri.bluetooth.enable {
     hardware.bluetooth = {
       enable = true;
-      package = pkgs.bluezFull;
+      package = pkgs.bluez;
     };
 
     services.blueman.enable = true;
