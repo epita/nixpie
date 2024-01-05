@@ -65,6 +65,7 @@ let
     "exam-prepa" = { };
     "exam-maths" = { };
     "exam-scia" = { };
+    "exam-majeures" = { };
 
     "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };
