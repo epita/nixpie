@@ -60,7 +60,6 @@ let
     "nixos-majeures" = { };
 
     "exam-bachelor" = { };
-    "exam-inter" = { };
     "exam-pie" = { };
     "exam-prepa" = { };
     "exam-maths" = { };
