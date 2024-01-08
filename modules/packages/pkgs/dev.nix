@@ -71,5 +71,10 @@
       subversion
       tig
     ];
+
+    environment.variables = {
+      ACLOCAL_PATH = "${pkgs.autoconf-archive}/share/aclocal:${pkgs.autoconf}/share/aclocal:${pkgs.automake}/share/aclocal";
+    };
+
   };
 }
