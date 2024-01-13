@@ -11,6 +11,7 @@
   cri.packages = {
     pkgs = {
       coq.enable = true;
+      info9.enable = true;
     };
   };
 
