@@ -48,6 +48,11 @@ in
   };
 
   config = lib.mkIf config.cri.packages.pkgs.info9.enable {
+    cri.packages.pkgs = {
+      java.enable = true;
+      podman.enable = true;
+    };
+
     environment.systemPackages = with pkgs; [
       # Elastic
       elastic-wrapper
