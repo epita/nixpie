@@ -13,6 +13,7 @@
       coq.enable = true;
       info9.enable = true;
       libvirt.enable = true;
+      libvirt.enableDiskPartition = true;
     };
   };
 
