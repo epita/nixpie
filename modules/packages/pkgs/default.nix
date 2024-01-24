@@ -18,6 +18,7 @@
     ./java.nix
     ./js.nix
     ./latex-exam.nix
+    ./libvirt.nix
     ./lisp.nix
     ./net.nix
     ./ocaml.nix
