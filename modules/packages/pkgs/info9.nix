@@ -63,6 +63,7 @@ in
       # Neo4j
       neo4j
       neo4j-desktop-wrapper
+      kubectl
     ];
   };
 }
