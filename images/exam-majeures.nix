@@ -11,6 +11,8 @@
   cri.packages = {
     pkgs = {
       latexExam.enable = true;
+      libvirt.enable = lib.mkForce false;
+      libvirt.enableDiskPartition = lib.mkForce false;
     };
   };
 
