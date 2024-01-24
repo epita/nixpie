@@ -12,6 +12,7 @@
     pkgs = {
       coq.enable = true;
       info9.enable = true;
+      libvirt.enable = true;
     };
   };
 
