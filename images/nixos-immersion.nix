@@ -24,6 +24,7 @@
   cri.packages = {
     pkgs = {
       dev.enable = true;
+      csharp.enable = true;
     };
   };
 }
