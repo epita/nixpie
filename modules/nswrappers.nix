@@ -22,11 +22,11 @@ in
     security.sudo.extraRules = [{
       users = [ "ALL" ];
       commands = [
-        { command = "${pkgs.nswrappers}/bin/ns-init"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.nswrappers}/bin/ns-add-if"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.nswrappers}/bin/ns-exec"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.nswrappers}/bin/ns-del-if"; options = [ "NOPASSWD" ]; }
-        { command = "${pkgs.nswrappers}/bin/ns-destroy"; options = [ "NOPASSWD" ]; }
+        { command = "/run/current-system/sw/bin/ns-init"; options = [ "NOPASSWD" ]; }
+        { command = "/run/current-system/sw/bin/ns-add-if"; options = [ "NOPASSWD" ]; }
+        { command = "/run/current-system/sw/bin/ns-exec"; options = [ "NOPASSWD" ]; }
+        { command = "/run/current-system/sw/bin/ns-del-if"; options = [ "NOPASSWD" ]; }
+        { command = "/run/current-system/sw/bin/ns-destroy"; options = [ "NOPASSWD" ]; }
       ];
     }];
   };
