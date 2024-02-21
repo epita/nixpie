@@ -20,12 +20,10 @@
     print("logged in")
 
     print("waiting for i3 config prompts")
-    # OCR is a bit dodgy with small text, we are actually looking for:
-    # first configuration
-    machine.wait_for_text("first corfiguraticr")
+    machine.wait_until_succeeds("DISPLAY=:0 XAUTHORITY=$(find /run/sddm -name 'xauth_*') xwininfo -root -tree | grep 'i3: first configuration'")
     machine.screenshot("i3configuration")
     machine.send_chars("\n")
-    machine.wait_for_text("-> <Win>")
+    machine.sleep(1)
     machine.screenshot("i3meta")
     machine.send_chars("\n")
 
