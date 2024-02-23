@@ -127,10 +127,6 @@ with lib;
     extraConfig = ''
       AddKeysToAgent yes
 
-      Host git.exam.pie.cri.epita.fr
-        GSSAPIAuthentication yes
-      Host git.cri.epita.fr
-        GSSAPIAuthentication yes
       Host git.forge.epita.fr
         GSSAPIAuthentication yes
       Host git.exam.forge.epita.fr
