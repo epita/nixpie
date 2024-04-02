@@ -9,9 +9,11 @@
 } @ inputs:
 let
 
-  nixosSystem = imageName: { isVM ? false, extraModules ? [ ] } @ args:
+  makeLocal = { ... } @ attr: builtins.listToAttrs (map (x: { name = "${x}-local"; value = (builtins.getAttr x attr) // { isLocal = true; }; }) (builtins.attrNames attr));
+
+  nixosSystem = imageName: { isVM ? false, isLocal ? false, extraModules ? [ ] } @ args:
     let
-      _imageName = if isVM then lib.removeSuffix "-vm" imageName else imageName;
+      _imageName = if isVM then lib.removeSuffix "-vm" imageName else if isLocal then lib.removeSuffix "-local" imageName else imageName;
 
       specialArgs = import ./special-args.nix inputs imageName;
 
@@ -20,7 +22,7 @@ let
           inherit (import ./modules.nix inputs imageName) core global flakeModules;
           local = import "${toString ./.}/${_imageName}.nix";
         in
-        flakeModules ++ [ core global local ] ++ (lib.optional isVM ../profiles/vm) ++ extraModules;
+        flakeModules ++ [ core global local ] ++ (lib.optional isVM ../profiles/vm) ++ (lib.optional isLocal ../profiles/local) ++ extraModules;
     in
     lib.nixosSystem {
       inherit system specialArgs;
@@ -44,7 +46,7 @@ let
       ];
     };
 
-  hosts = lib.mapAttrs nixosSystem {
+  allHosts = {
     "nixos-docker" = { };
     "nixos-exec" = { };
     #"nixos-gpgpu" = { }; # disabled because cuda on NixOS is broken
@@ -75,5 +77,9 @@ let
     "france-ioi" = { };
     "exam-france-ioi" = { };
   };
+
+  localHosts = makeLocal allHosts;
+
+  hosts = lib.mapAttrs nixosSystem (allHosts // localHosts);
 in
 hosts

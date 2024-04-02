@@ -4,4 +4,5 @@
   graphical = ./graphical;
   tests = ./tests;
   vm = ./vm;
+  local = ./local;
 }

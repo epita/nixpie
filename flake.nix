@@ -101,7 +101,7 @@
 
         # works like hydraJobs
         gitlabCiJobs = {
-          images.x86_64-linux = lib.mapAttrs (_: nixosConfig: nixosConfig.config.system.build.toplevel) self.nixosConfigurations;
+          images.x86_64-linux = lib.filterAttrs (name: _: !lib.hasSuffix "-local" name) (lib.mapAttrs (_: nixosConfig: nixosConfig.config.system.build.toplevel) self.nixosConfigurations);
           packages.x86_64-linux = lib.filterAttrs (name: _: !lib.hasSuffix "-docker" name) self.packages.x86_64-linux;
           checks.x86_64-linux = self.checks.x86_64-linux;
         };
