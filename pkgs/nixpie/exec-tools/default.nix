@@ -12,6 +12,12 @@
 , nfs-utils
 , parted
 , util-linux
+, jq
+, nix
+, git
+, dialog
+, dosfstools
+, nixos-install-tools
 }:
 
 stdenvNoCC.mkDerivation {
@@ -40,6 +46,12 @@ stdenvNoCC.mkDerivation {
           nfs-utils
           parted
           util-linux
+          jq
+          nix
+          git
+          dialog
+          dosfstools
+          nixos-install-tools
         ]}
     done
   '';
