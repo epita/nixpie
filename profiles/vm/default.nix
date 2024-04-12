@@ -13,5 +13,6 @@
 
   cri = {
     idle-shutdown.enable = lib.mkForce false;
+    sm-inventory-agent.enable = lib.mkForce false;
   };
 }

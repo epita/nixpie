@@ -36,6 +36,7 @@ let
                 netboot.enable = lib.mkVMOverride false;
                 networking.nameservers = lib.mkVMOverride [ "1.1.1.1" ];
                 cri.users.checkEpitaUserAllowed = false;
+                cri.sm-inventory-agent.enable = lib.mkForce false;
               }
             ];
           }).config.system.build.vm;

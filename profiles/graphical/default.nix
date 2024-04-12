@@ -24,6 +24,7 @@ in
     sddm.enable = true;
     sound.enable = true;
     idle-shutdown.enable = true;
+    sm-inventory-agent.enable = true;
   };
 
   cri.packages.pkgs.desktop.enable = true;
