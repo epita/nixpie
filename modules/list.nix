@@ -24,6 +24,7 @@
   redshift = ./services/x11/redshift.nix;
   i3 = ./services/x11/window-managers/i3.nix;
   idle-shutdown = ./services/misc/idle-shutdown;
+  sm-inventory-agent = ./services/misc/sm-inventory-agent;
 
   netboot = ./system/boot/netboot.nix;
 }
