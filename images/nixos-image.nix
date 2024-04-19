@@ -13,4 +13,8 @@
       opengl.enable = true;
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    blender
+  ];
 }
