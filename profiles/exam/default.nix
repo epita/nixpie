@@ -163,6 +163,7 @@ in
 
       acl whitelistdomain dstdomain www.jetbrains.com
       acl whitelistdomain dstdomain plugins.jetbrains.com
+      acl whitelistdomain dstdomain downloads.marketplace.jetbrains.com
       acl whitelistdomain dstdomain download.jetbrains.com
       acl whitelistdomain dstdomain download-cdn.jetbrains.com
       acl whitelistdomain dstdomain frameworks.jetbrains.com
