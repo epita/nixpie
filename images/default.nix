@@ -9,7 +9,7 @@
 } @ inputs:
 let
 
-  makeLocal = { ... } @ attr: builtins.listToAttrs (map (x: { name = "${x}-local"; value = (builtins.getAttr x attr) // { isLocal = true; }; }) (builtins.attrNames attr));
+  makeLocal = { ... } @ attr: builtins.listToAttrs (map (x: { name = "${x}-local"; value = (builtins.getAttr x attr) // { isLocal = true; }; }) (builtins.filter (x: (builtins.match (".+" + "-vm") x) == null) (builtins.attrNames attr)));
 
   nixosSystem = imageName: { isVM ? false, isLocal ? false, extraModules ? [ ] } @ args:
     let
