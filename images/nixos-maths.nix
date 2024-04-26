@@ -57,5 +57,6 @@
     termcolor
     xarray
     xlrd
+    gmpy2
   ];
 }
