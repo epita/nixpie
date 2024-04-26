@@ -1,11 +1,14 @@
 { lib, ... }:
 
+with lib;
+
 {
-  netboot.enable = lib.mkForce false;
+  netboot.enable = mkForce false;
 
   networking = {
-    networkmanager.enable = true;
-    hostName = "nixos";
+    networkmanager.enable = mkForce true;
+    hostName = mkForce "nixos";
+    useDHCP = mkForce false;
   };
 
   programs.nm-applet.enable = true;
