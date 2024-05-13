@@ -97,6 +97,7 @@ in
           ct state {established, related} accept
 
           # Allow DNS (kresd)
+          ip daddr 10.224.21.54 udp dport domain accept
           ip daddr 10.224.21.53 udp dport domain accept
           ip daddr 10.201.5.53 udp dport domain accept
 
