@@ -15,11 +15,11 @@
       reflex
       gnum4
       gnumake
-      #havm
+      havm
       libtool
       libxslt
       llvmPackages_14.llvm
-      #nolimips
+      nolimips
       perl
       clang32-alias
       bear
