@@ -49,11 +49,13 @@
     pycryptodome
     pygame
     pytorch
+    torchvision
     scikit-learn
     scikitimage
     scipy
     seaborn
     seaborn
+    tensorboard
     termcolor
     xarray
     xlrd
