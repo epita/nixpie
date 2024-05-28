@@ -97,8 +97,6 @@ in
           ct state {established, related} accept
 
           # Allow DNS (kresd)
-          ip daddr 10.224.21.54 udp dport domain accept
-          ip daddr 10.224.21.53 udp dport domain accept
           ip daddr 10.201.5.53 udp dport domain accept
 
           # kerberos.pie.cri.epita.fr
@@ -107,20 +105,16 @@ in
           ip daddr 91.243.117.185 tcp dport {ldap,ldaps} accept
 
           # Git Exam CRI
-          ip daddr 10.224.21.122 tcp dport ssh accept
           ip daddr 10.201.5.122 tcp dport ssh accept
 
           # Git Exam Forge
-          ip daddr 10.224.21.123 tcp dport ssh accept
           ip daddr 10.201.5.123 tcp dport ssh accept
 
           # NTP
-          ip daddr 10.224.4.2 udp dport ntp accept
           ip daddr 10.201.5.2 udp dport ntp accept
 
           # Salt
-          ip daddr {10.224.4.0/24,10.224.21.0/24} tcp dport {4505,4506} accept
-          ip daddr {10.201.5.0/24,10.201.5.0/24} tcp dport {4505,4506} accept
+          ip daddr 10.201.5.0/24 tcp dport {4505,4506} accept
 
           meta skuid root accept
           tcp dport {http, https} meta skuid squid accept
@@ -147,11 +141,9 @@ in
     proxyAddress = "127.0.0.1";
     configText = ''
       # Reverse CRI
-      acl whitelistip dst 10.224.4.2
       acl whitelistip dst 10.201.5.2
 
       # Ingress k8s prod-1
-      acl whitelistip dst 10.224.21.80
       acl whitelistip dst 10.201.5.80
 
       # s3.cri.epita.fr
