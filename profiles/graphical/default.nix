@@ -33,7 +33,7 @@ in
     enable = true;
     autorun = true;
 
-    layout = "us,fr,gb";
+    xkb.layout = "us,fr,gb";
     displayManager = {
       setupCommands = ''
         ${pkgs.xorg.setxkbmap}/bin/setxkbmap us,fr,gb
