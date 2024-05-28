@@ -143,7 +143,7 @@ with lib;
     dirmngr.enable = true;
     agent = {
       enable = true;
-      pinentryFlavor = "gtk2";
+      pinentryPackage = pkgs.pinentry-gtk2;
       enableBrowserSocket = true;
       enableExtraSocket = true;
       enableSSHSupport = false;
