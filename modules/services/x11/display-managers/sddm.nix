@@ -38,7 +38,7 @@ in
   };
 
   config = mkIf config.cri.sddm.enable {
-    services.xserver.displayManager = {
+    services.displayManager = {
       autoLogin = {
         inherit (config.cri.sddm.autoLogin) enable user;
       };
