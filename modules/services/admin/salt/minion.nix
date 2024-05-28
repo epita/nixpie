@@ -38,6 +38,7 @@ with lib;
 
     systemd.services.salt-minion = {
       after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
       path = [ "/run/current-system/sw" ];
 
       serviceConfig = {

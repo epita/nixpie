@@ -55,6 +55,7 @@ in
 
     systemd.services.display-manager = {
       after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
     };
   };
 }
