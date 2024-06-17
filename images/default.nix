@@ -60,6 +60,7 @@ let
     "nixos-scia" = { };
     "nixos-ssie" = { };
     "nixos-majeures" = { };
+    "nixos-summer-program" = { };
 
     "exam-bachelor" = { };
     "exam-pie" = { };
