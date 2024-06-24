@@ -12,12 +12,6 @@ let
     git tag -a "submission-$(git rev-parse --short HEAD)" -m "Submission"
     git push origin master --follow-tags
   '';
-
-  proxypac = pkgs.writeTextDir "wpad.dat" ''
-    function FindProxyForURL (url, host) {
-      return 'PROXY localhost:3128; DIRECT';
-    }
-  '';
 in
 {
   cri.afs.enable = false;
@@ -136,80 +130,7 @@ in
     };
   };
 
-  services.squid = {
-    enable = true;
-    proxyAddress = "127.0.0.1";
-    configText = ''
-      # Reverse CRI
-      acl whitelistip dst 10.201.5.2
-
-      # Ingress k8s prod-1
-      acl whitelistip dst 10.201.5.80
-
-      # s3.cri.epita.fr
-      acl whitelistip dst 91.243.117.208
-
-      # Intellij + Gradle
-      acl whitelistdomain dstdomain repo1.maven.org
-      acl whitelistdomain dstdomain services.gradle.org
-      acl whitelistdomain dstdomain api.nuget.org
-
-      acl whitelistdomain dstdomain www.jetbrains.com
-      acl whitelistdomain dstdomain plugins.jetbrains.com
-      acl whitelistdomain dstdomain downloads.marketplace.jetbrains.com
-      acl whitelistdomain dstdomain download.jetbrains.com
-      acl whitelistdomain dstdomain download-cdn.jetbrains.com
-      acl whitelistdomain dstdomain frameworks.jetbrains.com
-      acl whitelistdomain dstdomain vortex.data.microsoft.com
-      acl whitelistdomain dstdomain marketplace.visualstudio.com
-
-      # Scala maven repositories
-      acl whitelistdomain dstdomain repo.scala-sbt.org
-      acl whitelistdomain dstdomain repo.typesafe.com
-
-      # Electif BLSC SmartPy
-      acl whitelistdomain dstdomain smartpy.io
-      acl whitelistdomain dstdomain fonts.googleapis.com
-      acl whitelistdomain dstdomain cdn.jsdelivr.net
-      acl whitelistdomain dstdomain fonts.gstatic.com
-
-      acl whitelistdomain dstdomain ocsp.pki.goog
-
-      acl Safe_ports port 80          # http
-      acl Safe_ports port 443         # https
-
-      http_access deny !Safe_ports
-      http_access allow whitelistip
-      http_access allow whitelistdomain
-
-      # Application logs to syslog, access and store logs have specific files
-      cache_log       syslog
-      access_log      stdio:/var/log/squid/access.log
-      cache_store_log stdio:/var/log/squid/store.log
-
-      # Required by systemd service
-      pid_filename    /run/squid.pid
-
-      # Run as user and group squid
-      cache_effective_user squid squid
-
-      # And finally deny all other access to this proxy
-      http_access deny all
-
-      # Squid normally listens to port 3128
-      http_port 3128
-
-      # Leave coredumps in the first cache dir
-      coredump_dir /var/cache/squid
-
-      cache_mgr tickets@forge.epita.fr
-    '';
-  };
-
-  systemd.services.squid = {
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
-  };
+  cri.squid.enable = true;
 
   systemd.services.dns-online = {
     description = "wait for DNS to be online";
@@ -227,19 +148,5 @@ in
         sleep 1;
       done
     '';
-  };
-
-  networking.proxy = {
-    httpProxy = "http://127.0.0.1:3128";
-    httpsProxy = "http://127.0.0.1:3128";
-  };
-
-  networking.hosts = {
-    "127.0.0.1" = [ "wpad" ];
-  };
-
-  services.lighttpd = {
-    enable = true;
-    document-root = proxypac;
   };
 }
