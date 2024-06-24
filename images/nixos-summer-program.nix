@@ -11,6 +11,16 @@
     SUBSYSTEMS=="usb", ATTRS{idProduct}=="7523", ATTRS{idVendor}=="1a86", SYMLINK+="espcam", GROUP="users"
   '';
 
+  cri = {
+    xfce.enable = true;
+
+    packages.pkgs = {
+      dev.enable = true;
+      docker.enable = true;
+      net.enable = true;
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     arduino
   ];
