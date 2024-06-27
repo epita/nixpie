@@ -19,6 +19,7 @@
   afs = ./services/network-filesystems/openafs/client.nix;
   aria2 = ./services/networking/aria2.nix;
   squid = ./services/networking/squid.nix;
+  privoxy = ./services/networking/privoxy.nix;
   sshd = ./services/networking/sshd/sshd.nix;
   xfce = ./services/x11/desktop-managers/xfce.nix;
   sddm = ./services/x11/display-managers/sddm.nix;
