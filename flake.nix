@@ -47,9 +47,6 @@
           inherit system;
           config = {
             allowUnfree = true;
-            permittedInsecurePackages = [
-              "squid-5.9"
-            ];
           };
           overlays =
             (attrValues self.overlays) ++
