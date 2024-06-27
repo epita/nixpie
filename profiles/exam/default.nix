@@ -53,7 +53,7 @@ in
   networking.nftables = {
     enable = true;
     preCheckRuleset = ''
-      sed 's/skuid squid/skuid nobody/g' -i ruleset.conf
+      sed 's/skuid privoxy/skuid nobody/g' -i ruleset.conf
     '';
     ruleset = ''
       table inet filter {
@@ -111,7 +111,7 @@ in
           ip daddr 10.201.5.0/24 tcp dport {4505,4506} accept
 
           meta skuid root accept
-          tcp dport {http, https} meta skuid squid accept
+          tcp dport {http, https} meta skuid privoxy accept
 
           drop
         }
@@ -130,7 +130,7 @@ in
     };
   };
 
-  cri.squid.enable = true;
+  cri.privoxy.enable = true;
 
   systemd.services.dns-online = {
     description = "wait for DNS to be online";
