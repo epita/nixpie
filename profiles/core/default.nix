@@ -64,6 +64,10 @@ with lib;
 
   security = {
     protectKernelImage = true;
+    pki.certificateFiles = [
+      "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+      ../../certs/public/root.crt
+    ];
   };
 
   hardware.enableRedistributableFirmware = true;
@@ -120,6 +124,8 @@ with lib;
 
     IDEA_JDK = "/run/current-system/sw/lib/openjdk/";
     PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig";
+
+    REQUESTS_CA_BUNDLE = "/etc/ssl/certs/ca-certificates.crt";
   };
 
   programs.ssh = {

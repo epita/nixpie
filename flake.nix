@@ -153,6 +153,16 @@
                 '');
               };
 
+              fetch-root-ca = {
+                type = "app";
+                program = toString (pkgs.writeShellScript "fetch-root-ca.sh" ''
+                  set -e
+                  cert_dir="$(git rev-parse --show-toplevel)/certs/"
+                  ${pkgs.curl}/bin/curl -L --output "$cert_dir/public/root.crt" \
+                    "https://vault.cri.epita.fr/v1/pki/ca/pem"
+                '');
+              };
+
               awscli = {
                 type = "app";
                 program = "${pkgs.awscli}/bin/aws";
