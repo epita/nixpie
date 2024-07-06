@@ -1,7 +1,7 @@
 { lib
 , fetchgit
 , stdenv
-, autoconf
+, autoconf271
 , automake
 , ghc
 , texinfo
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [
-    autoconf
+    autoconf271
     automake
     ghc
     texinfo
