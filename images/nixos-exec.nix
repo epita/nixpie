@@ -42,7 +42,9 @@ in
 
   boot.kernelParams = [ "exec_url=htop.sh" ];
 
-  users.users.root.password = lib.mkForce "";
+  users.users.root = {
+    hashedPassword = lib.mkForce "";
+  };
 
   services.getty = {
     loginProgram = "${pkgs.bash}/bin/bash";

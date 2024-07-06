@@ -155,7 +155,7 @@ in
 
         "root" = {
           hashedPassword = "$6$Fon8AuLkzs7ZjiID$URNhr52P6QzxJN9fCQgWl/IoIAxTZQ9xQKXVy20BWz9ZRqKK22MGG3vLFc485MhgoNghePqq8xw5aTRZJmWqz0";
-          initialHashedPassword = "$6$Fon8AuLkzs7ZjiID$URNhr52P6QzxJN9fCQgWl/IoIAxTZQ9xQKXVy20BWz9ZRqKK22MGG3vLFc485MhgoNghePqq8xw5aTRZJmWqz0";
+          hashedPasswordFile = null;
 
           openssh.authorizedKeys.keys = [
             "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxxAN/65MNm34RnxXn1uzl7re/cyMGkQimkxdEu1ZOgvBVWUV0iwFedWtmUo3sKpZDW8aVcBdwFd5E+fLGiKK+1BXkLZFj8vPcdNe1EL1L4dfqiAE9dh/wU1+TJbFx2Snxapa6VXpVep3YOUBETT6oC7J48u7o/U5+C9yLvgGRQiDd39hBbITcCKsPkPJTv/VtyonTqZz7k44y3juGATqRSmHEZeVSaFcipEPzH4FroEu1aan8X1mnB578bLy8rEtQ7c8it2L0Pf05IFlNO2gYPAQclzk5rCtKY0U1RdgzdBgt84CZXaJ5wkqmsNC1QhE6+0LgtkwTapIPhO24qBn00CPd/ElOom/hOwEUeUi5y4VUwnFWM3cb9bDK9EneumV4iQsGsIXgp9BFIbywEuS/LdfMsQwBTFoANGMQ1skg4dh+hxt8KdTygjSeh2hK7ZDlyHbnmifUk13SSKnCXHbanvvzuatWgonDtwniPqsay75debSOrEcB+D6fjie9pi7+6N8YP+iC0IZLb1JboN69piwiyIB64HlIE8f3t2cGVrjtKsU/BgtBkIfeiknHezuyqT6sD8uMGZZd2zQkl/Lav9imcrH/H+g48BSvdXWtvlKqqD2K1YvBdLk6n1cFMuHQ8g4CIQXbLds29G55O2Zxo2eyS3IlmVOCDsD8KnhP/Q== nicolas"
