@@ -6,6 +6,7 @@
   nswrappers = ./nswrappers.nix;
 
   label = ./misc/label.nix;
+  security-class = ./misc/security-class.nix;
 
   packages = ./packages;
   yubikey = ./programs/yubikey.nix;

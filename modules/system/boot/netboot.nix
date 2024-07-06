@@ -1,4 +1,4 @@
-{ imageName, config, lib, pkgs, ... }:
+{ inputs, imageName, config, lib, pkgs, ... }:
 
 with lib;
 
@@ -40,6 +40,23 @@ with lib;
           type = types.str;
           default = "/dev/disk/by-partlabel/bootcache";
           description = "Path to the bootcache partition to use.";
+        };
+      };
+      uki = {
+        enable = mkEnableOption "build a Unified Kernel Image" // { default = true; };
+        embedCmdline = mkEnableOption "Embed the kernel command line into the UKI" // { default = true; };
+        signature = {
+          enable = mkEnableOption "sign the UKI" // { default = true; };
+          certificatesFile = mkOption {
+            type = types.path;
+            default = "${inputs.self}/certs/secureboot/${config.system.nixos.securityClass}.crt";
+            description = "Path to a PEM file containing the signing certificate chain";
+          };
+          keyFile = mkOption {
+            type = types.path;
+            default = "${inputs.self}/certs/secureboot/${config.system.nixos.securityClass}.key";
+            description = "Path to a PEM file containing the signing key";
+          };
         };
       };
       fallbackNameservers = mkOption {
@@ -357,12 +374,37 @@ with lib;
         > $out
     '';
 
-    system.build.toplevel-netboot = pkgs.runCommand "${imageName}.toplevel-netboot" { } ''
-      mkdir -p $out
-      cp ${config.system.build.kernel}/bzImage $out/${imageName}_bzImage
-      cp ${config.system.build.initrd} $out/${imageName}_initrd
-      cp ${config.system.build.torrent} $out/${imageName}.torrent
-      cp ${config.system.build.squashfs}/${config.system.build.squashfs.name} $out/${imageName}.squashfs
-    '';
+    system.build.toplevel-netboot = pkgs.runCommand "${imageName}.toplevel-netboot"
+      {
+        nativeBuildInputs = [ pkgs.systemdUkify pkgs.osslsigncode ];
+      }
+      (lib.strings.concatStrings [
+        ''
+          mkdir -p $out
+          cp ${config.system.build.kernel}/bzImage $out/${imageName}_bzImage
+          cp ${config.system.build.initrd} $out/${imageName}_initrd
+          cp ${config.system.build.torrent} $out/${imageName}.torrent
+          cp ${config.system.build.squashfs}/${config.system.build.squashfs.name} $out/${imageName}.squashfs
+        ''
+        (lib.strings.optionalString config.netboot.uki.enable
+          ''
+            ukify build \
+              --linux="$out/${imageName}_bzImage" \
+              --initrd="$out/${imageName}_initrd" \
+              --os-release='@${config.system.build.toplevel}/etc/os-release' \
+              ${if config.netboot.uki.embedCmdline then ''--cmdline=${lib.strings.escapeShellArg (builtins.toString config.boot.kernelParams)}'' else ""} \
+              --output="$out/${imageName}.unsigned.efi"
+          ''
+        )
+        (lib.strings.optionalString config.netboot.uki.signature.enable
+          ''
+            osslsigncode sign \
+              -certs "${config.netboot.uki.signature.certificatesFile}" \
+              -key "${config.netboot.uki.signature.keyFile}" \
+              -in "$out/${imageName}.unsigned.efi" \
+              -out "$out/${imageName}.efi"
+          ''
+        )
+      ]);
   };
 }

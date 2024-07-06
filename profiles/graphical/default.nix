@@ -27,6 +27,8 @@ in
     sm-inventory-agent.enable = true;
   };
 
+  system.nixos.securityClass = mkDefault "regular";
+
   cri.packages.pkgs.desktop.enable = true;
 
   services.xserver = {

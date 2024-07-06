@@ -5,6 +5,8 @@
     ../profiles/graphical
   ];
 
+  system.nixos.securityClass = "misc";
+
   cri.packages = {
     pkgs = {
       docker.enable = true;

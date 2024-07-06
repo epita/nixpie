@@ -138,6 +138,21 @@
               list-images = mkListApp imageList;
               list-pkgs = mkListApp pkgsList;
 
+              gen-secureboot-certs = {
+                type = "app";
+                program = toString (pkgs.writeShellScript "gen-secureboot-certs.sh" ''
+                  set -e
+                  cert_dir="$(git rev-parse --show-toplevel)/certs/secureboot"
+                  for name in misc regular exam; do
+                    ${pkgs.openssl}/bin/openssl req -x509 -newkey rsa:2048 \
+                      -keyout "$cert_dir/$name.key" -out "$cert_dir/$name.crt" \
+                      -sha256 -days 36500 -nodes \
+                      -addext "subjectAltName = URI:forge:securityclass:$name" \
+                      -subj "/CN=SecureBoot Test Authority ($name)"
+                  done
+                '');
+              };
+
               awscli = {
                 type = "app";
                 program = "${pkgs.awscli}/bin/aws";

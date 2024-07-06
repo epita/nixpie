@@ -29,6 +29,9 @@ in
     nix-store-rw.enable = lib.mkForce false;
     home.enable = lib.mkForce false;
     swap.enable = lib.mkForce false;
+    uki = {
+      embedCmdline = false;
+    };
   };
 
   cri = {

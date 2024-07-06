@@ -17,6 +17,8 @@ in
     ../profiles/graphical
   ];
 
+  system.nixos.securityClass = "misc";
+
   netboot.enable = true;
   cri.sddm.title = "France IOI";
   cri.xfce.enable = true;

@@ -5,6 +5,8 @@
     ../profiles/graphical
   ];
 
+  system.nixos.securityClass = "misc";
+
   netboot.enable = true;
   cri.sddm.title = "NixOS NET";
 

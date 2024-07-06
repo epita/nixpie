@@ -40,6 +40,8 @@ in
     nix-store-rw.enable = false;
   };
 
+  system.nixos.securityClass = "exam";
+
   networking.firewall.enable = false;
 
   services.xserver.windowManager.i3 = {
