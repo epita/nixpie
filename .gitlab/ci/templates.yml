@@ -102,3 +102,61 @@ stages:
   allow_failure: true
   rules:
     - when: manual
+
+.secureboot-certs:
+  variables:
+    VAULT_SERVER_URL: "https://vault.cri.epita.fr"
+    VAULT_AUTH_PATH: "gitlab"
+  id_tokens:
+    VAULT_ID_TOKEN:
+      aud: https://vault.cri.epita.fr
+  secrets:
+    SECUREBOOT_MISC_CERT:
+      vault:
+        path: projects/forge/infrastructure/nixpie/certs/secureboot/misc
+        field: fullchain
+        engine:
+          name: kv-v2
+          path: gitlab
+    SECUREBOOT_MISC_KEY:
+      vault:
+        path: projects/forge/infrastructure/nixpie/certs/secureboot/misc
+        field: key
+        engine:
+          name: kv-v2
+          path: gitlab
+    SECUREBOOT_REGULAR_CERT:
+      vault:
+        path: projects/forge/infrastructure/nixpie/certs/secureboot/regular
+        field: fullchain
+        engine:
+          name: kv-v2
+          path: gitlab
+    SECUREBOOT_REGULAR_KEY:
+      vault:
+        path: projects/forge/infrastructure/nixpie/certs/secureboot/regular
+        field: key
+        engine:
+          name: kv-v2
+          path: gitlab
+    SECUREBOOT_EXAM_CERT:
+      vault:
+        path: projects/forge/infrastructure/nixpie/certs/secureboot/exam
+        field: fullchain
+        engine:
+          name: kv-v2
+          path: gitlab
+    SECUREBOOT_EXAM_KEY:
+      vault:
+        path: projects/forge/infrastructure/nixpie/certs/secureboot/exam
+        field: key
+        engine:
+          name: kv-v2
+          path: gitlab
+  before_script:
+    - cp "$SECUREBOOT_MISC_CERT" certs/secureboot/misc.crt
+    - cp "$SECUREBOOT_MISC_KEY" certs/secureboot/misc.key
+    - cp "$SECUREBOOT_REGULAR_CERT" certs/secureboot/regular.crt
+    - cp "$SECUREBOOT_REGULAR_KEY" certs/secureboot/regular.key
+    - cp "$SECUREBOOT_EXAM_CERT" certs/secureboot/exam.crt
+    - cp "$SECUREBOOT_EXAM_KEY" certs/secureboot/exam.key

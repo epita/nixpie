@@ -56,7 +56,9 @@ cat <<EOF
     - nix copy --to "s3://\${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=\${AWS_NIX_CACHE_ENDPOINT}" "\$buildExpression"
 
 ${image}:deploy:
-  extends: .deploy
+  extends:
+    - .deploy
+    - .secureboot-certs
   needs:
     - ${image}:build
   variables:
