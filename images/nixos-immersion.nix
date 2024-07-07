@@ -10,7 +10,7 @@
   cri.xfce.enable = true;
 
   environment.systemPackages = with pkgs; [
-    gnome.gedit
+    gedit
     gimp
   ];
 
