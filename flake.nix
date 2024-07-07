@@ -48,7 +48,8 @@
           config = {
             allowUnfree = true;
             permittedInsecurePackages = [
-              "squid-5.9"
+              "squid-6.8"
+              "freeimage-unstable-2021-11-01"
             ];
           };
           overlays =
