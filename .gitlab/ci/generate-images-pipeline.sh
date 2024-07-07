@@ -7,7 +7,7 @@ source "${CI_PROJECT_DIR}/.gitlab/ci/utils.sh"
 function getChangedImages() {
   echoInfo "Evaluating images..."
   nix_run nix-eval-jobs --check-cache-status --flake "${CI_PROJECT_DIR}#gitlabCiJobs.images.x86_64-linux" | tee "${DIFF_DIR}/images.jsonl" 1>&2
-  jq -r '. | select(.isCached == false) | .attr' "${DIFF_DIR}/images.jsonl" | xargs
+  jq -r '. | select(.isCached == false or .error != null) | .attr' "${DIFF_DIR}/images.jsonl" | xargs
 }
 
 echoInfo "Getting ready..."
