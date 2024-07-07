@@ -18,9 +18,10 @@ print_defaults
 
 echoInfo "Starting pipeline generation..."
 
-changedImages=""
+
+images="$(nix_run list-images | xargs)"
 if [ -n "${ALL_IMAGES:-}" ]; then
-  changedImages="$(nix_run list-images | xargs)"
+  changedImages="${images}"
 else
   changedImages="$(getChangedImages)"
 fi
@@ -29,7 +30,7 @@ echoWarn "Images to be rebuilt are: ${changedImages}"
 
 echoInfo "Generating pipeline..."
 
-for image in ${changedImages}; do
+for image in ${images}; do
 echoInfo "Generating jobs for image ${image}..."
 cat <<EOF
 ${image}:build:
@@ -40,6 +41,12 @@ EOF
 if isFork; then
 cat <<EOF
     - .fork-default
+EOF
+fi
+
+if [[ " ${changedImages} " != *" ${image} "* ]]; then
+cat <<EOF
+  when: manual
 EOF
 fi
 
