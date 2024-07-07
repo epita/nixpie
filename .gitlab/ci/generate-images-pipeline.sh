@@ -76,6 +76,11 @@ ${image}:deploy:
     - nix_run awscli s3 --endpoint-url "\${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "\$storePath" "s3://\${AWS_PXE_IMAGES_BUCKET}"
     - rm -f ./result
     - nix store delete --impure "\$storePath"
+    - buildExpression=".#nixosConfigurations.${image}.config.system.build.toplevel-deployed"
+    - nix -L build "\$buildExpression"
+    - nix store sign --recursive --key-file "\${NIX_CACHE_PRIV_KEY_FILE}" "\$buildExpression"
+    - cat "\${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - nix copy --to "s3://\${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=\${AWS_NIX_CACHE_ENDPOINT}" "\$buildExpression"
 EOF
 
 if nix_run list-docker | grep "${image}" > /dev/null; then

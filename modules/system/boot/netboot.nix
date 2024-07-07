@@ -364,5 +364,12 @@ with lib;
       cp ${config.system.build.torrent} $out/${imageName}.torrent
       cp ${config.system.build.squashfs}/${config.system.build.squashfs.name} $out/${imageName}.squashfs
     '';
+
+    system.build.toplevel-deployed = pkgs.runCommand "${imageName}.toplevel-deployed"
+      {
+        nativeBuildInputs = [ config.system.build.toplevel ];
+      } ''
+      date --iso-8601=second > "$out"
+    '';
   };
 }
