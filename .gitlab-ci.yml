@@ -1,5 +1,13 @@
 ---
 
+variables:
+  ALL_IMAGES:
+    value: "false"
+    options:
+      - "true"
+      - "false"
+    description: Set to true to skip changes detection
+
 include:
   # Overriden in .rules-default but left here for reference
   - template: Workflows/MergeRequest-Pipelines.gitlab-ci.yml

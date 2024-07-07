@@ -20,7 +20,7 @@ echoInfo "Starting pipeline generation..."
 
 
 images="$(nix_run list-images | xargs)"
-if [ -n "${ALL_IMAGES:-}" ]; then
+if [ "${ALL_IMAGES:-}" = "true" ]; then
   changedImages="${images}"
 else
   changedImages="$(getChangedImages)"
