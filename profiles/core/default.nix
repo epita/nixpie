@@ -70,6 +70,7 @@ with lib;
 
   cri = {
     aria2.enable = true;
+    boot.splash.enable = true;
     machine-state.enable = true;
     node-exporter.enable = true;
     salt.enable = true;

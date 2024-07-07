@@ -262,6 +262,8 @@ with lib;
 
         aria2c $aria2_opts --dir="$torrentDir" --index-out=1="$squashfsName" $torrentDir/$torrentFile > /dev/console
 
+        ${optionalString config.boot.plymouth.enable "/plymouth-start.sh"}
+
         if ! [ -f "$torrentDir/$squashfsName" ]; then
           ls -la $torrentDir
           echo "Torrent download of '$squashfsName' failed!"

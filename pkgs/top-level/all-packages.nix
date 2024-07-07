@@ -72,6 +72,8 @@
 
   pam_subuid = ../os-specific/linux/pam_subuid;
 
+  plymouth-forge-theme = ../os-specific/linux/plymouth-forge-theme;
+
   ### APPLICATIONS
 
   geany = {

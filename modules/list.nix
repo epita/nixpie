@@ -27,4 +27,5 @@
   sm-inventory-agent = ./services/misc/sm-inventory-agent;
 
   netboot = ./system/boot/netboot.nix;
+  splash = ./system/boot/splash.nix;
 }

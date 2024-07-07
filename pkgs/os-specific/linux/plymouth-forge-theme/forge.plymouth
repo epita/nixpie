@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Forge
+Description=Forge theme.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/forge
+ScriptFile=/usr/share/plymouth/themes/forge/forge.script
