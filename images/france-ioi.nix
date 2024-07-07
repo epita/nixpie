@@ -5,7 +5,7 @@ let
     codeblocksFull
     ddd
     eclipses.eclipse-sdk
-    gnome.gedit
+    gedit
     gource
     libsForQt5.kate
     sublime3
