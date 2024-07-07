@@ -19,5 +19,7 @@ let
   nixpieLabel = "nixpie-" + (maybeEnv "NIXPIE_LABEL_VERSION" "pregit");
 in
 {
-  system.nixos.label = concatStringsSep "_" ([ nixpieLabel ] ++ versions);
+  # We must assign a very high priority because `nixos-test-base` is overriding
+  # this value with `lib.mkForce` when running checks.
+  system.nixos.label = mkOverride 25 (concatStringsSep "_" ([ nixpieLabel ] ++ versions));
 }
