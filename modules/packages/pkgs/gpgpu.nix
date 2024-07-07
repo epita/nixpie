@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   options = {
@@ -18,8 +18,8 @@
       # CUDA
       binutils
       cudaPackages.cudatoolkit
-      cudaPackages.nsight_systems
-      cudaPackages.nsight_compute
+      inputs.pkgset.pkgs2311.cudaPackages.nsight_systems
+      inputs.pkgset.pkgs2311.cudaPackages.nsight_compute
       freeglut
       gperf
       gitRepo

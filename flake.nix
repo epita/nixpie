@@ -6,6 +6,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs2311.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
@@ -27,6 +28,7 @@
     { self
 
     , nixpkgs
+    , nixpkgs2311
     , nixpkgsUnstable
     , nixpkgsMaster
 
@@ -65,6 +67,7 @@
 
       pkgset = system: {
         pkgs = pkgImport nixpkgs system true;
+        pkgs2311 = pkgImport nixpkgs2311 system false;
         pkgsUnstable = pkgImport nixpkgsUnstable system false;
         pkgsMaster = pkgImport nixpkgsMaster system false;
       };
@@ -100,7 +103,7 @@
 
       multiSystemOutputs = eachDefaultSystem (system:
         let
-          inherit (pkgset system) pkgs pkgsUnstable pkgsMaster;
+          inherit (pkgset system) pkgs pkgs2311 pkgsUnstable pkgsMaster;
         in
         {
           checks = (import ./tests (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }));
