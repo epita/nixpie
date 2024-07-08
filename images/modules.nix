@@ -21,10 +21,7 @@ imageName:
       "nixpkgs-master=${nixpkgsMaster}"
     ];
 
-    nixpkgs = {
-      inherit (pkgset) pkgs;
-      overlays = [ self.overrides.${system} ] ++ (lib.attrValues self.overlays);
-    };
+    nixpkgs.pkgs = pkgset.pkgs;
 
     nix.registry = {
       nixpkgs.flake = nixpkgs;
