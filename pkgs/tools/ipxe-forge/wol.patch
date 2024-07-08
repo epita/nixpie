@@ -1,0 +1,196 @@
+diff --git a/src/config/config.c b/src/config/config.c
+index 6bcd3c1c..6575a4ae 100644
+--- a/src/config/config.c
++++ b/src/config/config.c
+@@ -290,6 +290,9 @@ REQUIRE_OBJECT ( profstat_cmd );
+ #ifdef NTP_CMD
+ REQUIRE_OBJECT ( ntp_cmd );
+ #endif
++#ifdef WOL_CMD
++REQUIRE_OBJECT ( wol_cmd );
++#endif
+ #ifdef CERT_CMD
+ REQUIRE_OBJECT ( cert_cmd );
+ #endif
+diff --git a/src/config/general.h b/src/config/general.h
+index f936e874..ea208311 100644
+--- a/src/config/general.h
++++ b/src/config/general.h
+@@ -162,6 +162,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
+ //#define PARAM_CMD		/* Request parameter commands */
+ //#define NEIGHBOUR_CMD		/* Neighbour management commands */
+ //#define PING_CMD		/* Ping command */
++//#define WOL_CMD   	/* Wake-on-Lan command */
+ //#define CONSOLE_CMD		/* Console command */
+ //#define IPSTAT_CMD		/* IP statistics commands */
+ //#define PROFSTAT_CMD		/* Profiling commands */
+diff --git a/src/hci/commands/wol_cmd.c b/src/hci/commands/wol_cmd.c
+new file mode 100644
+index 00000000..1501d972
+--- /dev/null
++++ b/src/hci/commands/wol_cmd.c
+@@ -0,0 +1,143 @@
++/*
++ * Copyright (C) 2016 Marin Hannache <mareo@cri.epita.net>.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
++ * 02110-1301, USA.
++ *
++ * You can also choose to distribute this program under the terms of
++ * the Unmodified Binary Distribution Licence (as given in the file
++ * COPYING.UBDL), provided that you have satisfied its requirements.
++ */
++
++FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <getopt.h>
++#include <errno.h>
++#include <include/byteswap.h>
++#include <ipxe/netdevice.h>
++#include <ipxe/command.h>
++#include <ipxe/parseopt.h>
++#include <ipxe/if_ether.h>
++#include <ipxe/base16.h>
++#include <ipxe/iobuf.h>
++
++/** @file
++ *
++ * Wake-on-Lan command
++ *
++ */
++
++/** "wol" options */
++struct wol_options {};
++
++/** "wol" option list */
++static struct option_descriptor wol_opts[] = {};
++
++/** "wol" command descriptor */
++static struct command_descriptor wol_cmd =
++	COMMAND_DESC ( struct wol_options, wol_opts, 2, 2,
++		       "<MAC address> <interface>" );
++
++static int parse_ethaddr ( char * str, uint8_t ethaddr[ETH_ALEN] ) {
++	int rc;
++	rc = hex_decode ( ':', str, ethaddr, sizeof (uint8_t) * ETH_ALEN );
++	if ( rc < 0 ) {
++		rc = hex_decode ( '-', str, ethaddr,
++		                  sizeof (uint8_t) * ETH_ALEN );
++		if ( rc < 0 )
++			goto err;
++	}
++
++	if ( rc != ETH_ALEN )
++		goto err;
++
++	return 0;
++err:
++	printf ( "Malformed MAC address: %s\n", str );
++	return -EINVAL;
++}
++
++static int send_wol ( uint8_t ethaddr[ETH_ALEN], struct net_device *iface ) {
++	int rc;
++	struct io_buffer *iobuf;
++	struct net_protocol wol = {
++		.name = "wol",
++		.rx = NULL,
++		.ntoa = NULL,
++		.net_proto = htons ( 0x0842 ),
++		.net_addr_len = 0,
++	};
++
++	iobuf = alloc_iob ( iface->ll_protocol->ll_header_len + 6 +
++	                    16 * ETH_ALEN );
++	if ( ! iobuf )
++		return -ENOMEM;
++	iob_reserve ( iobuf, iface->ll_protocol->ll_header_len );
++	memset( iob_put ( iobuf, 6 ), 0xFF, 6 );
++	for (int i = 0; i < 16; i++)
++		memcpy( iob_put ( iobuf, ETH_ALEN ), ethaddr, ETH_ALEN );
++
++	rc = net_tx ( iob_disown ( iobuf ), iface, &wol, iface->ll_broadcast,
++	              iface->ll_addr );
++
++	return rc;
++}
++
++/**
++ * "wol" command
++ *
++ * @v argc		Argument count
++ * @v argv		Argument list
++ * @ret rc		Return status code
++ */
++static int wol_exec ( int argc, char **argv ) {
++	struct wol_options opts;
++	uint8_t ethaddr[ETH_ALEN];
++	struct net_device *iface;
++	int rc;
++
++	/* Parse options */
++	if ( ( rc = parse_options ( argc, argv, &wol_cmd, &opts ) ) != 0 )
++		return rc;
++
++	/* Parse mac address */
++	if ( ( rc = parse_ethaddr ( argv[optind], ethaddr ) ) != 0 )
++		return rc;
++
++	/* Parse interface name */
++	if ( ( rc = parse_netdev ( argv[optind + 1 ], &iface ) ) != 0 )
++		return rc;
++
++	if ( ! netdev_is_open ( iface ) )
++	{
++		printf ( "Device %s is closed!\n", iface->name );
++		return -EINVAL;
++	}
++
++	printf ( "Sending magic packet to %s on %s...\n",
++	         iface->ll_protocol->ntoa ( ethaddr ), iface->name );
++	rc = send_wol ( ethaddr, iface );
++
++	return rc;
++}
++
++/** Wake-on-Lan command */
++struct command wol_command __command = {
++	.name = "wol",
++	.exec = wol_exec,
++};
+diff --git a/src/include/ipxe/errfile.h b/src/include/ipxe/errfile.h
+index fcb4f0e6..a15caa39 100644
+--- a/src/include/ipxe/errfile.h
++++ b/src/include/ipxe/errfile.h
+@@ -22,6 +22,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
+ #define ERRFILE_NET		0x00006000	/**< Networking code */
+ #define ERRFILE_IMAGE		0x00008000	/**< Image code */
+ #define ERRFILE_OTHER		0x0000e000	/**< Any other code */
++#define ERRFILE_FORGE		0x0000f000	/**< Forge code */
+ 
+ /** @} */
+ 
+@@ -420,6 +421,8 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
+ #define ERRFILE_widget_ui	      ( ERRFILE_OTHER | 0x00620000 )
+ #define ERRFILE_form_ui		      ( ERRFILE_OTHER | 0x00630000 )
+ 
++#define ERRFILE_wol_cmd		      ( ERRFILE_FORGE | 0x00000000 )
++
+ /** @} */
+ 
+ #endif /* _IPXE_ERRFILE_H */

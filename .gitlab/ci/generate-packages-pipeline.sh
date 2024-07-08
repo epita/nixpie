@@ -55,7 +55,30 @@ cat <<EOF
     - cat "\${AWS_NIX_CACHE_CREDENTIALS_FILE}" > ~/.aws/credentials
     - nix copy --to "s3://\${AWS_NIX_CACHE_BUCKET}?scheme=https&endpoint=\${AWS_NIX_CACHE_ENDPOINT}" "\$buildExpression"
 EOF
+
+if [ "${pkg}" = "ipxe-forge" ]; then
+cat <<EOF
+  artifacts:
+    paths:
+      - ./result/ipxe.efi
+      - ./result/ipxe.iso
+      - ./result/mmx64.efi
+      - ./result/shimx64.efi
+      - ./result/undionly.kpxe
+
+${pkg}:deploy:
+  extends:
+    - .deploy
+  needs:
+    - ${pkg}:build
+  script:
+    - cat "\${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - nix_run awscli s3 --endpoint-url "\${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive ./result/ "s3://\${AWS_PXE_IMAGES_BUCKET}"
+EOF
 fi
+
+fi
+
 done
 
 echoSuccess "All done!"

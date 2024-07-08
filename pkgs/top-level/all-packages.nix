@@ -13,6 +13,8 @@
 
   nixpie-utils = ../nixpie/nixpie-utils;
 
+  ipxe-forge = ../tools/ipxe-forge;
+
   ### TOOLS
 
   clonezilla = ../tools/backup/clonezilla;

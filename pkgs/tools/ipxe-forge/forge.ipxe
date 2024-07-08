@@ -1,0 +1,45 @@
+#!ipxe
+
+set target:string     https://django-pxe.pie.cri.epita.fr
+set defaultntp:string ntp.pie.cri.epita.fr
+set maxretry:int32    5
+
+:start
+  set retryntp:int32 0
+  set retry:int32    0
+
+  ifopen || goto reboot
+  isset ${42} && set ntp:string ${42:ipv4} || set ntp:string ${defaultntp}
+  isset ${ip} || goto dhcp
+  goto chain
+
+:dhcp
+  echo Getting configuration from DHCP...
+  ifconf -c dhcp || goto reboot
+  isset ${42} && set ntp:string ${42:ipv4} || set ntp:string ${defaultntp}
+  goto chain
+
+:reboot
+  prompt --key 0x02 --timeout 2000 Rebooting, press Ctrl-B for the iPXE command line... || reboot
+  shell
+goto reboot
+
+:chain
+  inc retry
+  prompt --key 0x02 --timeout 2000 Attempt ${retry}/${maxretry}, press Ctrl-B for the iPXE command line... && shell ||
+  chain ${target} && goto continue ||
+  iseq ${retry} 1 && goto settime ||
+  iseq ${retry} ${maxretry} && goto reboot ||
+goto chain
+
+:settime
+  inc retryntp
+  prompt --key 0x03 --timeout 2000 Updating NTP attempt ${retryntp}/${maxretry}, press Ctrl-C to abort... && goto chain ||
+  ntp ${ntp:string} && goto chain ||
+  iseq ${retryntp} ${maxretry} && goto reboot ||
+goto settime
+
+:continue
+  prompt --key 0x02 --timeout 2000 Continue booting, press Ctrl-B for the iPXE command line... || exit
+  shell
+goto continue
