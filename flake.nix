@@ -11,6 +11,7 @@
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
     machine-state.url = "git+https://gitlab.cri.epita.fr/cri/packages/machine-state.git";
+    forgectl.url = "git+https://gitlab.cri.epita.fr/cri/tools/forgectl.git";
 
     docker-nixpkgs = {
       url = "github:nix-community/docker-nixpkgs";
@@ -33,6 +34,7 @@
     , nixpkgsMaster
 
     , machine-state
+    , forgectl
 
     , docker-nixpkgs
 
@@ -61,6 +63,7 @@
 
               (final: prev: {
                 machine-state = machine-state.packages.${system}.machine-state;
+                forgectl = forgectl.packages.${system}.forgectl;
               })
             ];
         };

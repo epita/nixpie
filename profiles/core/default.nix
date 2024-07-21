@@ -109,6 +109,13 @@ with lib;
     nixos.enable = true;
   };
 
+  security.tpm2 = {
+    enable = true;
+    tctiEnvironment = {
+      enable = true;
+    };
+  };
+
   # HACK: this is needed to be able to compile with external libs such as
   # criterion
   environment.pathsToLink = [ "/include" "/lib" ];

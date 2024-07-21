@@ -10,6 +10,7 @@
 
     environment.systemPackages = with pkgs; [
       file
+      forgectl
       git
       htop
       iftop
