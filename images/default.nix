@@ -46,6 +46,7 @@ let
 
   hosts = lib.mapAttrs nixosSystem {
     "nixos-docker" = { };
+    "nixos-enroll" = { };
     "nixos-exec" = { };
     "nixos-gpgpu" = { };
     "nixos-image" = { };

@@ -13,6 +13,7 @@ with lib;
     services.pcscd.enable = true;
 
     environment.systemPackages = with pkgs; [
+      yubico-piv-tool
       yubikey-manager
       yubikey-personalization
       yubioath-flutter
