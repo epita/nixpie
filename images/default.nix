@@ -50,13 +50,13 @@ let
     "nixos-exec" = { };
     "nixos-gpgpu" = { };
     "nixos-image" = { };
+    "nixos-immersion" = { };
     "nixos-lan" = { };
     "nixos-maths" = { };
     "nixos-net" = { };
     "nixos-pie" = { };
     "nixos-prepa" = { };
     "nixos-test" = { };
-    "nixos-immersion" = { };
     "nixos-bachelor" = { };
     "nixos-scia" = { };
     "nixos-majeures" = { };

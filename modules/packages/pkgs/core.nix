@@ -14,6 +14,7 @@
       git
       htop
       iftop
+      inetutils
       iotop
       iproute
       ldns
@@ -29,12 +30,11 @@
       rsync
       screen
       tcpdump
-      inetutils
       tmux
       tree
+      unzip
       usbutils
       utillinux
-      unzip
       wget
       zip
     ];
