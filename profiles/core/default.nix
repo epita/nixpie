@@ -74,6 +74,7 @@ with lib;
 
   cri = {
     aria2.enable = true;
+    fetchHostSecrets.enable = true;
     machine-state.enable = true;
     node-exporter.enable = true;
     salt.enable = true;

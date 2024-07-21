@@ -11,6 +11,7 @@
   packages = ./packages;
   yubikey = ./programs/yubikey.nix;
 
+  fetch-host-secrets = ./services/admin/fetch-host-secrets.nix;
   machine-state = ./services/admin/machine-state.nix;
   node-exporter = ./services/admin/node-exporter.nix;
   salt = ./services/admin/salt/minion.nix;
