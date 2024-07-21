@@ -34,7 +34,7 @@
 
 let
   pname = "clonezilla";
-  version = "3.35.2";
+  version = "5.6.13";
 
   meta = with lib; {
     description = "ncurses partition and disk imaging/cloning program";
@@ -49,7 +49,7 @@ let
 
     src = fetchurl {
       url = "http://free.nchc.org.tw/drbl-core/src/stable/${pname}-${version}.tar.xz";
-      sha256 = "sha256-+p2D108ioZk1kMhcdz7Hw3S5sNKxqGWONlFx+AvumC4=";
+      sha256 = "sha256-5BDJSicJbebQQQGFIk2W1ewuas8Znt6P+TRLlNkUXmM=";
     };
 
     nativeBuildInputs = [ makeWrapper ];
@@ -70,11 +70,11 @@ let
   };
   drbl = stdenv.mkDerivation rec {
     pname = "drbl";
-    version = "2.30.5";
+    version = "5.3.2";
 
     src = fetchurl {
       url = "http://free.nchc.org.tw/drbl-core/src/stable/${pname}-${version}.tar.xz";
-      sha256 = "sha256-pYVrbv/vnfJIjC6E1Hzqw0QP70+P1AcdroT63HhBfjA=";
+      sha256 = "sha256-lEH8/qQLJOj1oSl9ox9NGRLMbKT0Fjy2TXJkKv8oUoA=";
     };
 
     propagatedBuildInputs = [ perl ];
