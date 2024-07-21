@@ -51,7 +51,7 @@ in
 
   services.getty = {
     loginProgram = "${pkgs.bash}/bin/bash";
-    loginOptions = "${execScript}";
+    loginOptions = "--login ${execScript}";
     autologinUser = "root";
   };
 }
