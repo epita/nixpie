@@ -18,8 +18,8 @@
       # CUDA
       binutils
       cudaPackages.cudatoolkit
-      cudaPackages.nsight_systems
-      cudaPackages.nsight_compute
+      #cudaPackages.nsight_systems #FIXME
+      #cudaPackages.nsight_compute #FIXME
       freeglut
       gperf
       gitRepo
