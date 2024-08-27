@@ -11,6 +11,7 @@
     environment.systemPackages = with pkgs; [
       ocaml
       opam
+      ocaml-top
     ];
   };
 }
