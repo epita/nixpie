@@ -8,7 +8,7 @@ stdenv.mkDerivation rec {
   version = "1.2.1";
 
   src = fetchurl {
-    url = "https://gitlab.cri.epita.fr/cri/packages/epita-themes-sddm/-/archive/${version}/epita-themes-sddm-${version}.tar.gz";
+    url = "https://gitlab.cri.epita.fr/forge/packages/epita-themes-sddm/-/archive/${version}/epita-themes-sddm-${version}.tar.gz";
     sha256 = "f05293252ddc2fa7021c122f8f3d87338c5be92604f9787b99f1fa4ef011836c";
   };
 

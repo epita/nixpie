@@ -6,7 +6,7 @@ echoInfo() { >&2 echo -e "\e[1;34m[INFO] ${*}\e[0m" ; }
 echoSuccess() { >&2 echo -e "\e[1;32m[SUCCESS] ${*}\e[0m" ; }
 
 function isFork() {
-  [ -n "${CI_MERGE_REQUEST_SOURCE_PROJECT_URL:-}" ] && [ "${CI_MERGE_REQUEST_SOURCE_PROJECT_URL:-}" != "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie" ]
+  [ -n "${CI_MERGE_REQUEST_SOURCE_PROJECT_URL:-}" ] && [ "${CI_MERGE_REQUEST_SOURCE_PROJECT_URL:-}" != "https://gitlab.cri.epita.fr/forge/infra/nixpie" ]
 }
 
 function print_defaults() {

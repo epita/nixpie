@@ -37,7 +37,7 @@ let
 
     dontUnpack = true;
     src = fetchurl {
-      url = "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie/-/package_files/5572/download";
+      url = "https://gitlab.cri.epita.fr/forge/infra/nixpie/-/package_files/5572/download";
       sha256 = "7dc810747d330ec33191d198dd399a8ff99bf991a10d27f335475692f2c2bcf8";
     };
 

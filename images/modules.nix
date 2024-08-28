@@ -37,7 +37,7 @@ imageName:
         };
         to = {
           type = "git";
-          url = "https://gitlab.cri.epita.fr/cri/infrastructure/nixpie.git";
+          url = "https://gitlab.cri.epita.fr/forge/infra/nixpie.git";
         };
       };
     };

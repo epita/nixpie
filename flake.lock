@@ -93,11 +93,11 @@
         "rev": "0526a321d86c16e1ba6eb71ff8100f09eaedb2a2",
         "revCount": 86,
         "type": "git",
-        "url": "https://gitlab.cri.epita.fr/cri/packages/machine-state.git"
+        "url": "https://gitlab.cri.epita.fr/forge/packages/machine-state.git"
       },
       "original": {
         "type": "git",
-        "url": "https://gitlab.cri.epita.fr/cri/packages/machine-state.git"
+        "url": "https://gitlab.cri.epita.fr/forge/packages/machine-state.git"
       }
     },
     "nixpkgs": {

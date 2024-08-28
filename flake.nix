@@ -9,7 +9,7 @@
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgsMaster.url = "github:NixOS/nixpkgs/master";
 
-    machine-state.url = "git+https://gitlab.cri.epita.fr/cri/packages/machine-state.git";
+    machine-state.url = "git+https://gitlab.cri.epita.fr/forge/packages/machine-state.git";
 
     docker-nixpkgs = {
       url = "github:nix-community/docker-nixpkgs";
