@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
 
   src = builtins.fetchTarball {
     url = "http://static.cri.epita.fr/pkg/TP_68000_Ubuntu64.tar.gz";
-    sha256 = "sha256:0c4h0ydc2lb8lxq98raa4rcf5abwzi5z0xnm1kgaab9rfbv5grq3";
+    sha256 = "sha256-ksbBoLXGJk6uABv5ZQQGexwZk2ryPW9s7A8FU84XdQw=";
   };
 
   nativeBuildInputs = [ autoPatchelfHook wrapQtAppsHook ];
