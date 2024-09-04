@@ -4,16 +4,17 @@
   imports = [ ../profiles/graphical ];
 
   netboot.enable = true;
-  cri.sddm.title = "NixOS SSIE";
+  cri.sddm.title = "NixOS SSSE";
 
   cri.packages = {
     python.core.enable = true;
-    ocaml.ssie.enable = true;
+    python.ssse.enable = true;
+    ocaml.ssse.enable = true;
     pkgs = {
       dev.enable = true;
       js.enable = true;
       ocaml.enable = true;
-      ssie.enable = true;
+      ssse.enable = true;
     };
   };
 }

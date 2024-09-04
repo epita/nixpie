@@ -2,11 +2,13 @@
 
 {
   options = {
-    cri.packages.pkgs.ssie.enable =
-      lib.options.mkEnableOption "dev SSIE CRI package bundle";
+    cri.packages.pkgs.ssse.enable =
+      lib.options.mkEnableOption "dev SSSE CRI package bundle";
   };
 
-  config = lib.mkIf config.cri.packages.pkgs.ssie.enable {
+  config = lib.mkIf config.cri.packages.pkgs.ssse.enable {
+    cri.packages.python.ssse.enable = lib.mkDefault true;
+
     environment.systemPackages = with pkgs; [
       arduino
       julia
