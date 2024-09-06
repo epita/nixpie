@@ -61,6 +61,7 @@ let
     "nixos-ssse" = { };
     "nixos-majeures" = { };
     "nixos-summer-program" = { };
+    "nixos-cnix-tty" = { };
 
     "exam-bachelor" = { };
     "exam-pie" = { };
