@@ -29,16 +29,18 @@ in
       extraConfig = mkBefore
         ((if cfg.allowUsers then ''
           AllowUsers *
-          AuthorizedKeysCommand /run/wrappers/bin/sss_ssh_authorizedkeys
-          AuthorizedKeysCommandUser nobody
         '' else ''
           AllowUsers root
+          Match group wheel
+              AllowUsers *
         '') + ''
+          AuthorizedKeysCommand /run/wrappers/bin/sss_ssh_authorizedkeys
+          AuthorizedKeysCommandUser nobody
           PermitEmptyPasswords no
         '');
     };
 
-    security.wrappers = mkIf cfg.allowUsers {
+    security.wrappers = {
       sss_ssh_authorizedkeys = {
         source = "${pkgs.sssd}/bin/sss_ssh_authorizedkeys";
         owner = "root";
