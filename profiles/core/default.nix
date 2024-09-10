@@ -20,15 +20,15 @@ with lib;
       substituters = [ "https://s3.cri.epita.fr/cri-nix-cache.s3.cri.epita.fr" ];
       trusted-public-keys = [ "cache.nix.cri.epita.fr:qDIfJpZWGBWaGXKO3wZL1zmC+DikhMwFRO4RVE6VVeo=" ];
       auto-optimise-store = false;
+      auto-allocate-uids = true;
     };
 
     gc.automatic = false;
     optimise.automatic = false;
 
     extraOptions = ''
-      experimental-features = nix-command flakes
+      experimental-features = nix-command flakes auto-allocate-uids
     '';
-
   };
 
   networking = {
