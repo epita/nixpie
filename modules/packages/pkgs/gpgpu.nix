@@ -18,7 +18,10 @@
       # CUDA
       binutils
       cudaPackages.cudatoolkit
-      #cudaPackages.nsight_systems #FIXME
+      cudaPackages.cuda_nvprof
+      (cudaPackages.nsight_systems.overrideAttrs (final: prev: {
+        buildInputs = prev.buildInputs ++ [ boost178 e2fsprogs ];
+      }))
       #cudaPackages.nsight_compute #FIXME
       freeglut
       gperf
