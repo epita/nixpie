@@ -13,7 +13,16 @@ let
     podman container rm --all
     podman rmi "$REGISTRY"
     podman pull $CREDS "$REGISTRY"
-    podman run -it $CREDS "$REGISTRY"
+
+    # Hack to be able to chown those files in the container
+    cat $HOME/afs/.confs/gitconfig > $HOME/tty_gitconfig 
+    mkdir $HOME/tty_ssh
+    for f in $HOME/afs/.confs/ssh/*; do
+      name=$(basename "$f")
+      cat $f > $HOME/tty_ssh/$name
+    done
+
+    podman run -it -v /tmp:/tmp -v $HOME/tty_gitconfig:/home/student/.gitconfig:copy,U -v $HOME/tty_ssh:/home/student/.ssh/:copy,U $CREDS "$REGISTRY"
   '';
 in
 {
