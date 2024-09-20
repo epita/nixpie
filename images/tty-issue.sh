@@ -32,7 +32,7 @@ center_text() {
 
 cat <<EOF
          ########################################           
-         #         EPITA $(colorfmt "%hlbbACU 2024%hl0") - TTY         #
+         #         EPITA $(colorfmt "%hlbbACU 2025%hl0") - TTY         #
          ########################################           
 
 # Assignment
@@ -49,7 +49,7 @@ The learning goals are:
 We hope you will enjoy this initiative and have some fun.
 
 -- 
-ACU 2024 Team
+ACU 2025 Team
 
 # Login
 
