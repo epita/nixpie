@@ -4,8 +4,10 @@ let
   tty_launch = pkgs.writeShellScriptBin "tty_launch" ''
     #!/bin/sh
 
-    REGISTRY=registry.cri.epita.fr/ing/assistants/subjects/piscine/exercises-misc/tty:latest
-    CREDS="--authfile=/home/theo.gardet/afs/auth.json" # FIXME: This should not go into production
+    # TAG=second-crashtest-friday
+    TAG=latest
+    REGISTRY=registry.cri.epita.fr/ing/assistants/subjects/piscine/exercises-misc/tty:$TAG
+    CREDS="--authfile=$HOME/afs/auth.json" # FIXME: This should not go into production
     # We systematically clean the remnants of the previous image to avoid the
     # command failing because of a lack of space on the device.
     # FIXME: This still creates a lot of <none> images.
