@@ -30,7 +30,7 @@ in
 {
   # Define the shell script to generate the static /etc/issue file
   environment.etc."issue".text = lib.strings.concatStrings [
-    (builtins.readFile ./tty-issue)
+    (builtins.readFile (pkgs.runCommand "cnix-tty-issue" {} (builtins.readFile ./tty-issue.sh)))
     "\n${config.system.nixos.distroName} ${config.system.nixos.label} (\\m) - \\l\n\n"
   ];
 

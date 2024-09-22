@@ -29,8 +29,7 @@ center_text() {
 }
 
 # Write the content to the output file
-
-cat <<EOF
+cat >$out <<EOF
          ########################################           
          #         EPITA $(colorfmt "%hlbbACU 2025%hl0") - TTY         #
          ########################################           
