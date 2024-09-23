@@ -24,7 +24,8 @@ let
       cat $f > $HOME/tty_ssh/$name
     done
 
-    podman run -it -v /tmp:/tmp -v $HOME/tty_gitconfig:/home/student/.gitconfig:copy,U -v $HOME/tty_ssh:/home/student/.ssh/:copy,U $CREDS "$REGISTRY"
+    KRB5CCACHE=$(klist | head -1 | cut -d : -f 3)
+    podman run -it -v $KRB5CCACHE:/tmp/krb5cc_1000 -v $HOME/tty_gitconfig:/home/student/.gitconfig:copy,U -v $HOME/tty_ssh:/home/student/.ssh/:copy,U $CREDS "$REGISTRY"
   '';
 in
 {
