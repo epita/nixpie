@@ -1,41 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  run_image = pkgs.writeShellScriptBin "run_image" ''
-    IMAGE_NAME=$1
-    LATEST_TAG=$2
-
-    # Hack to be able to chown those files in the container
-    cat $HOME/afs/.confs/gitconfig > $HOME/tty_gitconfig 
-    ! [ -d $HOME/tty_sh ] && mkdir $HOME/tty_ssh
-    for f in $HOME/afs/.confs/ssh/*; do
-      name=$(basename "$f")
-      cat $f > $HOME/tty_ssh/$name
-    done
-
-    # Run the container
-    KRB5CCACHE=$(klist | head -1 | cut -d : -f 3)
-    podman run -it -v $KRB5CCACHE:/tmp/krb5cc_1000                              \
-                   -v $HOME/tty_gitconfig:/home/student/.gitconfig:copy,U       \
-                   -v $HOME/tty_ssh:/home/student/.ssh/:copy,U                  \
-                   $IMAGE_NAME:$LATEST_TAG
-  '';
-
-  aria2c_hook = pkgs.writeShellScriptBin "aria2c_hook" ''
-    set -ux
-
-    GID=$1
-    FILE_NUMBER=$2
-    FILE_PATH=$3
-
-    IMAGE_NAME=tty-env
-
-    podman image import "$FILE_PATH" "$IMAGE_NAME"
-  
-    LATEST_TAG=$(curl $LATEST_TAG_URL)
-    run_image "$IMAGE_NAME" "$LATEST_TAG"
-  '';
-
   tty_launch = pkgs.writeShellScriptBin "tty_launch" ''
     #!/bin/sh
 
@@ -59,18 +24,40 @@ let
       # cd /srv/torrent
 
       curl $TORRENT_URL --output $TORRENT_NAME
-      ${pkgs.aria2}/bin/aria2c --on-download-complete aria2c_hook \
-                               --enable-dht=false       \
+      ${pkgs.aria2}/bin/aria2c --enable-dht=false       \
                                --enable-dht6=false      \
                                --seed-ratio=0           \
-                               "$TORRENT_NAME"&
-    else
-      run_image "$IMAGE_NAME" "$LATEST_TAG"
+                               --seed-time=0            \
+                               "$TORRENT_NAME"
+
+      podman image import "$FILE_PATH" "$IMAGE_NAME":"$LATEST_TAG"
     fi
+
     # TODO:
     # Make sure to update /srv/torrent/aria2_seedlist.txt to include your file. 
     # Make sure you don't mess with the rest of the file as it is used to seed PIE squashfs. 
     # Maybe systemctl restart aria2, I don't remember if the file is hot reloaded.
+    # {
+    #   echo "${config.netboot.torrent.mountPoint}/tty-env.tar.gz.torrent"
+    #   echo " index-out=1=${config.netboot.torrent.mountPoint}/tty-env.tar.gz.torrent"
+    #   echo " dir=${config.netboot.torrent.mountPoint}"
+    #   echo " check-integrity=true"
+    # } >> ${config.netboot.torrent.mountPoint}/aria2_seedlist.txt
+
+    # Hack to be able to chown those files in the container
+    cat $HOME/afs/.confs/gitconfig > $HOME/tty_gitconfig 
+    ! [ -d $HOME/tty_sh ] && mkdir $HOME/tty_ssh
+    for f in $HOME/afs/.confs/ssh/*; do
+      name=$(basename "$f")
+      cat $f > $HOME/tty_ssh/$name
+    done
+
+    # Run the container
+    KRB5CCACHE=$(klist | head -1 | cut -d : -f 3)
+    podman run -it -v $KRB5CCACHE:/tmp/krb5cc_1000                              \
+                   -v $HOME/tty_gitconfig:/home/student/.gitconfig:copy,U       \
+                   -v $HOME/tty_ssh:/home/student/.ssh/:copy,U                  \
+                   $IMAGE_NAME:$LATEST_TAG
   '';
 in
 {
@@ -90,8 +77,6 @@ in
 
   environment.systemPackages = [
     tty_launch
-    run_image
-    aria2c_hook
   ];
 }
 
