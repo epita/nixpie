@@ -6,6 +6,10 @@ with lib;
   options = {
     cri.aria2 = {
       enable = mkEnableOption "Whether to enable aria2.";
+      torrentDir = mkOption {
+        default = "${config.netboot.torrent.mountPoint}";
+        description = "path to seeded torrents";
+      };
       seedlist = mkOption {
         default = "${config.netboot.torrent.mountPoint}/aria2_seedlist.txt";
         description = "aria2 seedlist file to use for seeding torrent.";
@@ -27,6 +31,16 @@ with lib;
       serviceConfig = {
         Type = "simple";
       };
+
+      preStart = ''
+        for torrent in $(ls ${config.cri.aria2.torrentDir}/*.torrent); do
+          torrentname=''${torrent##*/}
+          echo $torrent
+          echo " index-out=1=''${torrentname%.torrent}.squashfs"
+          echo " dir=${config.cri.aria2.torrentDir}"
+          echo " check-integrity=true"
+        done > "${config.cri.aria2.seedlist}"
+      '';
 
       script = ''
         aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"

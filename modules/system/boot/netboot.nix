@@ -269,14 +269,6 @@ with lib;
         fi
 
         kill -9 $(pidof rngd)
-
-        for torrent in $(ls $torrentDir/*.torrent); do
-          torrentname=''${torrent##*/}
-          echo $torrent
-          echo " index-out=1=''${torrentname%.torrent}.squashfs"
-          echo " dir=$torrentDir"
-          echo " check-integrity=true"
-        done > "$torrentDir/aria2_seedlist.txt"
       '';
 
     # Usually, stage2Init is passed using the init kernel command line argument
