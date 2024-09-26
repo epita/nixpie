@@ -33,10 +33,12 @@ with lib;
       };
 
       preStart = ''
-        for torrent in $(ls ${config.cri.aria2.torrentDir}/*.torrent); do
-          torrentname=''${torrent##*/}
+        shopt -s nullglob
+
+        for torrent in ${config.cri.aria2.torrentDir}/*.torrent; do
+          torrentname="$(basename $torrent)"
           echo $torrent
-          echo " index-out=1=''${torrentname%.torrent}.squashfs"
+          echo " index-out=1=$(${pkgs.torrenttools}/bin/torrenttools info --raw "$torrent" | ${pkgs.jq}/bin/jq -r .info.name)"
           echo " dir=${config.cri.aria2.torrentDir}"
           echo " check-integrity=true"
         done > "${config.cri.aria2.seedlist}"
