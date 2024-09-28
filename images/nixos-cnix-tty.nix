@@ -14,13 +14,16 @@ let
     ${pkgs.curl}/bin/curl --fail --remove-on-error --connect-timeout 60 "${s3Bucket}/${torrentFilename}" --output "${torrentDir}/${torrentFilename}"
 
     echo "Fetching image using torrent"
-    ${pkgs.aria2}/bin/aria2c --enable-dht=false       \
-                             --enable-dht6=false      \
-                             --seed-ratio=0           \
-                             --seed-time=0            \
+
+    aria2_base="-V --file-allocation=prealloc --enable-mmap=true --allow-overwrite=true --bt-enable-lpd=true"
+    aria2_tracker="--bt-tracker-connect-timeout=20 --bt-tracker-timeout=20"
+    aria2_summary="--summary-interval=60"
+    aria2_nodht="--enable-dht=false --enable-dht6=false"
+    aria2_noseed="--seed-time=0 --seed-ratio=0"
+    aria2_opts="$aria2_base $aria2_tracker $aria2_summary $aria2_nodht $aria2_noseed"
+
+    ${pkgs.aria2}/bin/aria2c $aria2_opts \
                              --dir="${torrentDir}" --index-out=1="${imageFilename}" \
-                             --check-integrity \
-                             --allow-overwrite=true \
                              "${torrentDir}/${torrentFilename}"
 
     echo "Restarting aria2 for seeding"
