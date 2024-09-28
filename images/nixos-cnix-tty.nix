@@ -11,7 +11,7 @@ let
     set -eu
 
     echo "Fetching torrent file"
-    ${pkgs.curl}/bin/curl --fail "${s3Bucket}/${torrentFilename}" --output "${torrentDir}/${torrentFilename}"
+    ${pkgs.curl}/bin/curl --fail --remove-on-error --connect-timeout 60 "${s3Bucket}/${torrentFilename}" --output "${torrentDir}/${torrentFilename}"
 
     echo "Fetching image using torrent"
     ${pkgs.aria2}/bin/aria2c --enable-dht=false       \
@@ -19,6 +19,8 @@ let
                              --seed-ratio=0           \
                              --seed-time=0            \
                              --dir="${torrentDir}" --index-out=1="${imageFilename}" \
+                             --check-integrity \
+                             --allow-overwrite=true \
                              "${torrentDir}/${torrentFilename}"
 
     echo "Restarting aria2 for seeding"
