@@ -1,15 +1,15 @@
 { lib, stdenv, fetchurl, extraThemeConfig ? "" }:
 
 let
-  themes = [ "epita-simplyblack" "epita-acu-2023" "epita-acu-2024" ];
+  themes = [ "epita-simplyblack" "epita-acu-2023" "epita-acu-2024" "epita-acu-2025" ];
 in
 stdenv.mkDerivation rec {
   pname = "sddm-epita-themes";
-  version = "1.2.1";
+  version = "1.3.1";
 
   src = fetchurl {
     url = "https://gitlab.cri.epita.fr/forge/packages/epita-themes-sddm/-/archive/${version}/epita-themes-sddm-${version}.tar.gz";
-    sha256 = "f05293252ddc2fa7021c122f8f3d87338c5be92604f9787b99f1fa4ef011836c";
+    sha256 = "48f202720be5f2bd101e94e8e868a5180ffe9930b90f5cce5a19d20f4b22c2d6";
   };
 
   unpackPhase = ''
