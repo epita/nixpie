@@ -19,6 +19,8 @@
       torchvision
       torchaudio
       keras
+      lime
+      shap
     ];
   };
 }
