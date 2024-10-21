@@ -6,8 +6,7 @@
   ];
 
   netboot.enable = true;
-  cri.sddm.title = "NixOS PIE - Piscine 2027";
-  cri.sddm.theme = "epita-acu-2025";
+  cri.sddm.title = "NixOS PIE";
 
   environment.systemPackages = with pkgs; [
     #spot-lrde
