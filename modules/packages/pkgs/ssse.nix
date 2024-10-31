@@ -25,7 +25,6 @@
       ngspice
       pulseview
       sigrok-cli
-      libgcc
       vscodium
       tlaplusToolbox
     ];
