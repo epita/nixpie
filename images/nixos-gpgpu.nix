@@ -37,6 +37,11 @@
     CUDA_PATH = "${pkgs.cudatoolkit}";
   };
 
+  # On SSH OpenStack GPU instances, students tend to use all the memory and the
+  # system ends up unresponsive. This allows systemd-oomd to take action on
+  # student's processes before the memory is full.
+  systemd.oomd.enableUserSlices = true;
+
   environment.etc."nixos-gpgpu/shell.nix".text = ''
     let
       system = "x86_64-linux";
