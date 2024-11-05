@@ -21,6 +21,7 @@
       keras
       lime
       shap
+      seaborn
     ];
   };
 }
