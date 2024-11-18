@@ -60,5 +60,7 @@
     xarray
     xlrd
     gmpy2
+    sounddevice
+    soundfile
   ];
 }
