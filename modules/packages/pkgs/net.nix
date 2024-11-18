@@ -13,6 +13,9 @@
       pkgsi686Linux.dynamips
       tigervnc
       vpcs
+      aria2
+      opentracker
+      mktorrent
     ];
 
     virtualisation.virtualbox.host.enable = true;
