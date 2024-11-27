@@ -11,11 +11,6 @@ with lib;
         default = "salt.pie.cri.epita.fr";
         description = "Address of the salt master server";
       };
-      id = mkOption {
-        type = types.str;
-        default = imageName;
-        description = "id of the minion";
-      };
     };
   };
 
@@ -46,9 +41,7 @@ with lib;
       };
 
       preStart = ''
-        ip="$(${pkgs.nixpie-utils}/bin/get_ip.sh)"
-
-        id="${config.cri.salt.id}-''${ip}"
+        id="$(${pkgs.nixpie-utils}/bin/get_ip.sh)"
         sed -i '/^id:/d' /etc/salt/minion
         echo -e "\nid: $id" >> /etc/salt/minion
         echo "$id" > /etc/salt/minion_id
