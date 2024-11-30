@@ -2,7 +2,8 @@
 
 with lib;
 let
-  session_open = pkgs.writeShellScript "session_open" config.cri.users.sessionOpenScript;
+  cfg = config.cri.users;
+  session_open = lib.optionalString (cfg.sessionOpenScript != "") (pkgs.writeShellScript "session_open" cfg.sessionOpenScript);
   pam_epita = pkgs.writeShellScript "pam_epita" (if config.cri.afs.enable then ''
     export PATH="${pkgs.coreutils}/bin:/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
 
@@ -14,11 +15,11 @@ let
       if [ $(id -u) -eq 0 ]; then
         su - "$PAM_USER" -c "[ -e \$HOME/afs ] || ${pkgs.coreutils}/bin/ln -s $afs_u \$HOME/afs"
         su - "$PAM_USER" -c "[ -x \$HOME/afs/.confs/install.sh ] && AFS_DIR=\$HOME/afs \$HOME/afs/.confs/install.sh || true"
-        su - "$PAM_USER" ${session_open}
+        ${lib.optionalString (cfg.sessionOpenScript != "") ''su - "$PAM_USER" ${session_open}''}
       else
         [ -e $HOME/afs ] || ln -s $afs_u $HOME/afs
         [ -x $HOME/afs/.confs/install.sh ] && AFS_DIR=$HOME/afs $HOME/afs/.confs/install.sh || true
-        ${session_open}
+        ${lib.optionalString (cfg.sessionOpenScript != "") session_open}
       fi
     fi
 
