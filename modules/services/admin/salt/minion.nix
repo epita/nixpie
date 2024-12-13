@@ -18,7 +18,8 @@ with lib;
     services.salt.minion = {
       enable = true;
       configuration = {
-        inherit (config.cri.salt) master id;
+        inherit (config.cri.salt) master;
+        id = "nixpie";
         startup_states = "highstate";
       };
     };
