@@ -36,7 +36,7 @@ let
 in
 (lib.mapAttrs' (name: build: lib.nameValuePair ("${name}-docker") (mkDockerImage name build.config)) (filterAttrs (name: _: !hasPrefix "exam-" name && !hasSuffix "-vm" name) self.nixosConfigurations)) // {
   nix-docker = pkgs.docker-nixpkgs.nix.override {
-    nix = pkgs.nixFlakes;
+    nix = pkgs.nixVersions.stable;
     extraContents = [
       pkgs.findutils
       pkgs.jq

@@ -11,7 +11,7 @@ with lib;
   };
 
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixVersions.stable;
 
     settings = {
       sandbox = true;

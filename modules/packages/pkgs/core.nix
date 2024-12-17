@@ -14,7 +14,7 @@
       htop
       iftop
       iotop
-      iproute
+      iproute2
       ldns
       lsof
       man-pages

@@ -59,7 +59,7 @@ in
       alacritty
       bc
       dialog
-      gnome3.zenity
+      zenity
       hicolor-icon-theme
       keepassxc
       mlocate
