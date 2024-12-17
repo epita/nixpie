@@ -26,48 +26,13 @@ let
 
   options = {
     "BANNER_TIMEOUT" = 0;
-
-    "NET_PROTO_IPV6" = 1;
-    "NET_PROTO_LLDP" = 1;
-
-    "DOWNLOAD_PROTO_FILE" = 1;
-
-    "CERT_CMD" = 1;
-    "CONSOLE_CMD" = 1;
-    "DIGEST_CMD" = 1;
-    "IMAGE_TRUST_CMD" = 1;
-    "IPSTAT_CMD" = 1;
-    "NEIGHBOUR_CMD" = 1;
-    "NSLOOKUP_CMD" = 1;
-    "NTP_CMD" = 1;
-    "PARAM_CMD" = 1;
-    "PCI_CMD" = 1;
-    "PING_CMD" = 1;
-    "POWEROFF_CMD" = 1;
-    "REBOOT_CMD" = 1;
-    "TIME_CMD" = 1;
-    "VLAN_CMD" = 1;
-    "WOL_CMD" = 1;
   };
 
   script = ./forge.ipxe;
-
-  formattedOptions = builtins.concatStringsSep "\n" (
-    lib.lists.flatten
-      (lib.attrsets.mapAttrsToList
-        (opt: value: [
-          "#undef ${opt}"
-          (if (isNull value) then "" else ("#define ${opt} " + toString value))
-        ])
-        options
-      )
-  );
 in
 (ipxe.overrideAttrs (prev: {
   preConfigure = ''
-    cat > src/config/local/general.h <<EOF
-    ${formattedOptions}
-    EOF
+    substituteInPlace src/config/general.h --replace '#define BANNER_TIMEOUT		20' '#define BANNER_TIMEOUT		0'
   '';
 
   patches = [
@@ -78,4 +43,26 @@ in
     ("CERT=" + builtins.concatStringsSep "," trustedCerts)
     ("TRUST=" + builtins.concatStringsSep "," trustedCerts)
   ];
-})).override { embedScript = script; }
+})).override {
+  additionalOptions = [
+    "NET_PROTO_IPV6"
+    "NET_PROTO_LLDP"
+    "DOWNLOAD_PROTO_FILE"
+    "CERT_CMD"
+    "CONSOLE_CMD"
+    "DIGEST_CMD"
+    "IPSTAT_CMD"
+    "NEIGHBOUR_CMD"
+    "NSLOOKUP_CMD"
+    "NTP_CMD"
+    "PARAM_CMD"
+    "PCI_CMD"
+    "POWEROFF_CMD"
+    "REBOOT_CMD"
+    "TIME_CMD"
+    "VLAN_CMD"
+    "WOL_CMD"
+  ];
+
+  embedScript = script;
+}
