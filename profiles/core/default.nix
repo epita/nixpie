@@ -123,6 +123,7 @@ with lib;
   };
 
   programs.ssh = {
+    package = pkgs.openssh_gssapi;
     startAgent = true;
     extraConfig = ''
       AddKeysToAgent yes
