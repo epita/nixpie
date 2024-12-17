@@ -51,7 +51,6 @@
       lcov
       libfff
       ltrace
-      pharaoh
       pkg-config
       readline
       rr

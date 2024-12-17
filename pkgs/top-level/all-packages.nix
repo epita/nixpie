@@ -45,8 +45,6 @@
 
   dirbuster = ../development/tools/dirbuster;
 
-  pharaoh = ../development/tools/pharaoh;
-
   ### DEVELOPMENT / PYTHON MODULES
 
   jupyter-dash = {
