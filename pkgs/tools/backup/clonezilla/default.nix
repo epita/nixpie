@@ -114,7 +114,11 @@ buildFHSUserEnv {
     gzip
     lbzip2
     lrzip
-    lvm2
+    (lvm2.overrideAttrs (old: {
+      # nixpkgs issue 369732
+      # https://github.com/NixOS/nixpkgs/issues/369732
+      configureFlags = old.configureFlags ++ [ "--with-default-profile-subdir=profile.d" ];
+    }))
     lzop
     ntfs3g
     (partclone.overrideAttrs (old: {
