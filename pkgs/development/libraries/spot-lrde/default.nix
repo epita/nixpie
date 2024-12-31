@@ -6,11 +6,11 @@
 
 stdenv.mkDerivation rec {
   pname = "spot-lrde";
-  version = "2.10.6";
+  version = "2.12.1";
 
   src = fetchurl {
     url = "http://www.lrde.epita.fr/dload/spot/spot-${version}.tar.gz";
-    sha256 = "sha256-xYjRy1PM6j5ZL5lAKxTC9DZ7NJ7O+OF7bTkd8Ua8i6Q=";
+    sha256 = "sha256-VHfAjU4dBi8WTC5IaoNVaSXQfXDyGA3nBq96qUnG/1w=";
   };
 
   enableParallelBuilding = true;
