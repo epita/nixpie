@@ -40,7 +40,6 @@ let
     description = "ncurses partition and disk imaging/cloning program";
     homepage = "https://clonezilla.org";
     license = licenses.gpl2;
-    maintainers = with maintainers; [ risson ];
     platforms = platforms.linux;
   };
 
@@ -94,7 +93,6 @@ let
       description = "Diskless Remote Boot in Linux: manage the deployment of the GNU/Linux operating system across many clients";
       homepage = "https://drbl.org";
       license = licenses.gpl2;
-      maintainers = with maintainers; [ risson ];
       platforms = platforms.linux;
     };
   };
