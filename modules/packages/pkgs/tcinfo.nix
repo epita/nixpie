@@ -57,7 +57,7 @@ in
       # Elastic
       elastic-wrapper
       # MongoDB
-      mongodb
+      mongodb-ce
       mongodb-tools
       mongosh
       # Neo4j
