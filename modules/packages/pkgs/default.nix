@@ -14,7 +14,7 @@
     ./games.nix
     ./gpgpu.nix
     ./gtk.nix
-    ./info9.nix
+    ./tcinfo.nix
     ./java.nix
     ./js.nix
     ./latex-exam.nix

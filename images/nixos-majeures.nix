@@ -11,7 +11,7 @@
   cri.packages = {
     pkgs = {
       coq.enable = true;
-      info9.enable = true;
+      tcinfo.enable = true;
       js.enable = true;
       libvirt.enable = true;
       libvirt.enableDiskPartition = true;

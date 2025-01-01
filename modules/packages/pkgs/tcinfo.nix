@@ -44,10 +44,10 @@ let
 in
 {
   options = {
-    cri.packages.pkgs.info9.enable = lib.options.mkEnableOption "INFO9 CRI package bundle";
+    cri.packages.pkgs.tcinfo.enable = lib.options.mkEnableOption "TCINFO CRI package bundle";
   };
 
-  config = lib.mkIf config.cri.packages.pkgs.info9.enable {
+  config = lib.mkIf config.cri.packages.pkgs.tcinfo.enable {
     cri.packages.pkgs = {
       java.enable = true;
       podman.enable = true;
