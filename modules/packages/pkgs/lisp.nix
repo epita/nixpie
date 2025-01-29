@@ -9,7 +9,7 @@
     environment.systemPackages = with pkgs; [
       sbcl
       clisp
-      emacs28Packages.slime
+      emacsPackages.slime
     ];
   };
 }
