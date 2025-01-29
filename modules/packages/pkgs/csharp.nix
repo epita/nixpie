@@ -14,8 +14,6 @@
     environment.systemPackages = with pkgs; [
       config.cri.packages.pkgs.csharp.dotnetPackage
       jetbrains.rider
-      mono
-      msbuild
     ];
 
     environment.variables = {
