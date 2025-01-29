@@ -49,6 +49,7 @@
             allowUnfree = true;
             permittedInsecurePackages = [
               "freeimage-unstable-2021-11-01"
+              "dotnet-sdk-7.0.410"
             ];
           };
           overlays =
