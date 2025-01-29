@@ -23,6 +23,7 @@
     ./net.nix
     ./nts.nix
     ./ocaml.nix
+    ./octave.nix
     ./opengl.nix
     ./podman.nix
     ./prolog.nix
