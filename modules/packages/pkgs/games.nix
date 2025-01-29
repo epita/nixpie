@@ -9,7 +9,6 @@
     environment.systemPackages = with pkgs; [
       crispyDoom
       freeciv
-      gtetrinet
       nethack
       openttd
       superTuxKart
