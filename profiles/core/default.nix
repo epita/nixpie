@@ -78,6 +78,7 @@ with lib;
     yubikey.enable = true;
   };
   programs.vim = {
+    enable = true;
     defaultEditor = true;
     package = pkgs.vim_configurable;
   };
