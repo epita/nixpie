@@ -7,7 +7,7 @@
 
   config = lib.mkIf config.cri.packages.pkgs.prolog.enable {
     environment.systemPackages = with pkgs; [
-      swiProlog
+      swi-prolog
       gprolog
     ];
   };
