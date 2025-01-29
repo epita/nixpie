@@ -14,7 +14,7 @@ with lib;
     pkgs = {
       dev.enable = true;
       ocaml.enable = true;
-      afit.enable = true;
+      octave.enable = true;
       csharp.enable = true;
       asm.enable = true;
       gtk.enable = true;
