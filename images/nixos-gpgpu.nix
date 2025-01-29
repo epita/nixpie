@@ -10,6 +10,7 @@
   cri.sshd.allowUsers = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.open = false;
 
   boot.extraModprobeConfig = ''
     options nvidia NVreg_RestrictProfilingToAdminUsers=0 NVreg_DeviceFileMode=0666
