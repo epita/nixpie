@@ -15,7 +15,7 @@
       pillow
       pandas
       pytorch
-      tensorflow
+      #tensorflow #FIXME
       torchvision
       torchaudio
       keras
