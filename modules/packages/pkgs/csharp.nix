@@ -17,7 +17,7 @@
     ];
 
     environment.variables = {
-      DOTNET_ROOT = "${config.cri.packages.pkgs.csharp.dotnetPackage}";
+      DOTNET_ROOT = "${config.cri.packages.pkgs.csharp.dotnetPackage}/share/dotnet";
     };
   };
 }
