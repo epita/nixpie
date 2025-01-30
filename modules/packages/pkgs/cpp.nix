@@ -8,7 +8,7 @@
   config = lib.mkIf config.cri.packages.pkgs.cpp.enable {
     environment.systemPackages = with pkgs; [
       httplib
-      libyamlcpp
+      yaml-cpp
     ];
   };
 }
