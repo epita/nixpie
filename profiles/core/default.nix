@@ -35,8 +35,13 @@ with lib;
     useDHCP = true;
     dhcpcd = {
       wait = "any"; # make sure we get an IP before marking the service as up
+
+      # force_hostname is required because nixpkgs#359571 changed the default
+      # hostname from localhost to nixos and dhcpcd only changes the hostname if
+      # it is localhost.
       extraConfig = ''
         noipv4ll
+        env force_hostname=YES
       '';
     };
     timeServers = [
@@ -59,6 +64,15 @@ with lib;
           to = 42999;
         }
       ];
+    };
+  };
+
+  # TODO: remove me when fixed upstream, sigh.
+  systemd.services.dhcpcd = {
+    serviceConfig = {
+      ProtectHostname = lib.mkForce false;
+      SystemCallFilter = lib.mkBefore [ "sethostname" ];
+      AmbientCapabilities = [ "CAP_SYS_ADMIN" ];
     };
   };
 
