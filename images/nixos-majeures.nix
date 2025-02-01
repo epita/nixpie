@@ -15,6 +15,7 @@
       js.enable = true;
       libvirt.enable = true;
       libvirt.enableDiskPartition = true;
+      scala.enable = true; # for SCIA
     };
   };
 
