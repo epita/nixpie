@@ -6,9 +6,11 @@
   };
 
   config = lib.mkIf config.cri.packages.pkgs.scala.enable {
+    cri.packages.pkgs = {
+      java.enable = true;
+    };
+
     environment.systemPackages = with pkgs; [
-      jetbrains.idea-ultimate
-      maven
       sbt
       (vscode-with-extensions.override {
         vscode = vscodium;
@@ -17,10 +19,5 @@
         ];
       })
     ];
-
-    programs.java = {
-      enable = true;
-      package = pkgs.jdk;
-    };
   };
 }
