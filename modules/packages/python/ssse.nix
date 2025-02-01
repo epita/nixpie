@@ -15,13 +15,16 @@
       pillow
       pandas
       pytorch
-      #tensorflow #FIXME
       torchvision
       torchaudio
-      keras
       lime
       shap
       seaborn
+
+      # the following are disabled because tensorflow is not compatible with
+      # python 3.12
+      #tensorflow
+      #keras
     ];
   };
 }
