@@ -57,7 +57,6 @@ let
     "nixos-prepa" = { };
     "nixos-test" = { };
     "nixos-immersion" = { };
-    "nixos-scia" = { };
     "nixos-ssse" = { };
     "nixos-majeures" = { };
     "nixos-summer-program" = { };
@@ -66,7 +65,6 @@ let
     "exam-pie" = { };
     "exam-prepa" = { };
     "exam-maths" = { };
-    "exam-scia" = { };
     "exam-majeures" = { };
 
     "nixos-exec-vm" = { isVM = true; };
