@@ -38,7 +38,7 @@
     numpy
     openpyxl
     pandas
-    pandas-datareader
+    #pandas-datareader # not working with python>3.12, nixpkgs#310800
     pkgs.jupyter-dash
     #jupyter-contrib-nbextensions
     pkgs.jupyter_latex_envs
