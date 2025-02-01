@@ -47,7 +47,7 @@ let
   hosts = lib.mapAttrs nixosSystem {
     "nixos-docker" = { };
     "nixos-exec" = { };
-    "nixos-gpgpu" = { };
+    #"nixos-gpgpu" = { }; # disabled because cuda on NixOS is broken
     "nixos-image" = { };
     "nixos-lan" = { };
     "nixos-maths" = { };
