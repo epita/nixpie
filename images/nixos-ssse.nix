@@ -15,6 +15,8 @@
       js.enable = true;
       ocaml.enable = true;
       ssse.enable = true;
+      libvirt.enable = true;
+      libvirt.enableDiskPartition = true;
     };
   };
 }
