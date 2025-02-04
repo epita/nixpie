@@ -79,6 +79,7 @@ with lib;
   security = {
     protectKernelImage = true;
   };
+  security.polkit.enable = true;
 
   hardware.enableRedistributableFirmware = true;
 
