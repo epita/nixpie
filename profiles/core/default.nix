@@ -128,7 +128,7 @@ with lib;
   environment.variables = {
     NIXPKGS_ALLOW_UNFREE = "1";
 
-    NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu = "-I/run/current-system/sw/include";
+    NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu = "-isystem /run/current-system/sw/include";
     NIX_CFLAGS_LINK_x86_64_unknown_linux_gnu = "-L/run/current-system/sw/lib";
 
     CMAKE_INCLUDE_PATH = "/run/current-system/sw/include";
