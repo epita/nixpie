@@ -1,5 +1,19 @@
 { config, lib, pkgs, ... }:
 
+let
+  espIdfShell = pkgs.mkShell {
+    name = "esp-idf-full-shell";
+
+    buildInputs = with pkgs; [
+      esp-idf-full
+    ];
+  };
+  espIdfShellStart = pkgs.writeShellScriptBin "esp-idf-shell" ''
+    # nix shell for ${espIdfShell}
+    # don't remove above line to enforce derivation build at image build
+    ${config.nix.package}/bin/nix develop ${espIdfShell.drvPath}
+  '';
+in
 {
   options = {
     cri.packages.pkgs.ssse.enable =
@@ -27,6 +41,7 @@
       sigrok-cli
       vscodium
       tlaplusToolbox
+      espIdfShellStart
     ];
 
     environment.etc."security/group.conf".text = ''

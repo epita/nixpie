@@ -115,6 +115,29 @@
         "type": "github"
       }
     },
+    "nixpkgs-esp-dev": {
+      "inputs": {
+        "flake-utils": [
+          "futils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1738140586,
+        "narHash": "sha256-Vn4PD4eH18QklgDY1vnjXJqNPmP3SJNejcBroW0yTTA=",
+        "owner": "mirrexagon",
+        "repo": "nixpkgs-esp-dev",
+        "rev": "29517b39abe729e04118bf77af526f9947f6c476",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mirrexagon",
+        "repo": "nixpkgs-esp-dev",
+        "type": "github"
+      }
+    },
     "nixpkgsMaster": {
       "locked": {
         "lastModified": 1738168080,
@@ -192,6 +215,7 @@
         "futils": "futils",
         "machine-state": "machine-state",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-esp-dev": "nixpkgs-esp-dev",
         "nixpkgsMaster": "nixpkgsMaster",
         "nixpkgsUnstable": "nixpkgsUnstable"
       }

@@ -21,6 +21,12 @@
       url = "github:edolstra/flake-compat";
       flake = false;
     };
+
+    nixpkgs-esp-dev = {
+      url = "github:mirrexagon/nixpkgs-esp-dev";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "futils";
+    };
   };
 
   outputs =
@@ -36,6 +42,7 @@
 
     , futils
     , flake-compat
+    , nixpkgs-esp-dev
     } @ inputs:
     let
       inherit (nixpkgs) lib;
@@ -60,6 +67,8 @@
               (final: prev: {
                 machine-state = machine-state.packages.${system}.machine-state;
               })
+
+              nixpkgs-esp-dev.overlays.default
             ];
         };
 
