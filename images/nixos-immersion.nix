@@ -12,6 +12,7 @@
   environment.systemPackages = with pkgs; [
     gedit
     gimp
+    weka
   ];
 
   cri.packages.pythonPackages.nixosPieCustom = p: with p; [
