@@ -42,6 +42,7 @@ in
       vscodium
       tlaplusToolbox
       espIdfShellStart
+      framac
     ];
 
     environment.etc."security/group.conf".text = ''
