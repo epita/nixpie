@@ -15,6 +15,8 @@
     weka
   ];
 
+  environment.pathsToLink = [ "/share/weka" ];
+
   cri.packages.pythonPackages.nixosPieCustom = p: with p; [
     opencv4
     matplotlib
