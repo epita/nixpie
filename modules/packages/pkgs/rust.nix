@@ -12,7 +12,7 @@
       rustup
       (writeScriptBin "rust-doc" ''
         echo "Opening Rust documentation..."
-        ${xdg-utils}/bin/xdg-open ${rustc.doc}/share/doc/rust/html/index.html >/dev/null 2>/dev/null </dev/null & disown
+        ${xdg-utils}/bin/xdg-open ${rustc.doc}/share/doc/docs/html/index.html >/dev/null 2>/dev/null </dev/null & disown
       '')
     ];
   };
