@@ -46,7 +46,12 @@
   dirbuster = ../development/tools/dirbuster;
 
   ### DEVELOPMENT / PYTHON MODULES
-  
+
+  missingno = {
+    path = ../development/python-modules/missingno;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
+
   dash-daq = {
     path = ../development/python-modules/dash-daq;
     callPackage = final: prev: final.python3Packages.callPackage;
@@ -56,7 +61,7 @@
     path = ../development/python-modules/dash-colorscales;
     callPackage = final: prev: final.python3Packages.callPackage;
   };
-  
+
   strsimpy = {
     path = ../development/python-modules/strsimpy;
     callPackage = final: prev: final.python3Packages.callPackage;
