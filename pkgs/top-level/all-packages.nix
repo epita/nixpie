@@ -47,6 +47,11 @@
 
   ### DEVELOPMENT / PYTHON MODULES
   
+  strsimpy = {
+    path = ../development/python-modules/strsimpy;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
+
   dtale = {
     path = ../development/python-modules/dtale;
     callPackage = final: prev: final.python3Packages.callPackage;
