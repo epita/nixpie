@@ -46,6 +46,10 @@
   dirbuster = ../development/tools/dirbuster;
 
   ### DEVELOPMENT / PYTHON MODULES
+  dash-colorscales = {
+    path = ../development/python-modules/dash-colorscales;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
   
   strsimpy = {
     path = ../development/python-modules/strsimpy;
