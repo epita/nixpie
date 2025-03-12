@@ -22,6 +22,7 @@
   ];
 
   cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
+    pkgs.dtale
     beautifulsoup4
     dash
     folium
