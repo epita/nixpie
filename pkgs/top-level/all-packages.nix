@@ -47,6 +47,31 @@
 
   ### DEVELOPMENT / PYTHON MODULES
 
+  missingno = {
+    path = ../development/python-modules/missingno;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
+
+  dash-daq = {
+    path = ../development/python-modules/dash-daq;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
+
+  dash-colorscales = {
+    path = ../development/python-modules/dash-colorscales;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
+
+  strsimpy = {
+    path = ../development/python-modules/strsimpy;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
+
+  dtale = {
+    path = ../development/python-modules/dtale;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
+
   jupyter-dash = {
     path = ../development/python-modules/jupyter-dash;
     callPackage = final: prev: final.python3Packages.callPackage;
