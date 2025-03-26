@@ -1,12 +1,13 @@
 { lib, stdenv, fetchzip }:
 
-stdenv.makeDerivation rec {
+stdenv.mkDerivation rec {
   pname = "numpy-doc";
   version = "2.2";
 
   src = fetchzip {
     url = "https://numpy.org/doc/${version}/numpy-html.zip";
-    hash = "";
+    hash = "sha256-f1L5rvxnXhj+IIEnp/R2t/8mJx59/cVZpC7CmO9/Tm0=";
+    stripRoot = false;
   };
 
   installPhase = ''

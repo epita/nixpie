@@ -1,5 +1,10 @@
 { config, pkgs, inputs, system, ... }:
-
+let
+  openNumpyDoc = pkgs.writeShellScriptBin "open-numpy-doc" ''
+    #!${pkgs.runtimeShell}
+    ${pkgs.firefox}/bin/firefox ${pkgs.numpy-doc}/index.html
+  '';
+in
 {
   imports = [
     ../profiles/graphical

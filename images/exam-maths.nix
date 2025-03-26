@@ -1,15 +1,9 @@
-{ config, lib, ... }:
-let
-  pkgs.writeShellScriptBin "open-numpy-doc" ''
-        #! ${pkgs.runtimeShell}
-        ${pkgs.firefox} ${pkgs.numpy-doc}/index.html
-      '';
-  in
-  {
+{ config, lib, pkgs, ... }:
+
+{
   imports = [
     ../profiles/graphical
     ../profiles/exam
-
     ./nixos-maths.nix
   ];
 
@@ -23,6 +17,6 @@ let
 
   environment.systemPackages = with pkgs; [
     numpy-doc
-    open-numpy-doc
+    openNumpyDoc
   ];
-  }
+}
