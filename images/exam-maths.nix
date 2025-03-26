@@ -14,9 +14,4 @@
   };
 
   cri.sddm.title = lib.mkForce "Exam Maths";
-
-  environment.systemPackages = with pkgs; [
-    numpy-doc
-    openNumpyDoc
-  ];
 }

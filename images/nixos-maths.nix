@@ -24,6 +24,8 @@ in
   environment.systemPackages = with pkgs; [
     libreoffice
     gnuplot
+    numpy-doc
+    openNumpyDoc
   ];
 
   cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
