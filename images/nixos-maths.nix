@@ -1,8 +1,7 @@
 { config, pkgs, inputs, system, ... }:
 let
-  openNumpyDoc = pkgs.writeShellScriptBin "open-numpy-doc" ''
-    #!${pkgs.runtimeShell}
-    ${pkgs.firefox}/bin/firefox ${pkgs.numpy-doc}/index.html
+  numpy-doc = pkgs.writeShellScriptBin "numpy-doc" ''
+    ${pkgs.xdg-utils}/bin/xdg-open ${pkgs.numpy-doc}/index.html
   '';
 in
 {
@@ -25,7 +24,6 @@ in
     libreoffice
     gnuplot
     numpy-doc
-    openNumpyDoc
   ];
 
   cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
