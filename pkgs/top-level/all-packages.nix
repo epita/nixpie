@@ -118,4 +118,8 @@
   ### NSWRAPPERS
 
   nswrappers = ../nswrappers;
+
+  ### DATA / DOCUMENTATION
+
+  numpy-doc = ../data/documentation/numpy;
 }
