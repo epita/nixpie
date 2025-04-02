@@ -19,6 +19,11 @@
 
   clonezilla = ../tools/backup/clonezilla;
 
+  dumptorrent = {
+    path = ../by-name/du/dumptorrent/package.nix;
+    args = final: prev: { inherit (prev) dumptorrent; };
+  };
+
   ### DEVELOPMENT / COMPILERS
 
   clang32-alias = ../development/compilers/clang32-alias;
