@@ -73,6 +73,7 @@ let
     "nixos-test-vm" = { isVM = true; };
 
     "france-ioi" = { };
+    "exam-france-ioi" = { };
   };
 in
 hosts
