@@ -5,6 +5,7 @@ i3lock.overrideAttrs (old: rec {
 
   patches = [
     ./i3lock-epita.patch
+    ./0002-fix-sd-bus-kill-session-instead-of-terminating-it.patch
   ];
 
   postPatch = ''

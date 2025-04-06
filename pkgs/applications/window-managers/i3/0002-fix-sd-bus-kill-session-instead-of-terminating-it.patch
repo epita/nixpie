@@ -1,0 +1,44 @@
+From a98a088e05e156589180cab13f554bbb33d2b108 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Manass=C3=A9=20Ratovo?= <manasse@forge.epita.fr>
+Date: Sun, 6 Apr 2025 19:44:37 +0200
+Subject: [PATCH 2/2] fix(sd-bus): kill session instead of terminating it
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Manassé Ratovo <manasse@forge.epita.fr>
+---
+ sd-bus.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/sd-bus.c b/sd-bus.c
+index 54ea11f..561ec03 100644
+--- a/sd-bus.c
++++ b/sd-bus.c
+@@ -1,6 +1,8 @@
++#include <signal.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++
+ #include <systemd/sd-bus.h>
+ 
+ #include "sd-bus.h"
+@@ -23,10 +25,12 @@ int terminate_current_session(void) {
+             "org.freedesktop.login1",               /* service to contact */
+             "/org/freedesktop/login1/session/self", /* object path */
+             "org.freedesktop.login1.Session",       /* interface name */
+-            "Terminate",                            /* method name */
++            "Kill",                                 /* method name */
+             &error,                                 /* object to return error in */
+             &m,                                     /* return message on success */
+-            ""                                      /* input signature */
++            "si",                                   /* input signature */
++            "all",                                  /* first argument */
++            SIGTERM                                 /* second argument */
+             );
+     if (r < 0) {
+         fprintf(stderr, "Failed to issue method call: %s\n", error.message);
+-- 
+2.47.2
+
