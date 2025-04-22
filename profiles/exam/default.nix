@@ -97,6 +97,8 @@ in
           ip daddr 91.243.117.186 tcp dport {kerberos,kerberos-adm} accept
           # ldap.pie.cri.epita.fr
           ip daddr 91.243.117.185 tcp dport {ldap,ldaps} accept
+          # internal IP address for LDAP and Kerberos
+          ip daddr 10.201.5.54 tcp dport {ldap,ldaps,kerberos,kerberos-adm} accept
 
           # Git Exam CRI
           ip daddr 10.201.5.122 tcp dport ssh accept
