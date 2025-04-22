@@ -49,7 +49,8 @@ with lib;
         aria2_summary="--summary-interval=60"
         aria2_nodht="--enable-dht=false --enable-dht6=false"
         aria2_always_seed="--seed-ratio=0"
-        aria2_opts="$aria2_base $aria2_summary $aria2_nodht $aria2_always_seed"
+        aria2_limit_bandwidth="--max-overall-upload-limit=200M"
+        aria2_opts="$aria2_base $aria2_summary $aria2_nodht $aria2_always_seed $aria2_limit_bandwidth"
 
         ${pkgs.aria2}/bin/aria2c $aria2_opts --check-integrity --input-file=${config.cri.aria2.seedlist}
       '';
