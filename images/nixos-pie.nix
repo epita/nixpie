@@ -10,6 +10,7 @@
 
   environment.systemPackages = with pkgs; [
     #spot-lrde
+    tina
   ];
 
   cri.packages.pythonPackages.nixosPieCustom = p: with p; [
