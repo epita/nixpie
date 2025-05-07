@@ -120,6 +120,8 @@
 
   ciscoPacketTracer8 = ../applications/networking/cisco-packet-tracer;
 
+  tina = ../applications/editors/tina;
+
   sddm-epita-themes = ../applications/display-managers/sddm/sddm-epita-themes.nix;
 
   ### NSWRAPPERS
