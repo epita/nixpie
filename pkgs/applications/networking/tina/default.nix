@@ -30,7 +30,7 @@ let
   
   src = fetchurl {
     url = "https://projects.laas.fr/tina/binaries/tina-${version}-amd64-linux.tgz";
-    sha256 = "7dc810747d330ec33191d198dd399a8ff99bf991a10d27f335475692f2c2bcf8";
+    sha256 = "sha256-lWnElPO4fEEWYTTf+XRykTkkhYV2hn53D5Z0TckcJ9Y=";
   };
   
   tinaFiles = stdenv.mkDerivation {
