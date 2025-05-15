@@ -23,6 +23,7 @@
       perl
       clang32-alias
       bear
+      ovm
     ];
   };
 }
