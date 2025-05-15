@@ -17,6 +17,7 @@ in
       dev.enable = true;
       lisp.enable = true;
       r.enable = true;
+      podman.enable = true;
     };
   };
 
