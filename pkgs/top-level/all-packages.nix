@@ -44,6 +44,8 @@
     args = final: prev: { inherit (prev) ocaml; };
   };
 
+  ovm = ../development/compilers/ovm;
+
   ### DEVELOPMENT / TOOLS
 
   clang-format-epita = ../development/tools/clang-format-epita;
