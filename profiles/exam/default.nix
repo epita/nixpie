@@ -15,20 +15,32 @@ let
 in
 {
   cri.afs.enable = false;
-  cri.packages.pkgs.desktop.firefox.toolbarBookmarks = [
-    {
-      Title = "Moodle Exam";
-      URL = "https://moodle-exam.cri.epita.fr";
-    }
-    {
-      Title = "Intranet Exam";
-      URL = "https://exam.forge.epita.fr";
-    }
-    {
-      Title = "Intranet Exam - Remaining time";
-      URL = "https://exam.forge.epita.fr/_exam/session";
-    }
-  ];
+  cri.packages.pkgs.desktop.firefox = {
+    extraPolicies = {
+      Proxy = {
+        Mode = "manual";
+        Locked = true;
+        HTTPProxy = "127.0.0.1:8118";
+        SSLProxy = "127.0.0.1:8118";
+        SOCKSProxy = ""; # see https://bugzilla.mozilla.org/show_bug.cgi?id=1823693
+        UseHTTPProxyForAllProtocols = true;
+      };
+    };
+    toolbarBookmarks = [
+      {
+        Title = "Moodle Exam";
+        URL = "https://moodle-exam.cri.epita.fr";
+      }
+      {
+        Title = "Intranet Exam";
+        URL = "https://exam.forge.epita.fr";
+      }
+      {
+        Title = "Intranet Exam - Remaining time";
+        URL = "https://exam.forge.epita.fr/_exam/session";
+      }
+    ];
+  };
 
   netboot = {
     nix-store-rw.enable = false;
