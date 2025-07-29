@@ -47,6 +47,7 @@ in
         enable = true;
         autoNumlock = true;
         autoLogin.relogin = true;
+        package = pkgs.sddm;
       };
     };
 

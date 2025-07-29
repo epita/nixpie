@@ -124,6 +124,8 @@
 
   sddm-epita-themes = ../applications/display-managers/sddm/sddm-epita-themes.nix;
 
+  sddm = ../applications/display-managers/sddm;
+
   ### NSWRAPPERS
 
   nswrappers = ../nswrappers;
