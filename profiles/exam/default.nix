@@ -29,7 +29,7 @@ in
     toolbarBookmarks = [
       {
         Title = "Moodle Exam";
-        URL = "https://moodle-exam.cri.epita.fr";
+        URL = "https://moodle-exam.epita.fr";
       }
       {
         Title = "Intranet Exam";
