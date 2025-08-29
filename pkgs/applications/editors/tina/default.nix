@@ -31,7 +31,7 @@ let
 
   src = fetchurl {
     url = "https://projects.laas.fr/tina/binaries/tina-${version}-amd64-linux.tgz";
-    sha256 = "sha256-lWnElPO4fEEWYTTf+XRykTkkhYV2hn53D5Z0TckcJ9Y=";
+    sha256 = "sha256-PsGqutHACpwG3HqVKXWZEWRdvjfbF3zIFqtgD1j+zKA=";
   };
 
   # Tina files with patch elf
