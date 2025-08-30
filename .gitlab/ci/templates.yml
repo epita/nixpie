@@ -76,8 +76,6 @@ stages:
 .deploy:
   extends: .default
   stage: deploy
-  needs:
-    - build
   allow_failure: true
   rules:
     - when: manual
