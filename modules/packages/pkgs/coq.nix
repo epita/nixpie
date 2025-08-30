@@ -8,8 +8,8 @@
 
   config = lib.mkIf config.cri.packages.pkgs.coq.enable {
     environment.systemPackages = with pkgs; [
-      coq
-      coqPackages.coqide
+      coq_8_20
+      coqPackages_8_20.coqide
     ];
   };
 }
