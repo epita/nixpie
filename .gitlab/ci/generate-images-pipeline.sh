@@ -18,9 +18,10 @@ print_defaults
 
 echoInfo "Starting pipeline generation..."
 
+allImages="$(nix_run list-images | xargs)"
 changedImages=""
 if [ -n "${ALL_IMAGES:-}" ]; then
-  changedImages="$(nix_run list-images | xargs)"
+  changedImages="$allImages"
 else
   changedImages="$(getChangedImages)"
 fi
@@ -85,5 +86,29 @@ EOF
 fi
 fi
 done
+
+# Add image deploy job if on main branch even if the image has not changed
+if ! isFork && [ -n "${CI_COMMIT_BRANCH:-}" ] && [ "${CI_COMMIT_BRANCH:-}" = "${CI_DEFAULT_BRANCH:-}" ]; then
+  for image in ${allImages}; do
+    if ! echo "$changedImages" | grep -q "$image" ; then
+        echoInfo "Adding main deploy job for ${image}..."
+        cat <<EOF
+${image}:deploy:
+  extends: .deploy
+  variables:
+    NIXPIE_LABEL_VERSION: "$(git rev-parse --short HEAD)"
+  script:
+    - buildExpression=".#nixosConfigurations.${image}.config.system.build.toplevel-netboot"
+    - nix -L build --impure "\$buildExpression"
+    - storePath="\$(readlink -f ./result)"
+    - cat "\${AWS_PXE_IMAGES_CREDENTIALS_FILE}" > ~/.aws/credentials
+    - nix_run awscli s3 --endpoint-url "\${AWS_PXE_IMAGES_ENDPOINT}" cp --acl public-read --recursive "\$storePath" "s3://\${AWS_PXE_IMAGES_BUCKET}"
+    - rm -f ./result
+    - nix store delete --impure "\$storePath"
+EOF
+    fi
+  done
+fi
+
 
 echoSuccess "All done!"
