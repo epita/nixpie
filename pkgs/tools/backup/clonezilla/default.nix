@@ -2,7 +2,7 @@
 , fetchurl
 , stdenv
 , makeWrapper
-, buildFHSUserEnv
+, buildFHSEnv
 , perl
 , bc
 , bzip2
@@ -97,7 +97,7 @@ let
     };
   };
 in
-buildFHSUserEnv {
+buildFHSEnv {
   name = pname;
   targetPkgs = pkgs: [
     clonezilla
