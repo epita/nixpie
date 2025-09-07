@@ -24,6 +24,11 @@
     args = final: prev: { inherit (prev) dumptorrent; };
   };
 
+  salt = {
+    path = ../by-name/sa/salt/package.nix;
+    args = final: prev: { inherit (prev) salt; };
+  };
+
   ### DEVELOPMENT / COMPILERS
 
   clang32-alias = ../development/compilers/clang32-alias;
