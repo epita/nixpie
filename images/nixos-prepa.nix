@@ -15,7 +15,6 @@ with lib;
       dev.enable = true;
       ocaml.enable = true;
       octave.enable = true;
-      csharp.enable = true;
       asm.enable = true;
       gtk.enable = true;
       rust.enable = true;
