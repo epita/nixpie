@@ -31,7 +31,7 @@ center_text() {
 # Write the content to the output file
 cat >$out <<EOF
          ########################################           
-         #         EPITA $(colorfmt "%hlbbACU 2025%hl0") - TTY         #
+         #         EPITA $(colorfmt "%hlbbACU 2026%hl0") - TTY         #
          ########################################           
 
 # Assignment
@@ -48,7 +48,7 @@ The learning goals are:
 We hope you will enjoy this initiative and have some fun.
 
 -- 
-ACU 2025 Team
+ACU 2026 Team
 
 # Login
 
