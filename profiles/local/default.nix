@@ -5,22 +5,6 @@ with lib;
 {
   netboot.enable = mkForce false;
 
-  networking = {
-    networkmanager.enable = mkForce true;
-    hostName = mkForce "nixos";
-    useDHCP = mkForce false;
-  };
-
-  programs.nm-applet.enable = true;
-
-  cri = {
-    afs.enable = false;
-    krb5.enable = false;
-    ldap.enable = false;
-
-    users.checkEpitaUserAllowed = false;
-  };
-
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
