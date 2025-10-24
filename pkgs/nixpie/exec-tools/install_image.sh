@@ -1,6 +1,6 @@
-#! /usr/bin/env bash 
+#!/usr/bin/env bash
 
-set -x
+set -exuo pipefail
 
 if [ -e "/proc/cmdline" ]; then
 
@@ -12,10 +12,11 @@ if [ -e "/proc/cmdline" ]; then
 	
 fi
 
-if [ -z $CONFIG ]; then
+if [ -z "$CONFIG" ]; then
 
-	NIXPIE_CONFIGS="$(nix flake show --json git+https://gitlab.cri.epita.fr/cri/infrastructure/nixpie.git | jq -r '.nixosConfigurations | keys[]' | grep -vE '(-local|-vm)$' | nl -w2 | tr '\t' ' ' | tr '\n' ' ')";
+	NIXPIE_CONFIGS="$(nix flake show --json git+https://gitlab.cri.epita.fr/forge/infra/nixpie.git | jq -r '.nixosConfigurations | keys[]' | grep -vE '(-local|-vm)$' | nl -w2 | tr '\t' ' ' | tr '\n' ' ')";
 
+	# shellcheck disable=SC2086
 	CHOICE=$(dialog --clear --menu "Please select a configuration:" 0 0 25 $NIXPIE_CONFIGS 2>&1 >/dev/tty)
 
 
@@ -30,9 +31,10 @@ DISK_COUNT=$(echo "$DISKS" | wc -w)
 if [ "$DISK_COUNT" -eq 2 ]; then
 	DISK=$(echo "$DISKS" | awk '{print $1}' | sed 's/"//g')
 else
+	# shellcheck disable=SC2086
 	DISK=$(dialog --clear --menu "Please select a disk:" 0 0 25 $DISKS 2>&1 >/dev/tty)
 
-	DISK=$(echo "$DISK" | sed 's/"//g')
+	DISK=${DISK//\"/}
 fi
 
 if [[ "$DISK" == nvme* ]]; then
@@ -67,4 +69,4 @@ mount /dev/disk/by-label/nixos-root /mnt
 mkdir -p /mnt/boot
 mount /dev/disk/by-label/EFI /mnt/boot
 
-nixos-install --no-root-passwd --flake git+https://gitlab.cri.epita.fr/cri/infrastructure/nixpie.git#${CONFIG}-local
+nixos-install --no-root-passwd --flake "git+https://gitlab.cri.epita.fr/forge/infra/nixpie.git#${CONFIG}-local"
