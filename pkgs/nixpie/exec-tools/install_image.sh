@@ -12,7 +12,7 @@ if [ -e "/proc/cmdline" ]; then
 	
 fi
 
-if [ -z "$CONFIG" ]; then
+if [ -z "${CONFIG:-}" ]; then
 
 	NIXPIE_CONFIGS="$(nix flake show --json git+https://gitlab.cri.epita.fr/forge/infra/nixpie.git | jq -r '.nixosConfigurations | keys[]' | grep -vE '(-local|-vm)$' | nl -w2 | tr '\t' ' ' | tr '\n' ' ')";
 
@@ -37,7 +37,7 @@ else
 	DISK=${DISK//\"/}
 fi
 
-if [[ "$DISK" == nvme* ]]; then
+if [[ "$DISK" == /dev/nvme* ]]; then
 	PREFIX="${DISK}p"
 else
 	PREFIX="${DISK}"
