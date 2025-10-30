@@ -2,7 +2,7 @@
 
 {
   options = {
-    cri.packages.pkgs.python.enable = lib.options.mkEnableOption "dev Rust CRI package bundle";
+    cri.packages.pkgs.python.enable = lib.options.mkEnableOption "dev Python CRI package bundle";
   };
 
   config = lib.mkIf config.cri.packages.pkgs.python.enable {
