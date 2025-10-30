@@ -28,6 +28,7 @@
     ./podman.nix
     ./prolog.nix
     ./prpa.nix
+    ./python.nix
     ./r.nix
     ./rust.nix
     ./scala.nix
