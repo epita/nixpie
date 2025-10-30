@@ -13,6 +13,7 @@ with lib;
   cri.packages = {
     pkgs = {
       dev.enable = true;
+      python.enable = true;
       ocaml.enable = true;
       octave.enable = true;
       asm.enable = true;
