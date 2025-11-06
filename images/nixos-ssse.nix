@@ -12,6 +12,7 @@
     ocaml.ssse.enable = true;
     pkgs = {
       dev.enable = true;
+      podman.enable = true; # FORGE #65303
       js.enable = true;
       ocaml.enable = true;
       ssse.enable = true;
