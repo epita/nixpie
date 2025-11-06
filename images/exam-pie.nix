@@ -1,5 +1,7 @@
 { config, lib, ... }:
 
+with lib;
+
 {
   imports = [
     ../profiles/graphical
@@ -11,6 +13,8 @@
   cri.packages = {
     pkgs = {
       latexExam.enable = true;
+      thl.enable = mkForce false;
+      tiger.enable = mkForce false;
     };
   };
 
