@@ -62,6 +62,10 @@ in
       tlaplusToolbox
       espIdfShellStart
       framac
+
+      # FORGE #65302
+      ghidra-bin
+      gcc-arm-embedded
     ];
 
     environment.etc."security/group.conf".text = ''
