@@ -69,5 +69,6 @@ in
     gmpy2
     sounddevice
     soundfile
+    pywavelets
   ];
 }
