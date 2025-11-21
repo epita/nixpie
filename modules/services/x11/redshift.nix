@@ -16,8 +16,8 @@ with lib;
 
     # Used by redshift to determine sunrise and sunset.
     location = {
-      longitude = 48.87951;
-      latitude = 2.28513;
+      latitude = 48.87951;
+      longitude = 2.28513;
     };
   };
 }
