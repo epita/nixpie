@@ -13,4 +13,9 @@
       nts.enable = true;
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    ollama
+    lmstudio
+  ];
 }
