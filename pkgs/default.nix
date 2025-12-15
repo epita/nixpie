@@ -6,7 +6,7 @@ let
   drvs = lib.filterAttrs (name: _: builtins.elem name allPackagesNames) pkgs;
 
   systemDrvs = lib.filterAttrs
-    (_: drv: builtins.elem pkgs.system (drv.meta.platforms))
+    (_: drv: builtins.elem pkgs.stdenv.hostPlatform.system (drv.meta.platforms))
     drvs;
 in
 systemDrvs

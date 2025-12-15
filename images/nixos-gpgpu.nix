@@ -64,7 +64,7 @@
       name = "cuda-env-shell";
       buildInputs = with pkgs; [
         git gitRepo gnupg autoconf curl
-        procps gnumake utillinux m4 gperf unzip cmake
+        procps gnumake util-linux m4 gperf unzip cmake
         linuxPackages.nvidia_x11
         libGLU libGL
         xorg.libXi xorg.libXmu freeglut
