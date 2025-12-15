@@ -26,9 +26,9 @@
       # `gcc` is still wrapped
       (lib.setPrio (gcc.meta.priority + 1) gcc-unwrapped)
 
-      clang_12
-      llvmPackages_12.llvm
-      llvmPackages_12.lld
+      clang
+      llvmPackages.llvm
+      llvmPackages.lld
 
       # testing frameworks
       criterion
