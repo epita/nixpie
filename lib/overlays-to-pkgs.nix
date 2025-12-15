@@ -14,7 +14,7 @@ let
   # don't bother exporting a package if it's platform isn't supported
   systemDrvs = builtins.filter
     (drv: builtins.elem
-      pkgs.system
+      pkgs.stdenv.hostPlatform.system
       (drv.meta.platforms or [ ]))
     drvs;
 

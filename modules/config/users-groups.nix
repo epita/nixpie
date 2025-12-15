@@ -174,6 +174,6 @@ in
     };
 
     # Kill all user processes when logging out
-    services.logind.killUserProcesses = true;
+    services.logind.settings.Login.KillUserProcesses = true;
   };
 }

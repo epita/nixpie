@@ -32,7 +32,7 @@
       tmux
       tree
       usbutils
-      utillinux
+      util-linux
       unzip
       wget
       zip
