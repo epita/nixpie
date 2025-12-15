@@ -1,19 +1,56 @@
-{ lib, buildPythonPackage, fetchPypi, flask-compress, dash-bootstrap-components, strsimpy, dash-colorscales, dash-daq, missingno, statsmodels }:
+{ lib
+, buildPythonPackage
+, fetchPypi
+, flask-compress
+, dash-bootstrap-components
+, strsimpy
+, dash-daq
+, missingno
+, statsmodels
+, setuptools
+, lz4
+, et-xmlfile
+, future
+, kaleido
+, networkx
+, openpyxl
+, pkginfo
+, scikit-learn
+, squarify
+, xarray
+, xlrd
+, beautifulsoup4
+, ...
+}:
 
 buildPythonPackage rec {
   pname = "dtale";
-  version = "3.16.0";
+  version = "3.18.2";
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-94utfwFCwJhLn9rNIoNQ0b7hcbKWiIN3w3N462Z3ek8=";
+    hash = "sha256-JiQl+yHsGAJd8FPa4QAsOkgZwXbtpx84yyIG8ex4asY=";
   };
 
+  build-system = [ setuptools ];
+
   propagatedBuildInputs = [
+    lz4
+    et-xmlfile
+    future
+    kaleido
+    networkx
+    openpyxl
+    pkginfo
+    scikit-learn
+    squarify
+    xarray
+    xlrd
+    beautifulsoup4
     flask-compress
     dash-bootstrap-components
     strsimpy
-    dash-colorscales
     dash-daq
     missingno
     statsmodels

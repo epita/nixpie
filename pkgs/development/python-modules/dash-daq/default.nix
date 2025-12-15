@@ -1,18 +1,22 @@
-{ lib, buildPythonPackage, fetchPypi }:
+{ lib, buildPythonPackage, fetchPypi, setuptools, dash, ... }:
 
 buildPythonPackage rec {
   pname = "dash_daq";
   version = "0.5.0";
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
     hash = "sha256-odhbZ5n3uIVlL7xErr21jEElRhao01C5Q77rQq3kJWo=";
   };
 
-  propagatedBuildInputs = [
-  ];
-
   doCheck = false;
+
+  build-system = [ setuptools ];
+
+  propagatedBuildInputs = [
+    dash
+  ];
 
   meta = with lib; {
     homepage = "https://github.com/plotly/dash-daq";
