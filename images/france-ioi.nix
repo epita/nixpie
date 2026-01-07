@@ -7,7 +7,7 @@ let
     eclipses.eclipse-sdk
     gedit
     gource
-    libsForQt5.kate
+    kdePackages.kate
     sublime3
     vscode
   ];
