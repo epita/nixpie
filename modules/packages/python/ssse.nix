@@ -14,7 +14,7 @@
       scikit-learn
       pillow
       pandas
-      pytorch
+      torch
       torchvision
       torchaudio
       lime

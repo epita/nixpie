@@ -7,7 +7,7 @@
 
   config = lib.mkIf config.cri.packages.pkgs.games.enable {
     environment.systemPackages = with pkgs; [
-      crispyDoom
+      crispy-doom
       freeciv
       nethack
       openttd

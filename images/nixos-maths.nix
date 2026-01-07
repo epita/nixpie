@@ -55,7 +55,7 @@ in
     plotly
     pycryptodome
     pygame
-    pytorch
+    torch
     torchvision
     scikit-learn
     scikitimage

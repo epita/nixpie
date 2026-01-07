@@ -63,7 +63,7 @@ in
 
       environment.systemPackages = with pkgs; [
         wrappedVirtManager
-        aria # for iso download
+        aria2 # for iso download
       ];
 
       systemd.services.libvirtd-config.script = lib.mkAfter ''
