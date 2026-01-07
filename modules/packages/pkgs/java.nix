@@ -7,7 +7,7 @@
 
   config = lib.mkIf config.cri.packages.pkgs.java.enable {
     environment.systemPackages = with pkgs; [
-      jetbrains.idea-ultimate
+      jetbrains.idea
       maven
     ];
 
