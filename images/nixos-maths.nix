@@ -58,7 +58,7 @@ in
     torch
     torchvision
     scikit-learn
-    scikitimage
+    scikit-image
     scipy
     seaborn
     seaborn
