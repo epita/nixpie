@@ -12,8 +12,6 @@
     machine.wait_for_text("Welcome to machine")
 
     print("logging in")
-    # go back to the login field
-    machine.send_key("shift-tab")
     machine.send_chars("epita")
     machine.screenshot("sddm")
     machine.send_chars("\n")
