@@ -45,7 +45,7 @@ in
           pref("network.trr.excluded-domains", "cri.epita.fr");
         '';
         extraPolicies = cfg.firefox.extraPolicies // (optionalAttrs (builtins.length cfg.firefox.toolbarBookmarks > 0) {
-          Bookmarks = builtins.map (bookmark: bookmark // { Placement = "toolbar"; }) cfg.firefox.toolbarBookmarks;
+          ManagedBookmarks = [{ "toplevel_name" = "EPITA"; }] ++ cfg.firefox.toolbarBookmarks;
           DisplayBookmarksToolbar = "always";
         });
       })

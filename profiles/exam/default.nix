@@ -28,16 +28,16 @@ in
     };
     toolbarBookmarks = [
       {
-        Title = "Moodle Exam";
-        URL = "https://moodle-exam.epita.fr";
+        name = "Moodle Exam";
+        url = "https://moodle-exam.epita.fr";
       }
       {
-        Title = "Intranet Exam";
-        URL = "https://exam.forge.epita.fr";
+        name = "Intranet Exam";
+        url = "https://exam.forge.epita.fr";
       }
       {
-        Title = "Intranet Exam - Remaining time";
-        URL = "https://exam.forge.epita.fr/_exam/session";
+        name = "Intranet Exam - Remaining time";
+        url = "https://exam.forge.epita.fr/_exam/session";
       }
     ];
   };
