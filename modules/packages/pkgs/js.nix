@@ -9,7 +9,7 @@
     environment.systemPackages = with pkgs; [
       nodejs
       yarn
-      hoppscotch
+      insomnia
     ];
   };
 }
