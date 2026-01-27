@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 {
@@ -13,6 +12,8 @@
 
   netboot.enable = true;
   cri.sddm.title = "Exam NestJS";
+
+  cri.xfce.enable = true;
 
   cri.packages = {
     pkgs = {
