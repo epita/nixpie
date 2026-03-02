@@ -5,11 +5,11 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "sddm-epita-themes";
-  version = "1.4.0";
+  version = "22c85aa7f9e76dae2adcfbf8a59d4981cf9cb4db";
 
   src = fetchurl {
     url = "https://gitlab.cri.epita.fr/forge/packages/epita-themes-sddm/-/archive/${version}/epita-themes-sddm-${version}.tar.gz";
-    sha256 = "sha256-ffadjlkMsjf0vmTiWq05qKQcKC9I37XVKiSz38YxujE=";
+    sha256 = "sha256-HADxGxHL5Z8GUBeX0JCOqpUMbtlLReodb0qSvhhyi/s=";
   };
 
   unpackPhase = ''
