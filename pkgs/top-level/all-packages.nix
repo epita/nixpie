@@ -123,11 +123,6 @@
     args = final: prev: { inherit (prev) i3lock; };
   };
 
-  ciscoPacketTracer8 = {
-    path = ../applications/networking/cisco-packet-tracer;
-    args = final: prev: { inherit (prev) ciscoPacketTracer8; };
-  };
-
   tina = ../applications/editors/tina;
 
   sddm-epita-themes = ../applications/display-managers/sddm/sddm-epita-themes.nix;
