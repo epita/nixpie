@@ -68,6 +68,7 @@ let
     "exam-prepa" = { };
     "exam-maths" = { };
     "exam-majeures" = { };
+    "exam-net" = { };
 
     "nixos-exec-vm" = { isVM = true; };
     "nixos-pie-vm" = { isVM = true; };
