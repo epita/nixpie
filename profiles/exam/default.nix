@@ -46,7 +46,75 @@ in
     nix-store-rw.enable = false;
   };
 
-  networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+
+    allowedTCPPorts = [
+      22 # SSH
+      9100 # node-exporter
+    ];
+
+    allowPing = true;
+
+    # Warning: do not use domain names in these rules, at the risk of the
+    # firewall starting before a nameserver could be fetched from the DHCP
+    # server, in which case you might not have a firewall at all.
+    extraCommands = ''
+      ${pkgs.nftables}/bin/nft delete table inet output-filter 2>/dev/null || true
+
+      ${pkgs.nftables}/bin/nft -f - <<'EOF'
+      table inet output-filter {
+        chain output {
+          type filter hook output priority 0; policy drop;
+
+          # Accept any localhost traffic
+          iifname lo accept
+          oifname lo accept
+          ip daddr 127.0.0.0/8 accept
+
+          # Accept traffic originated from us
+          ct state { established, related } accept
+
+          # Allow DNS (kresd)
+          ip daddr 10.201.5.53 udp dport 53 accept
+
+          # kerberos.pie.cri.epita.fr
+          ip daddr 91.243.117.186 tcp dport { 88, 749 } accept
+          # ldap.pie.cri.epita.fr
+          ip daddr 91.243.117.185 tcp dport { 389, 636 } accept
+          # Internal IP address for LDAP and Kerberos
+          ip daddr 10.201.5.54 tcp dport { 389, 636, 88, 749 } accept
+
+          # Git Exam CRI
+          ip daddr 10.201.5.122 tcp dport 22 accept
+
+          # Git Exam Forge
+          ip daddr 10.201.5.123 tcp dport 22 accept
+
+          # NTP
+          ip daddr 10.201.5.2 udp dport 123 accept
+
+          # Salt
+          ip daddr 10.201.5.0/24 tcp dport { 4505, 4506 } accept
+
+          # Allow root to do anything
+          meta skuid root accept
+
+          # Allow privoxy to access HTTP/HTTPS
+          tcp dport { 80, 443 } meta skuid privoxy accept
+        }
+
+        chain forward {
+          type filter hook forward priority 0; policy drop;
+        }
+      }
+      EOF
+    '';
+
+    extraStopCommands = ''
+      ${pkgs.nftables}/bin/nft delete table inet output-filter 2>/dev/null || true
+    '';
+  };
 
   services.xserver.windowManager.i3 = {
     extraSessionCommands = lib.mkAfter ''
@@ -57,93 +125,8 @@ in
   environment.systemPackages = with pkgs; [
     exam-start
     submission
+    nftables
   ];
-
-  # Warning: do not use domain names in these rules, at the risk of the
-  # firewall starting before a nameserver could be fetched from the DHCP
-  # server, in which case you might not have a firewall at all.
-  networking.nftables = {
-    enable = true;
-    preCheckRuleset = ''
-      sed 's/skuid privoxy/skuid nobody/g' -i ruleset.conf
-    '';
-    ruleset = ''
-      table inet filter {
-        # Block all incomming connections traffic except SSH and "ping".
-        chain input {
-          type filter hook input priority 0;
-
-          # accept any localhost traffic
-          iifname lo accept
-
-          # accept traffic originated from us
-          ct state {established, related} accept
-
-          # accept SSH connections (required for a server)
-          tcp dport 22 accept
-
-          # accept node-exporter
-          tcp dport 9100 accept
-
-          # Allow ICMP
-          ip protocol icmp accept
-
-          drop
-        }
-
-        # Allow all outgoing connections.
-        chain output {
-          type filter hook output priority 0;
-
-          # accept any localhost traffic
-          iifname lo accept
-          oifname lo accept
-          ip daddr 127.0.0.0/8 accept
-
-          # accept traffic originated from us
-          ct state {established, related} accept
-
-          # Allow DNS (kresd)
-          ip daddr 10.201.5.53 udp dport domain accept
-
-          # kerberos.pie.cri.epita.fr
-          ip daddr 91.243.117.186 tcp dport {kerberos,kerberos-adm} accept
-          # ldap.pie.cri.epita.fr
-          ip daddr 91.243.117.185 tcp dport {ldap,ldaps} accept
-          # internal IP address for LDAP and Kerberos
-          ip daddr 10.201.5.54 tcp dport {ldap,ldaps,kerberos,kerberos-adm} accept
-
-          # Git Exam CRI
-          ip daddr 10.201.5.122 tcp dport ssh accept
-
-          # Git Exam Forge
-          ip daddr 10.201.5.123 tcp dport ssh accept
-
-          # NTP
-          ip daddr 10.201.5.2 udp dport ntp accept
-
-          # Salt
-          ip daddr 10.201.5.0/24 tcp dport {4505,4506} accept
-
-          meta skuid root accept
-          tcp dport {http, https} meta skuid privoxy accept
-
-          drop
-        }
-
-        chain forward {
-          type filter hook forward priority 0;
-          drop
-        }
-      }
-    '';
-  };
-
-  systemd.services.nftables = {
-    serviceConfig = {
-      Restart = "on-failure";
-    };
-  };
 
   cri.privoxy.enable = true;
 
