@@ -97,6 +97,7 @@ in
 
           # accept any localhost traffic
           iifname lo accept
+          oifname lo accept
           ip daddr 127.0.0.0/8 accept
 
           # accept traffic originated from us
