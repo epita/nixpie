@@ -10,30 +10,30 @@
 
   environment.systemPackages = with pkgs; [
     #spot-lrde
-    tina
+    #tina
   ];
 
   cri.packages.pythonPackages.nixosPieCustom = p: with p; [
-    networkx
-    osmnx
+    #networkx
+    #osmnx
   ];
 
   cri.packages = {
     pkgs = {
       cpp.enable = true;
       dev.enable = true;
-      devFunctional.enable = true;
-      java.enable = true;
-      js.enable = true;
-      podman.enable = true;
-      prpa.enable = true;
-      prolog.enable = true;
-      spider.enable = true;
-      sql.enable = true;
-      thl.enable = true;
-      tiger.enable = true;
+      #devFunctional.enable = true;
+      #java.enable = true;
+      #js.enable = true;
+      #podman.enable = true;
+      #prpa.enable = true;
+      #prolog.enable = true;
+      #spider.enable = true;
+      #sql.enable = true;
+      #thl.enable = true;
+      #tiger.enable = true;
     };
   };
 
-  cri.nswrappers.enable = true;
+  #cri.nswrappers.enable = true;
 }
