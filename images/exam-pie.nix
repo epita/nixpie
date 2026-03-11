@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -17,6 +17,16 @@ with lib;
       tiger.enable = mkForce false;
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    (vscode-with-extensions.override {
+      vscodeExtensions = with vscode-extensions; [
+        ms-vscode.cpptools
+        ms-vscode.cmake-tools
+        vscodevim.vim
+      ];
+    })
+  ];
 
   cri.sddm.title = lib.mkForce "Exam PIE";
 }

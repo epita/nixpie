@@ -9,6 +9,7 @@
     environment.systemPackages = with pkgs; [
       httplib
       yaml-cpp
+      jetbrains.clion
     ];
   };
 }
