@@ -20,7 +20,7 @@ with lib;
       };
       fakestat = true;
       packages = {
-        module = config.boot.kernelPackages.openafs;
+        module = (inputs.pkgset.pkgsUnstable.linuxPackagesFor config.boot.kernelPackages.kernel).openafs;
         programs = getBin inputs.pkgset.pkgsUnstable.openafs;
       };
     };
