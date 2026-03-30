@@ -65,6 +65,7 @@
 
       # vcs
       git
+      git-lfs
       pre-commit
       subversion
       tig
