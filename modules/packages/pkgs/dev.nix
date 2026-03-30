@@ -8,6 +8,11 @@
   config = lib.mkIf config.cri.packages.pkgs.dev.enable {
     cri.packages.python.dev.enable = lib.mkDefault true;
 
+    programs.git = {
+      enable = true;
+      lfs.enable = true;
+    };
+
     environment.systemPackages = with pkgs; [
       # build systems
       autoconf
@@ -64,8 +69,6 @@
       perlPackages.PerlIOgzip
 
       # vcs
-      git
-      git-lfs
       pre-commit
       subversion
       tig
