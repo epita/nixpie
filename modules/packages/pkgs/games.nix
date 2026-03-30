@@ -13,7 +13,6 @@
       openttd
       superTuxKart
       teeworlds
-      warsow
       wesnoth
     ];
   };
