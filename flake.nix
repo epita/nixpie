@@ -171,11 +171,11 @@
           packages = (import ./pkgs { inherit lib pkgs; })
             // (import ./images/docker.nix (recursiveUpdate inputs { inherit lib system; pkgset = pkgset system; }))
             // {
-              package-docs = import ./lib/make-package-docs.nix {
-                inherit pkgs lib;
-                nixosConfigurations = self.nixosConfigurations;
-              };
+            package-docs = import ./lib/make-package-docs.nix {
+              inherit pkgs lib;
+              nixosConfigurations = self.nixosConfigurations;
             };
+          };
         });
     in
     recursiveUpdate multiSystemOutputs anySystemOutputs;

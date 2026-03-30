@@ -75,11 +75,13 @@ let
   mkImagePage = imageName: config:
     let
       packages = getPackages config;
-      packageRows = lib.concatMapStringsSep "\n" (pkg: ''
-        <tr>
-          <td>${lib.escapeXML pkg.name}</td>
-          <td class="version">${lib.escapeXML pkg.version}</td>
-        </tr>'') packages;
+      packageRows = lib.concatMapStringsSep "\n"
+        (pkg: ''
+          <tr>
+            <td>${lib.escapeXML pkg.name}</td>
+            <td class="version">${lib.escapeXML pkg.version}</td>
+          </tr>'')
+        packages;
     in
     pkgs.writeText "${imageName}.html" ''
       <!DOCTYPE html>
