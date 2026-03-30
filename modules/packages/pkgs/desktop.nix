@@ -91,6 +91,9 @@ in
 
       # back to home
       discord
+
+      # accessibility
+      kdePackages.kmag
     ];
   };
 }
