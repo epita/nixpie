@@ -142,7 +142,7 @@ pages:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - nix build .#package-docs -o result
-    - cp -r result public
+    - cp -Lrv result public
   artifacts:
     paths:
       - public
