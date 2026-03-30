@@ -132,3 +132,17 @@ nix-docker:
   needs: []
   variables:
     IMAGE: nix
+
+# GitLab Pages - Package Documentation
+
+pages:
+  extends: .default
+  stage: misc
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - nix build .#package-docs -o result
+    - cp -r result public
+  artifacts:
+    paths:
+      - public
