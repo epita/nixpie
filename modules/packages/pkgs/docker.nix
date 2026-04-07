@@ -10,13 +10,12 @@
       docker-compose
     ];
 
-    virtualisation.docker.enable = true;
-
-    environment.etc."security/group.conf".text = ''
-      *;*;*;Al0000-2400;docker
-    '';
-    security.pam.services.sddm.text = lib.mkBefore ''
-      auth  required                    pam_group.so
-    '';
+    virtualisation.docker = {
+      enable = true;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
+    };
   };
 }
