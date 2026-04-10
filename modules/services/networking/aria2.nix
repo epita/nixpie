@@ -25,7 +25,8 @@ with lib;
 
     systemd.services.aria2 = {
       description = "aria2";
-      after = [ "network.target" ];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
