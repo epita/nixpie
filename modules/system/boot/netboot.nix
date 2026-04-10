@@ -303,6 +303,8 @@ with lib;
       name = "${imageName}.squashfs";
       storeContents = singleton config.system.build.toplevel;
       stage2Init = "${config.system.build.toplevel}/init";
+      comp = "zstd -Xcompression-level 15";
+      blockSize = "256K";
     };
 
     # Torrent file to download the squashfs
