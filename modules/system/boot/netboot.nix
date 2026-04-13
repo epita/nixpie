@@ -355,6 +355,13 @@ with lib;
       cp ${config.system.build.initrd} $out/${imageName}_initrd
       cp ${config.system.build.torrent} $out/${imageName}.torrent
       cp ${config.system.build.squashfs}/${config.system.build.squashfs.name} $out/${imageName}.squashfs
+
+      echo "${config.system.nixos.label}" > $out/${imageName}.version
+
+      sha256sum $out/${imageName}_bzImage > $out/${imageName}_bzImage.sha256sum
+      sha256sum $out/${imageName}_initrd > $out/${imageName}_initrd.sha256sum
+      sha256sum $out/${imageName}.torrent > $out/${imageName}.torrent.sha256sum
+      sha256sum $out/${imageName}.squashfs > $out/${imageName}.squashfs.sha256sum
     '';
   };
 }
