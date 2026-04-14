@@ -77,11 +77,6 @@
     callPackage = final: prev: final.python3Packages.callPackage;
   };
 
-  dtale = {
-    path = ../development/python-modules/dtale;
-    callPackage = final: prev: final.python3Packages.callPackage;
-  };
-
   jupyter-dash = {
     path = ../development/python-modules/jupyter-dash;
     callPackage = final: prev: final.python3Packages.callPackage;
