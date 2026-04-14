@@ -61,7 +61,7 @@ let
     }
     tr:hover { background: #f5f5f5; }
     .version { font-family: monospace; color: #666; }
-    .count { color: #666; font-size: 0.9rem; }
+    .info { color: #666; font-size: 0.9rem; }
     footer {
       margin-top: 2rem;
       padding-top: 1rem;
@@ -96,7 +96,8 @@ let
         <div class="container">
           <p><a href="index.html">&larr; Back to all images</a></p>
           <h1>${imageName}</h1>
-          <p class="count">${toString (builtins.length packages)} packages</p>
+          <p class="info">Version: ${config.system.nixos.label}</p>
+          <p class="info">${toString (builtins.length packages)} packages</p>
           <table>
             <thead>
               <tr>
