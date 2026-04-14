@@ -138,10 +138,12 @@ nix-docker:
 pages:
   extends: .default
   stage: misc
+  variables:
+    NIXPIE_LABEL_VERSION: "$(git rev-parse --short HEAD)"
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - nix build .#package-docs -o result
+    - nix build -L --impure .#package-docs -o result
     - cp -Lrv result public
   artifacts:
     paths:
