@@ -18,7 +18,6 @@
       havm
       libtool
       libxslt
-      llvmPackages_18.llvm
       nolimips
       perl
       clang32-alias
