@@ -2,14 +2,13 @@
 
 let
   franceIOIPkgs = with pkgs; [
-    codeblocksFull
     ddd
-    eclipses.eclipse-sdk
-    gedit
-    gource
-    kdePackages.kate
-    sublime3
-    vscode
+    (vscode-with-extensions.override {
+      vscodeExtensions = with vscode-extensions; [
+        ms-vscode.cpptools
+      ];
+    })
+    thonny
   ];
 in
 {
