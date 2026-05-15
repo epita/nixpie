@@ -8,6 +8,7 @@
 , # Compression parameters.
   # For zstd compression you can use "zstd -Xcompression-level 6".
   comp ? "xz -Xdict-size 100%"
+, blockSize ? "1048576"
 , name ? "nix-store.squashfs"
 , # Stage 2 init executable to write in a file in the squashfs to access it
   # from stage one
@@ -34,7 +35,7 @@ stdenv.mkDerivation rec {
     mksquashfs \
       nix-path-registration stage2Init $(cat $closureInfo/store-paths) \
       $out/${name} \
-      -keep-as-directory -all-root -b 1048576 -comp ${comp} \
+      -keep-as-directory -all-root -b ${blockSize} -comp ${comp} \
       -reproducible -no-fragments
   '';
 }
