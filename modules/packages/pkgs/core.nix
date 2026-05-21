@@ -12,6 +12,7 @@
       file
       git
       htop
+      home-manager
       iftop
       iotop
       iproute2
