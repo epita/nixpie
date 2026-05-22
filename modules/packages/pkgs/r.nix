@@ -13,7 +13,10 @@ in
   config = lib.mkIf config.cri.packages.pkgs.r.enable {
     environment.systemPackages = with pkgs; [
       (rWrapper.override { packages = nixpieRPackages; })
-      (rstudioWrapper.override { packages = nixpieRPackages; })
+      (rstudioWrapper.override {
+        packages = nixpieRPackages;
+        rstudio = rstudio-server;
+      })
     ];
   };
 }
