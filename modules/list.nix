@@ -16,6 +16,7 @@
 
   audio = ./services/audio/alsa.nix;
   bluetooth = ./services/hardware/bluetooth.nix;
+  bluetooth-exam = ./services/hardware/bluetooth-exam.nix;
   afs = ./services/network-filesystems/openafs/client.nix;
   aria2 = ./services/networking/aria2.nix;
   privoxy = ./services/networking/privoxy.nix;

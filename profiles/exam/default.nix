@@ -164,4 +164,6 @@ in
       done
     '';
   };
+
+  cri.bluetooth-exam.enable = true;
 }
