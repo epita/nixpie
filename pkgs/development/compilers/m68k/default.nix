@@ -5,7 +5,7 @@ stdenv.mkDerivation rec {
   version = "1.0";
 
   src = builtins.fetchTarball {
-    url = "https://s3.cri.epita.fr/cri-nico-uploads/TP_68000_Ubuntu64.tar.gz";
+    url = "https://gitlab.cri.epita.fr/forge/infra/nixpie/-/package_files/21602/download";
     sha256 = "sha256-ksbBoLXGJk6uABv5ZQQGexwZk2ryPW9s7A8FU84XdQw=";
   };
 
