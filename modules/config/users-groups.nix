@@ -35,7 +35,7 @@ let
     export PATH="${pkgs.coreutils}/bin:/run/wrappers/bin:/run/current-system/sw/bin:$PATH"
 
     if [ "$PAM_USER" = "epita" ]; then
-      curl --fail-with-body --silent https://fleet.pie.cri.epita.fr/pxe/epita-user-allowed/
+      curl --fail-with-body --silent --max-time 5 https://fleet.pie.cri.epita.fr/pxe/kvconfig/allow-guest-account/
       if [ $? -ne 0 ]; then
         echo "You are not allowed to login as epita user."
         exit 1
