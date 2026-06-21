@@ -6,7 +6,7 @@ stdenv.mkDerivation rec {
 
   src = builtins.fetchTarball {
     url = "https://gitlab.cri.epita.fr/forge/infra/nixpie/-/package_files/21602/download";
-    sha256 = "sha256-ksbBoLXGJk6uABv5ZQQGexwZk2ryPW9s7A8FU84XdQw=";
+    sha256 = "sha256-1TWeG4xx1Y4XtZ5QiDoVtn8cnMRNcgH5isNkZHpb2Ac=";
   };
 
   nativeBuildInputs = [ autoPatchelfHook wrapQtAppsHook ];
