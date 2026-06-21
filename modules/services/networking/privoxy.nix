@@ -20,7 +20,7 @@ in
       enable = mkEnableOption "Whether to enable privoxy";
       actionsEndpoint = mkOption {
         type = types.str;
-        default = "https://s3.cri.epita.fr/cri-fleet-manager/privoxy.actions";
+        default = "https://fleet.pie.cri.epita.fr/pxe/privoxy-config/";
         description = "privoxy dynamic action config endpoint";
       };
     };
@@ -76,7 +76,7 @@ in
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
       preStart = ''
-        ${pkgs.curl}/bin/curl --fail -o ${privoxyActionsPath} "${config.cri.privoxy.actionsEndpoint}"
+        ${pkgs.curl}/bin/curl --fail --max-time 10 -o ${privoxyActionsPath} "${config.cri.privoxy.actionsEndpoint}"
       '';
       serviceConfig = {
         Restart = "on-failure";
