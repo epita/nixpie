@@ -18,7 +18,7 @@ print_defaults
 
 echoInfo "Starting pipeline generation..."
 
-allImages="$(nix_run list-images | grep -v "-local" | xargs)"
+allImages="$(nix_run list-images | grep -v -- "-local" | xargs)"
 changedImages=""
 if [ -n "${ALL_IMAGES:-}" ]; then
   changedImages="$allImages"
