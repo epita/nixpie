@@ -103,8 +103,8 @@ in
           # accept traffic originated from us
           ct state {established, related} accept
 
-          # Allow DNS (kresd)
-          ip daddr 10.201.5.53 udp dport domain accept
+          # Allow DNS (PIE exam CoreDNS)
+          ip daddr 10.201.5.55 udp dport domain accept
 
           # kerberos.pie.cri.epita.fr
           ip daddr 91.243.117.186 tcp dport {kerberos,kerberos-adm} accept
