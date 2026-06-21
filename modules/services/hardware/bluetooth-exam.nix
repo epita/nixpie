@@ -10,7 +10,7 @@ in
       enable = mkEnableOption "Whether to enable conditional bluetooth for exam.";
       endpoint = mkOption {
         type = types.str;
-        default = "https://s3.cri.epita.fr/cri-fleet-manager/exam-bluetooth.enabled";
+        default = "https://fleet.pie.cri.epita.fr/pxe/kvconfig/allow-bluetooth-exam/";
         description = "Endpoint to check bluetooth activation";
       };
     };
@@ -25,9 +25,8 @@ in
         Type = "oneshot";
         RemainAfterExit = true;
         ExecStart = "${pkgs.writeShellScript "bluetooth-gate" ''
-          response=$(${pkgs.curl}/bin/curl --fail --max-time 5 \
-            ${cfg.endpoint})
-          [ "$response" = "true" ]
+          ${pkgs.curl}/bin/curl --fail --max-time 5 \
+            "${cfg.endpoint}"
         ''}";
       };
     };
