@@ -4,6 +4,7 @@ set -euo pipefail
 # delay in seconds before shutdown after no user is logged
 DELAY="${DELAY:-7200}"
 IDLE_SINCE_PATH="/run/nixpie-idle-shutdown"
+IDLE_PREVENT_ENDPOINT="${IDLE_PREVENT_ENDPOINT:-}"
 
 if ! grep -q 'sm\.cri\.epita\.fr' /etc/resolv.conf ; then
   echo "Not in machine room"
@@ -29,6 +30,11 @@ fi
 if [ "$(( CURRENT_TIME - IDLE_SINCE ))" -lt "$DELAY" ] ; then
   echo "Machine has not been idling for enough time. Exiting."
   exit
+fi
+
+if ! curl --silent --fail --max-time 10 "$IDLE_PREVENT_ENDPOINT" ; then
+    echo "Idle prevent API forbids shutting down. Exiting."
+    exit
 fi
 
 echo "Machine has been idling for too long, shutting down"
