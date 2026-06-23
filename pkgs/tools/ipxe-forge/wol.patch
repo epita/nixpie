@@ -1,8 +1,8 @@
 diff --git a/src/config/config.c b/src/config/config.c
-index 6bcd3c1c..6575a4ae 100644
+index e49f236a3..7596ebb1e 100644
 --- a/src/config/config.c
 +++ b/src/config/config.c
-@@ -290,6 +290,9 @@ REQUIRE_OBJECT ( profstat_cmd );
+@@ -293,6 +293,9 @@ REQUIRE_OBJECT ( profstat_cmd );
  #ifdef NTP_CMD
  REQUIRE_OBJECT ( ntp_cmd );
  #endif
@@ -13,23 +13,23 @@ index 6bcd3c1c..6575a4ae 100644
  REQUIRE_OBJECT ( cert_cmd );
  #endif
 diff --git a/src/config/general.h b/src/config/general.h
-index f936e874..ea208311 100644
+index 683c02ffb..9c4558ff0 100644
 --- a/src/config/general.h
 +++ b/src/config/general.h
-@@ -162,6 +162,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
+@@ -164,6 +164,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
  //#define PARAM_CMD		/* Request parameter commands */
  //#define NEIGHBOUR_CMD		/* Neighbour management commands */
  //#define PING_CMD		/* Ping command */
-+//#define WOL_CMD   	/* Wake-on-Lan command */
++//#define WOL_CMD		/* Wake-on-Lan command */
  //#define CONSOLE_CMD		/* Console command */
  //#define IPSTAT_CMD		/* IP statistics commands */
  //#define PROFSTAT_CMD		/* Profiling commands */
 diff --git a/src/hci/commands/wol_cmd.c b/src/hci/commands/wol_cmd.c
 new file mode 100644
-index 00000000..1501d972
+index 000000000..9421cf005
 --- /dev/null
 +++ b/src/hci/commands/wol_cmd.c
-@@ -0,0 +1,143 @@
+@@ -0,0 +1,140 @@
 +/*
 + * Copyright (C) 2016 Marin Hannache <mareo@cri.epita.net>.
 + *
@@ -169,12 +169,9 @@ index 00000000..1501d972
 +}
 +
 +/** Wake-on-Lan command */
-+struct command wol_command __command = {
-+	.name = "wol",
-+	.exec = wol_exec,
-+};
++COMMAND ( wol, wol_exec );
 diff --git a/src/include/ipxe/errfile.h b/src/include/ipxe/errfile.h
-index fcb4f0e6..a15caa39 100644
+index 0c28810ea..ab4069d71 100644
 --- a/src/include/ipxe/errfile.h
 +++ b/src/include/ipxe/errfile.h
 @@ -22,6 +22,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
@@ -185,9 +182,9 @@ index fcb4f0e6..a15caa39 100644
  
  /** @} */
  
-@@ -420,6 +421,8 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
- #define ERRFILE_widget_ui	      ( ERRFILE_OTHER | 0x00620000 )
- #define ERRFILE_form_ui		      ( ERRFILE_OTHER | 0x00630000 )
+@@ -444,6 +445,8 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
+ #define ERRFILE_weierstrass	      ( ERRFILE_OTHER | 0x00660000 )
+ #define ERRFILE_efi_cacert	      ( ERRFILE_OTHER | 0x00670000 )
  
 +#define ERRFILE_wol_cmd		      ( ERRFILE_FORGE | 0x00000000 )
 +
