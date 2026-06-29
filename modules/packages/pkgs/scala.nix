@@ -12,12 +12,11 @@
 
     environment.systemPackages = with pkgs; [
       sbt
-      (vscode-with-extensions.override {
-        vscode = vscodium;
-        vscodeExtensions = with vscode-extensions; [
-          scala-lang.scala
-        ];
-      })
+    ];
+
+    cri.packages.pkgs.codium.enable = true;
+    cri.packages.pkgs.codium.extensions = with pkgs.vscode-extensions; [
+      scala-lang.scala
     ];
   };
 }

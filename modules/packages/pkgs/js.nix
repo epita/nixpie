@@ -11,5 +11,11 @@
       yarn
       #postman
     ];
+
+    cri.packages.pkgs.codium.enable = true;
+    cri.packages.pkgs.codium.extensions = with pkgs.vscode-extensions; [
+      esbenp.prettier-vscode
+      dbaeumer.vscode-eslint
+    ];
   };
 }
