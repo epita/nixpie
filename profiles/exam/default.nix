@@ -166,4 +166,20 @@ in
   };
 
   cri.bluetooth-exam.enable = true;
+
+  # This is dirty but necessary:
+  # In exam, DHCP changes from the classic DNS resolver to a restricted exam DNS
+  # resolver. This exam resolver is the only allowed resolved (refer to the
+  # firewall config just above). If for any reason DHCP propagates the wrong
+  # resolver, DNS resolving will simply not be possible but we still need to be
+  # able to resolve a few technical domains for configuration.
+  # This also avoids stalled idling machines: when the exam is finished the
+  # classic resolver is provided again, which is blocked. So the idle script
+  # check will not be able to resolve its API, because firewall forbids it (curl
+  # uses nscd to resolve DNS, and it runs as a non-privileged user which is not
+  # allowed by firewall, only root can bypass firewall).
+  networking.hosts = {
+    "10.201.5.80" = [ "fleet.pie.cri.epita.fr" ];
+    "10.201.5.45" = [ "salt.pie.cri.epita.fr" ];
+  };
 }
