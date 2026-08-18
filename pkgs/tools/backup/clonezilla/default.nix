@@ -10,7 +10,7 @@
 , coreutils
 , dialog
 , dosfstools
-, ecryptfs
+, gocryptfs
 , file
 , gptfdisk
 , gzip
@@ -108,7 +108,7 @@ buildFHSEnv {
     coreutils
     dialog
     dosfstools
-    ecryptfs
+    gocryptfs
     file
     gptfdisk
     gzip
