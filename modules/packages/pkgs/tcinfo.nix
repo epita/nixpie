@@ -26,21 +26,21 @@ let
   # read-only. This wrapper makes sure the file is created before starting the
   # application and that it is writable (it makes the errors disappear but
   # breaks authentication, so it needs to be disabled in the GUI after starting)
-  neo4j-desktop-wrapper = pkgs.writeShellScriptBin "neo4j-desktop" ''
-    set -e
+  #neo4j-desktop-wrapper = pkgs.writeShellScriptBin "neo4j-desktop" ''
+  #  set -e
 
-    CONFIG="$HOME/.config/Neo4j Desktop"
+  #  CONFIG="$HOME/.config/Neo4j Desktop"
 
-    if [ ! -d "$CONFIG" ]; then
-      PATCH_DIR="$CONFIG/Application/relate-data/plugin-versions"
-      mkdir -p "$PATCH_DIR"
-      PATCH_FILE="$PATCH_DIR/neo4j-jwt-addon.json"
-      touch "$PATCH_FILE"
-      chmod 644 "$PATCH_FILE"
-    fi
+  #  if [ ! -d "$CONFIG" ]; then
+  #    PATCH_DIR="$CONFIG/Application/relate-data/plugin-versions"
+  #    mkdir -p "$PATCH_DIR"
+  #    PATCH_FILE="$PATCH_DIR/neo4j-jwt-addon.json"
+  #    touch "$PATCH_FILE"
+  #    chmod 644 "$PATCH_FILE"
+  #  fi
 
-    exec ${pkgs.neo4j-desktop}/bin/neo4j-desktop $@
-  '';
+  #  exec ${pkgs.neo4j-desktop}/bin/neo4j-desktop $@
+  #'';
 in
 {
   options = {
@@ -62,7 +62,7 @@ in
       mongosh
       # Neo4j
       neo4j
-      neo4j-desktop-wrapper
+      #neo4j-desktop-wrapper
       kubectl
     ];
   };
