@@ -2,25 +2,25 @@
 
 # Those wrappers are needed to make the packages work with the PIE environment
 let
-  # Elastic wrappers initiates the ES_HOME environment variable if not set
-  # It also copies the elasticsearch store home from the nix store and places it
-  # in the ES_HOME directory (keeping only what is needed) in order to make it
+  # OpenSearch wrapper initiates the OS_HOME environment variable if not set
+  # It also copies the opensearch store home from the nix store and places it
+  # in the OS_HOME directory (keeping only what is needed) in order to make it
   # writable
-  elastic-wrapper = pkgs.writeShellScriptBin "elasticsearch" ''
+  opensearch-wrapper = pkgs.writeShellScriptBin "opensearch" ''
     set -e
 
-    if [ -z "$ES_HOME" ]; then
-      export ES_HOME=$HOME/.elasticsearch
+    if [ -z "$OS_HOME" ]; then
+      export OS_HOME=$HOME/.opensearch
     fi
 
-    if [ ! -d "$ES_HOME" ]; then
-      mkdir -p $ES_HOME
-      cp -r ${pkgs.elasticsearch}/{config,lib,modules,plugins} $ES_HOME/
-      chmod +w -R $ES_HOME/
-      mkdir -p $ES_HOME/logs
+    if [ ! -d "$OS_HOME" ]; then
+      mkdir -p $OS_HOME
+      cp -r ${pkgs.opensearch}/{config,lib,modules,plugins} $OS_HOME/
+      chmod +w -R $OS_HOME/
+      mkdir -p $OS_HOME/logs
     fi
 
-    exec ${pkgs.elasticsearch}/bin/elasticsearch $@
+    exec ${pkgs.opensearch}/bin/opensearch $@
   '';
   # Neo4j desktop has a problem when creating the jwt addon file by making it
   # read-only. This wrapper makes sure the file is created before starting the
@@ -54,8 +54,8 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      # Elastic
-      elastic-wrapper
+      # OpenSearch
+      opensearch-wrapper
       # MongoDB
       mongodb-ce
       mongodb-tools
