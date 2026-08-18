@@ -13,5 +13,8 @@ with lib;
     services.xserver.desktopManager.xfce = {
       enable = true;
     };
+
+    # GNOME GCR SSH agent is used instead here.
+    programs.ssh.startAgent = lib.mkForce false;
   };
 }
