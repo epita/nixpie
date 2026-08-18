@@ -7,7 +7,7 @@
 
   config = lib.mkIf config.cri.packages.pkgs.js.enable {
     environment.systemPackages = with pkgs; [
-      nodejs_20
+      nodejs
       yarn
       #postman
     ];
