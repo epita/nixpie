@@ -116,7 +116,7 @@ with lib;
     info.enable = true;
     man = {
       enable = true;
-      generateCaches = true;
+      cache.enable = true;
     };
     nixos.enable = true;
   };
