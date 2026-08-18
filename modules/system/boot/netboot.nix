@@ -72,7 +72,7 @@ with lib;
       "/nix/.ro-store" = {
         fsType = "squashfs";
         device = "../${config.netboot.torrent.mountPoint}/${imageName}.squashfs";
-        options = [ "loop" ];
+        options = [ "loop" "x-systemd.requires=aria2-fetch-squashfs.service" ];
         neededForBoot = true;
       };
 
@@ -87,9 +87,11 @@ with lib;
         fsType = "overlay";
         device = "overlay";
         options = [
-          "lowerdir=/nix/.ro-store"
-          "upperdir=/nix/.rw-store/store"
-          "workdir=/nix/.rw-store/work"
+          "lowerdir=/sysroot/nix/.ro-store"
+          "upperdir=/sysroot/nix/.rw-store/store"
+          "workdir=/sysroot/nix/.rw-store/work"
+          "x-systemd.requires=sysroot-nix-.ro\\x2dstore.mount"
+          "x-systemd.requires=sysroot-nix-.rw\\x2dstore.mount"
         ];
       };
 
@@ -108,6 +110,7 @@ with lib;
     swapDevices = mkIf config.netboot.swap.enable [{ label = "swap"; }];
 
     networking.useDHCP = mkForce true;
+
     boot.initrd = {
       availableKernelModules = [
         # To mount /nix/store
@@ -162,137 +165,208 @@ with lib;
         "overlay"
       ];
 
-      # For torrent downloading
       network.enable = true;
-      network.udhcpc.extraArgs = [ "-t 10" "-A 10" ];
-      extraUtilsCommands = ''
-        copy_bin_and_libs ${pkgs.aria2}/bin/aria2c
-        copy_bin_and_libs ${pkgs.dumptorrent}/bin/dumptorrent
-        copy_bin_and_libs ${pkgs.rng-tools}/bin/rngd
-        copy_bin_and_libs ${pkgs.e2fsprogs}/bin/mke2fs
-        copy_bin_and_libs ${pkgs.e2fsprogs}/bin/mkfs.ext4
-      '';
+
+      systemd = {
+        network.enable = true;
+
+        emergencyAccess = true;
+
+        storePaths = [
+          "${pkgs.curl}/bin/curl"
+          "${pkgs.aria2}/bin/aria2c"
+          "${pkgs.dumptorrent}/bin/dumptorrent"
+          "${pkgs.rng-tools}/bin/rngd"
+          "${pkgs.e2fsprogs}/bin/mke2fs"
+          "${pkgs.e2fsprogs}/bin/mkfs.ext4"
+        ];
+
+        services = {
+          prepare-rw-nix-store = {
+            description = "Prepare read-write Nix store partition";
+
+            requiredBy = [ "initrd.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+
+            script = ''
+              nixStoreRwPartition="/dev/disk/by-partlabel/nix-store-rw"
+              if [[ -e $nixStoreRwPartition ]]; then
+                if ! ${pkgs.e2fsprogs}/bin/mkfs.ext4 -F -L nix-store-rw /dev/disk/by-partlabel/nix-store-rw; then
+                  echo "Failed to cleanup nix-store-rw partition"
+                fi
+              else
+                echo "No nix-store-rw partition found."
+              fi
+            '';
+          };
+          aria2-fetch-squashfs = {
+            description = "Fetch Nix store squashfs with torrent";
+
+            wants = [ "network-online.target" ];
+            after = [ "network-online.target" ];
+            before = [
+              "initrd-find-nixos-closure.service"
+            ];
+            requiredBy = [ "initrd.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+
+            path = with pkgs; [
+              coreutils
+              gawk
+              gnugrep
+              util-linux
+              procps
+              rng-tools
+              curl
+              dumptorrent
+              aria2
+            ];
+
+            script = ''
+              imageName="${imageName}"
+              torrentFile="$imageName.torrent"
+              torrentFilePath="/${config.system.build.torrent.name}"
+              squashfsName="$imageName.squashfs"
+
+              torrentDir=${config.netboot.torrent.mountPoint}
+              targetTorrentDir=$targetRoot/$torrentDir
+              mkdir -p $torrentDir $targetRoot $targetTorrentDir
+
+              mount -o bind,ro $torrentDir $targetTorrentDir
+
+              bootcachePartition="${config.netboot.bootcache.partition}"
+              ${optionalString (!config.netboot.bootcache.enable) ''
+                bootcachePartition="/dev/invalid"
+              ''}
+
+              if [[ -e $bootcachePartition ]]; then
+                if ! mount -t ext4 $bootcachePartition $torrentDir; then
+                  echo "Failed to mount bootcache, falling back to tmpfs..."
+                  mount -t tmpfs tmpfs $torrentDir
+                fi
+              else
+                echo "No bootcache partition found, falling back to tmpfs..."
+                mount -t tmpfs tmpfs $torrentDir
+              fi
+
+              curl -o "$torrentFilePath" "${config.netboot.torrent.webseed.url}$torrentFile"
+
+              # Compute needed space to download squashfs in cache
+              torrentSize=$(dumptorrent "$torrentFilePath" | grep Size | awk '{ print $2 }')
+              downloadedImageSize=$(stat -c %s $torrentDir/$squashfsName 2>/dev/null || echo 0)
+              neededSpace=$(((torrentSize - downloadedImageSize + 1000) / 1024))
+              getAvailableCacheSpace() {
+                  df -P "$torrentDir" | tail -n1 | awk '{ print $4 }'
+              }
+              availableCacheSpace=$(getAvailableCacheSpace)
+
+              # Delete images until there is enough space to download our squashfs
+              # Images are deleted starting from the oldest
+              while [ "$availableCacheSpace" -lt "$neededSpace" ] && ls -l "$torrentDir" | grep -q 'squashfs$'; do
+                oldestImage=$(stat -c "%Y %n" "$torrentDir"/*.squashfs | sort | head -1 | sed 's/[0-9]\+ //')
+                oldestImageSize=$(stat -c "%s" "''${oldestImage%.*}".* | awk '{s+=$1} END {printf "%.0f", s}')
+                echo "Deleting $oldestImage to free up $oldestImageSize bytes"
+                rm -f  -- "''${oldestImage%.*}".*
+                sync
+
+                availableCacheSpace=$(getAvailableCacheSpace)
+              done
+
+              rngd >&2
+
+              aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"
+              aria2_tracker="--bt-tracker-connect-timeout=20 --bt-tracker-timeout=20"
+              aria2_summary="--summary-interval=60"
+              aria2_nodht="--enable-dht=false --enable-dht6=false"
+              aria2_noseed="--seed-time=0 --seed-ratio=0"
+              aria2_opts="$aria2_base $aria2_tracker $aria2_summary $aria2_nodht $aria2_noseed"
+
+              cp "$torrentFilePath" $torrentDir/$torrentFile
+
+              aria2c $aria2_opts --dir="$torrentDir" --index-out=1="$squashfsName" $torrentDir/$torrentFile > /dev/console
+
+              if ! [ -f "$torrentDir/$squashfsName" ]; then
+                ls -la $torrentDir
+                echo "Torrent download of '$squashfsName' failed!"
+                fail
+              fi
+
+              kill -9 $(pidof rngd) || true
+            '';
+          };
+
+          # Taken from nixos/modules/system/boot/systemd/initrd.nix
+          # Edited to look for closure path in the stage2Init file in squashfs
+          # instead of using init= kernel parameter
+          initrd-find-nixos-closure = {
+            script = # bash
+              lib.mkForce ''
+                set -uo pipefail
+                export PATH="/bin:${
+                  lib.makeBinPath [
+                    config.boot.initrd.systemd.package.util-linux
+                    config.system.nixos-init.package
+                  ]
+                }"
+
+                closure=$(cat /sysroot/nix/store/stage2Init)
+
+                # Sanity check
+                if [ -z "''${closure:-}" ]; then
+                  echo 'No init closure found in squashfs' >&2
+                  exit 1
+                fi
+
+                # Resolve symlinks in the init parameter. We need this for some boot loaders
+                # (e.g. boot.loader.generationsDir).
+                closure="$(resolve-in-root /sysroot "$closure")"
+
+                # Assume the directory containing the init script is the closure.
+                closure="$(dirname "$closure")"
+
+                ln --symbolic "$closure" /nixos-closure
+
+                echo 'NEW_INIT=' > /etc/switch-root.conf
+              '';
+          };
+        };
+      };
     };
 
-    ###
-    ### Commands to execute on boot to download the system and configure it
-    ### properly.
-    ###
+    # Taken from nixpkgs: nixos/modules/installer/netboot/netboot.nix
+    systemd.services.register-nix-paths = {
+      description = "Register Nix Store Paths";
+      unitConfig.DefaultDependencies = false;
+      wantedBy = [ "sysinit.target" ];
+      before = [
+        "sysinit.target"
+        "shutdown.target"
+        "nix-daemon.socket"
+        "nix-daemon.service"
+      ];
+      after = [ "local-fs.target" ];
+      conflicts = [ "shutdown.target" ];
+      restartIfChanged = false;
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      script = ''
+        # After booting, register the contents of the Nix store
+        # in the Nix database in the tmpfs.
+        ${lib.getExe' config.nix.package "nix-store"} --load-db < /nix/store/nix-path-registration
 
-    # Network is done in preLVMCommands, which means it is already set up when
-    # we get to postDeviceCommands
-    boot.initrd.postDeviceCommands =
-      let
-        nameservers = (concatMapStrings
-          (ns: ''echo "${ns}" >> /etc/resolv.conf\n'')
-          config.netboot.fallbackNameservers);
-      in
-      ''
-        if ! [ -f /etc/resolv.conf ]; then
-          # In case we didn't receive a nameserver from our DHCP
-          ${nameservers}
-        fi
-
-        nixStoreRwPartition="/dev/disk/by-partlabel/nix-store-rw"
-        if [[ -e $nixStoreRwPartition ]]; then
-          if ! mkfs.ext4 -F -L nix-store-rw /dev/disk/by-partlabel/nix-store-rw; then
-            echo "Failed to cleanup nix-store-rw partition"
-          fi
-        else
-          echo "No nix-store-rw partition found."
-        fi
-
-        imageName="${imageName}"
-        torrentFile="$imageName.torrent"
-        torrentFilePath="/${config.system.build.torrent.name}"
-        squashfsName="$imageName.squashfs"
-
-        torrentDir=${config.netboot.torrent.mountPoint}
-        targetTorrentDir=$targetRoot/$torrentDir
-        mkdir -p $torrentDir $targetRoot $targetTorrentDir
-
-        mount -o bind,ro $torrentDir $targetTorrentDir
-
-        bootcachePartition="${config.netboot.bootcache.partition}"
-        ${optionalString (!config.netboot.bootcache.enable) ''
-          bootcachePartition="/dev/invalid"
-        ''}
-
-        if [[ -e $bootcachePartition ]]; then
-          if ! mount -t ext4 $bootcachePartition $torrentDir; then
-            echo "Failed to mount bootcache, falling back to tmpfs..."
-            mount -t tmpfs tmpfs $torrentDir
-          fi
-        else
-          echo "No bootcache partition found, falling back to tmpfs..."
-          mount -t tmpfs tmpfs $torrentDir
-        fi
-
-        # Compute needed space to download squashfs in cache
-        torrentSize=$(dumptorrent "$torrentFilePath" | grep Size | awk '{ print $2 }')
-        downloadedImageSize=$(stat -c %s $torrentDir/$squashfsName 2>/dev/null || echo 0)
-        neededSpace=$(((torrentSize - downloadedImageSize + 1000) / 1024))
-        getAvailableCacheSpace() {
-            df -P "$torrentDir" | tail -n1 | awk '{ print $4 }'
-        }
-        availableCacheSpace=$(getAvailableCacheSpace)
-
-        # Delete images until there is enough space to download our squashfs
-        # Images are deleted starting from the oldest
-        while [ "$availableCacheSpace" -lt "$neededSpace" ] && ls -l "$torrentDir" | grep -q 'squashfs$'; do
-          oldestImage=$(stat -c "%Y %n" "$torrentDir"/*.squashfs | sort | head -1 | sed 's/[0-9]\+ //')
-          oldestImageSize=$(stat -c "%s" "''${oldestImage%.*}".* | awk '{s+=$1} END {printf "%.0f", s}')
-          echo "Deleting $oldestImage to free up $oldestImageSize bytes"
-          rm -f  -- "''${oldestImage%.*}".*
-          sync
-
-          availableCacheSpace=$(getAvailableCacheSpace)
-        done
-
-        rngd >&2
-
-        aria2_base="-V --file-allocation=prealloc --enable-mmap=true --bt-enable-lpd=true"
-        aria2_tracker="--bt-tracker-connect-timeout=20 --bt-tracker-timeout=20"
-        aria2_summary="--summary-interval=60"
-        aria2_nodht="--enable-dht=false --enable-dht6=false"
-        aria2_noseed="--seed-time=0 --seed-ratio=0"
-        aria2_opts="$aria2_base $aria2_tracker $aria2_summary $aria2_nodht $aria2_noseed"
-
-        cp "$torrentFilePath" $torrentDir/$torrentFile
-
-        aria2c $aria2_opts --dir="$torrentDir" --index-out=1="$squashfsName" $torrentDir/$torrentFile > /dev/console
-
-        if ! [ -f "$torrentDir/$squashfsName" ]; then
-          ls -la $torrentDir
-          echo "Torrent download of '$squashfsName' failed!"
-          fail
-        fi
-
-        kill -9 $(pidof rngd)
+        # nixos-rebuild also requires a "system" profile and an /etc/NIXOS tag.
+        touch /etc/NIXOS
+        ${lib.getExe' config.nix.package "nix-env"} -p /nix/var/nix/profiles/system --set /run/current-system
       '';
-
-    # Usually, stage2Init is passed using the init kernel command line argument
-    # but it would be inconvenient to manually change it to the right Nix store
-    # path every time we rebuild an image. We just set it here and forget about
-    # it.
-    # Also, we cannot directly reference the current system.build.toplevel, as
-    # it would cause an infinite recursion, so we have to put it in another
-    # system.build artefact, in this case our squashfs, and use it from
-    # there
-    boot.initrd.postMountCommands = ''
-      export stage2Init=$(cat $targetRoot/nix/store/stage2Init)
-    '';
-
-    boot.postBootCommands = ''
-      # After booting, register the contents of the Nix store
-      # in the Nix database in the tmpfs.
-      ${config.nix.package}/bin/nix-store --load-db < /nix/store/nix-path-registration
-
-      # nixos-rebuild also requires a "system" profile and an
-      # /etc/NIXOS tag.
-      touch /etc/NIXOS
-      ${config.nix.package}/bin/nix-env -p /nix/var/nix/profiles/system --set /run/current-system
-    '';
+    };
 
     ###
     ### Outputs from the configuration needed to boot.
@@ -320,39 +394,15 @@ with lib;
       '';
     };
 
-    # Using the prepend argument here for system.build.initialRamdisk doesn't
-    # work, so we just create an extra initrd and concatenate the two later.
-    system.build.extraInitrd = pkgs.makeInitrd {
-      name = "extraInitrd";
-      inherit (config.boot.initrd) compressor;
-
-      contents = [
-        {
-          # Include the torrent in the image to download the squashfs.
-          object = config.system.build.torrent;
-          symlink = "/${config.system.build.torrent.name}";
-        }
-        {
-          # Required by aria2.
-          object =
-            config.environment.etc."ssl/certs/ca-certificates.crt".source;
-          symlink = "/etc/ssl/certs/ca-certificates.crt";
-        }
-      ];
-    };
-
-    # Concatenate the required initrds.
-    system.build.initrd = pkgs.runCommand "initrd" { } ''
-      cat \
-        ${config.system.build.initialRamdisk}/initrd \
-        ${config.system.build.extraInitrd}/initrd \
-        > $out
-    '';
+    # Include the torrent in the image to download the squashfs.
+    #boot.initrd.systemd.contents."/${config.system.build.torrent.name}".source = config.system.build.torrent;
+    # Required by aria2.
+    boot.initrd.systemd.contents."/etc/ssl/certs/ca-certificates.crt".source = config.environment.etc."ssl/certs/ca-certificates.crt".source;
 
     system.build.toplevel-netboot = pkgs.runCommand "${imageName}.toplevel-netboot" { } ''
       mkdir -p $out
       cp ${config.system.build.kernel}/bzImage $out/${imageName}_bzImage
-      cp ${config.system.build.initrd} $out/${imageName}_initrd
+      cp ${config.system.build.initialRamdisk}/initrd $out/${imageName}_initrd
       cp ${config.system.build.torrent} $out/${imageName}.torrent
       cp ${config.system.build.squashfs}/${config.system.build.squashfs.name} $out/${imageName}.squashfs
 
