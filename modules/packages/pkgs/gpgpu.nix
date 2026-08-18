@@ -32,13 +32,13 @@
       linuxPackages.nvidia_x11
       m4
       # ncurses5 # makes system-path builder go into an infinite loop
-      xorg.libX11
-      xorg.libXext
-      xorg.libXi
-      xorg.libXmu
-      xorg.libXrandr
-      xorg.libXtst
-      xorg.libXv
+      libx11
+      libxext
+      libxi
+      libxmu
+      libxrandr
+      libxtst
+      libxv
       zlib
 
       jre8

@@ -75,9 +75,9 @@ in
       netcat-openbsd
       rlwrap
       rxvt-unicode
-      xorg.xeyes
-      xorg.xinit
-      xorg.xkill
+      xeyes
+      xinit
+      xkill
       xsel
       xterm
       x11vnc

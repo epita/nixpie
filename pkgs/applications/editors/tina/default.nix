@@ -24,7 +24,24 @@
 , nss
 , tcl-8_5
 , tk-8_5
-, xorg
+, libice
+, libsm
+, libx11
+, libxcb
+, libxcomposite
+, libxcursor
+, libxdamage
+, libxext
+, libxfixes
+, libxi
+, libxrandr
+, libxrender
+, libxscrnsaver
+, libxtst
+, libxcb-image
+, libxcb-keysyms
+, libxcb-render-util
+, libxcb-wm
 }:
 let
   version = "3.8.5";
@@ -105,24 +122,24 @@ let
       nss
       tcl-8_5
       tk-8_5
-      xorg.libICE
-      xorg.libSM
-      xorg.libX11
-      xorg.libxcb
-      xorg.libXcomposite
-      xorg.libXcursor
-      xorg.libXdamage
-      xorg.libXext
-      xorg.libXfixes
-      xorg.libXi
-      xorg.libXrandr
-      xorg.libXrender
-      xorg.libXScrnSaver
-      xorg.libXtst
-      xorg.xcbutilimage
-      xorg.xcbutilkeysyms
-      xorg.xcbutilrenderutil
-      xorg.xcbutilwm
+      libice
+      libsm
+      libx11
+      libxcb
+      libxcomposite
+      libxcursor
+      libxdamage
+      libxext
+      libxfixes
+      libxi
+      libxrandr
+      libxrender
+      libxscrnsaver
+      libxtst
+      libxcb-image
+      libxcb-keysyms
+      libxcb-render-util
+      libxcb-wm
     ];
 
     runScript = lib.escapeShellArgs [ "/usr/bin/nd" ];

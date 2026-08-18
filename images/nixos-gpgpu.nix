@@ -67,8 +67,8 @@
         procps gnumake util-linux m4 gperf unzip cmake
         linuxPackages.nvidia_x11
         libGLU libGL
-        xorg.libXi xorg.libXmu freeglut
-        xorg.libXext xorg.libX11 xorg.libXv xorg.libXrandr zlib pngpp tbb
+        libxi libxmu freeglut
+        libxext libx11 libxv libxrandr zlib pngpp tbb
         ncurses5 stdenv.cc binutils
       ];
       shellHook = with pkgs;'' + "''" + ''
