@@ -33,8 +33,6 @@
 
   reflex = ../development/compilers/reflex;
 
-  havm = ../development/compilers/havm;
-
   m68k = {
     path = ../development/compilers/m68k;
     callPackage = final: prev: final.qt5.callPackage;

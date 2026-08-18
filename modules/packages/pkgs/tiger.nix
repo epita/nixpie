@@ -15,7 +15,6 @@
       reflex
       gnum4
       gnumake
-      havm
       libtool
       libxslt
       nolimips
