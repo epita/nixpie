@@ -36,11 +36,11 @@ in
     xkb.layout = "us,fr,gb";
     displayManager = {
       setupCommands = ''
-        ${pkgs.xorg.setxkbmap}/bin/setxkbmap us,fr,gb
+        ${pkgs.setxkbmap}/bin/setxkbmap us,fr,gb
       '';
 
       sessionCommands = ''
-        ${pkgs.xorg.xrdb}/bin/xrdb -merge ${Xresources}
+        ${pkgs.xrdb}/bin/xrdb -merge ${Xresources}
       '';
     };
   };
