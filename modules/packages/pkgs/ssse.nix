@@ -48,7 +48,7 @@ in
       kicad-unstable
       liberio
       mosquitto
-      nodePackages.node-red
+      node-red
       platformio-core
       sfml
       asio
