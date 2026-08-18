@@ -11,7 +11,7 @@
       freeciv
       nethack
       openttd
-      superTuxKart
+      supertuxkart
       teeworlds
       wesnoth
     ];
