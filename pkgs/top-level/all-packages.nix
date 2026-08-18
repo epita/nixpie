@@ -116,10 +116,10 @@
     args = final: prev: { inherit (prev) i3lock; };
   };
 
-  ciscoPacketTracer8 = {
-    path = ../applications/networking/cisco-packet-tracer;
-    args = final: prev: { inherit (prev) ciscoPacketTracer8; };
-  };
+  # ciscoPacketTracer9 = {
+  #   path = ../applications/networking/cisco-packet-tracer;
+  #   args = final: prev: { inherit (prev) ciscoPacketTracer9; };
+  # };
 
   tina = ../applications/editors/tina;
 

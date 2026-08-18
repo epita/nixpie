@@ -16,7 +16,7 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [ ciscoPacketTracer8 ];
+  #environment.systemPackages = with pkgs; [ ciscoPacketTracer8 ];
 
   cri.nswrappers.enable = true;
 }
