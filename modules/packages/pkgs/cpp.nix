@@ -9,7 +9,6 @@
     environment.systemPackages = with pkgs; [
       httplib
       yaml-cpp
-      jetbrains.clion # FIXME: only for exam in 2526, remove me after
     ];
 
     cri.packages.pkgs.codium.enable = true;
