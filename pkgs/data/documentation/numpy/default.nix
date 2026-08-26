@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
 
   src = fetchzip {
     url = "https://numpy.org/doc/${version}/numpy-html.zip";
-    hash = "sha256-hmENDKgfh8h3OZGq/jO20R+vj0udAg9Ic/8+VzgF4Jw=";
+    hash = "sha256-u3ixjqL/hVukuLXsiHYhzUNV+2uzcvw5d1FBu9Ldw70=";
     stripRoot = false;
   };
 
