@@ -15,7 +15,7 @@
 
   cri.packages.pythonPackages.nixosPieCustom = p: with p; [
     networkx
-    osmnx
+    #osmnx # FIXME: build failure as of 2026-08-26
   ];
 
   cri.packages = {
