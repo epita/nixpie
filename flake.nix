@@ -22,8 +22,11 @@
       flake = false;
     };
 
+    # Used by image nixos-ssse
+    # NOTE: Using Book-reader fork to remove python3.10 which was deprecated by
+    # NixOS 26.05.
     nixpkgs-esp-dev = {
-      url = "github:mirrexagon/nixpkgs-esp-dev";
+      url = "github:Book-reader/nixpkgs-esp-dev/remove-python310";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "futils";
     };
@@ -55,7 +58,7 @@
           config = {
             allowUnfree = true;
             permittedInsecurePackages = [
-              "freeimage-unstable-2021-11-01"
+              "python3.13-ecdsa-0.19.2" # added 2026-08-27, needed by esp env
             ];
           };
           overlays =
