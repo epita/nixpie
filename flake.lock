@@ -112,15 +112,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1767865407,
-        "narHash": "sha256-QWF1rZYd+HvNzLIeRS+OEBX7HF0EhWCGeLbMkgtbsIo=",
-        "owner": "mirrexagon",
+        "lastModified": 1774932133,
+        "narHash": "sha256-4xrbHOH2BI85J9Srio81Y/0o2TVr88VtMnHwPrhFq7Q=",
+        "owner": "Book-reader",
         "repo": "nixpkgs-esp-dev",
-        "rev": "5287d6e1ca9e15ebd5113c41b9590c468e1e001b",
+        "rev": "d5cd367e64d471b72260a07bfc22fada479781bc",
         "type": "github"
       },
       "original": {
-        "owner": "mirrexagon",
+        "owner": "Book-reader",
+        "ref": "remove-python310",
         "repo": "nixpkgs-esp-dev",
         "type": "github"
       }
