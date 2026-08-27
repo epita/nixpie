@@ -72,6 +72,8 @@
       pre-commit
       subversion
       tig
+
+      helix
     ];
 
     environment.variables = {
