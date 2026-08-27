@@ -9,7 +9,7 @@
   cri.sddm.title = "NixOS PIE";
 
   environment.systemPackages = with pkgs; [
-    #spot-lrde
+    spot-lre
     tina
   ];
 
