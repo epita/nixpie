@@ -60,6 +60,7 @@
       readline
       rr
       shellcheck
+      socat
       strace
       tk
       valgrind
