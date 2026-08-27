@@ -1,8 +1,8 @@
 diff --git a/src/config/config.c b/src/config/config.c
-index e49f236a3..7596ebb1e 100644
+index e89b0a9a4..f8979afda 100644
 --- a/src/config/config.c
 +++ b/src/config/config.c
-@@ -293,6 +293,9 @@ REQUIRE_OBJECT ( profstat_cmd );
+@@ -291,6 +291,9 @@ REQUIRE_OBJECT ( profstat_cmd );
  #ifdef NTP_CMD
  REQUIRE_OBJECT ( ntp_cmd );
  #endif
@@ -13,23 +13,23 @@ index e49f236a3..7596ebb1e 100644
  REQUIRE_OBJECT ( cert_cmd );
  #endif
 diff --git a/src/config/general.h b/src/config/general.h
-index 683c02ffb..9c4558ff0 100644
+index 8d8405d05..9b72519d2 100644
 --- a/src/config/general.h
 +++ b/src/config/general.h
-@@ -164,6 +164,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
- //#define PARAM_CMD		/* Request parameter commands */
- //#define NEIGHBOUR_CMD		/* Neighbour management commands */
+@@ -114,6 +114,7 @@ FILE_SECBOOT ( PERMITTED );
+ #define PARAM_CMD		/* Request parameter commands */
+ #define PCI_CMD			/* PCI commands */
  //#define PING_CMD		/* Ping command */
 +//#define WOL_CMD		/* Wake-on-Lan command */
- //#define CONSOLE_CMD		/* Console command */
- //#define IPSTAT_CMD		/* IP statistics commands */
  //#define PROFSTAT_CMD		/* Profiling commands */
+ //#define PXE_CMD		/* PXE commands */
+ #define ROUTE_CMD		/* Routing table management commands */
 diff --git a/src/hci/commands/wol_cmd.c b/src/hci/commands/wol_cmd.c
 new file mode 100644
-index 000000000..9421cf005
+index 000000000..5f5eb98f0
 --- /dev/null
 +++ b/src/hci/commands/wol_cmd.c
-@@ -0,0 +1,140 @@
+@@ -0,0 +1,141 @@
 +/*
 + * Copyright (C) 2016 Marin Hannache <mareo@cri.epita.net>.
 + *
@@ -54,6 +54,7 @@ index 000000000..9421cf005
 + */
 +
 +FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
++FILE_SECBOOT ( PERMITTED );
 +
 +#include <stdio.h>
 +#include <stdlib.h>
@@ -171,10 +172,10 @@ index 000000000..9421cf005
 +/** Wake-on-Lan command */
 +COMMAND ( wol, wol_exec );
 diff --git a/src/include/ipxe/errfile.h b/src/include/ipxe/errfile.h
-index 0c28810ea..ab4069d71 100644
+index 27c2bb97c..b9e8c427e 100644
 --- a/src/include/ipxe/errfile.h
 +++ b/src/include/ipxe/errfile.h
-@@ -22,6 +22,7 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
+@@ -23,6 +23,7 @@ FILE_SECBOOT ( PERMITTED );
  #define ERRFILE_NET		0x00006000	/**< Networking code */
  #define ERRFILE_IMAGE		0x00008000	/**< Image code */
  #define ERRFILE_OTHER		0x0000e000	/**< Any other code */
@@ -182,9 +183,9 @@ index 0c28810ea..ab4069d71 100644
  
  /** @} */
  
-@@ -444,6 +445,8 @@ FILE_LICENCE ( GPL2_OR_LATER_OR_UBDL );
- #define ERRFILE_weierstrass	      ( ERRFILE_OTHER | 0x00660000 )
- #define ERRFILE_efi_cacert	      ( ERRFILE_OTHER | 0x00670000 )
+@@ -448,6 +449,8 @@ FILE_SECBOOT ( PERMITTED );
+ #define ERRFILE_ecdhe		      ( ERRFILE_OTHER | 0x00680000 )
+ #define ERRFILE_ecdsa		      ( ERRFILE_OTHER | 0x00690000 )
  
 +#define ERRFILE_wol_cmd		      ( ERRFILE_FORGE | 0x00000000 )
 +
