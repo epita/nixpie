@@ -94,7 +94,7 @@
 
   libfff = ../development/libraries/libfff;
 
-  spot-lrde = ../development/libraries/spot-lrde;
+  spot-lre = ../development/libraries/spot-lre;
 
   ### OS-SPECIFIC
 
