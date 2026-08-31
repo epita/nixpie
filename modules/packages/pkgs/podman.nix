@@ -36,12 +36,16 @@ in
           storage.settings = {
             storage.driver = "overlay";
             storage.options.overlay.mount_program = "${lib.getExe pkgs.fuse-overlayfs}";
+            storage.runroot = lib.mkForce "";
+            storage.graphroot = lib.mkForce "";
           };
 
           # By default, podman prompts the user to chose a registry everytime an image is being pulled.
           registries.search = [ "docker.io" ];
         };
       };
+
+      boot.kernelModules = [ "tun" ];
 
       environment = {
         # For some reason, podman does not read the default storage.conf file without this variable.
