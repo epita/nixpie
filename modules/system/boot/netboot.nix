@@ -394,6 +394,21 @@ in
               emergencyScript
             ];
           };
+
+          # During switch-root, systemd stops every unit except the ones with
+          # IgnoreOnIsolate but for some reasons systemd-modules-load survives
+          # that and is never restarted after switch-root. That's not the
+          # behaviour we want because we might need to load other modules (from
+          # boot.kernelModules) after initrd.
+          # A proper fix would be to find the unit relationship that blocks
+          # systemd-modules-load from deactivating before switch root (likely to
+          # be something with the above units). But this works for now, and is
+          # also a workaround used by systemd themselves for systemd-networkd
+          # and systemd-resolved.
+          systemd-modules-load = {
+            before = [ "initrd-switch-root.target" ];
+            conflicts = [ "initrd-switch-root.target" ];
+          };
         };
       };
     };
