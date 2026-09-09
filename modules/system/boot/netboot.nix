@@ -127,6 +127,12 @@ in
 
     boot.initrd = {
       availableKernelModules = [
+        # To mount /srv/torrent
+        # This needs to be explicit because ext4 is not loaded when nix-store-rw
+        # partition is disabled. /srv/torrent is not neededForBoot to allow
+        # falling back on tmpfs.
+        "ext4"
+
         # To mount /nix/store
         "squashfs"
         "overlay"
