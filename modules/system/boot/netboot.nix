@@ -204,7 +204,7 @@ in
             let
               partitionDeviceUnit = "${utils.escapeSystemdPath cfg.nix-store-rw.partition}.device";
             in
-            {
+            mkIf cfg.nix-store-rw.enable {
               description = "Prepare read-write Nix store partition";
               requisite = [
                 partitionDeviceUnit
