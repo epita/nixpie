@@ -35,7 +35,14 @@ with lib;
     '';
   };
 
-  systemd.network.enable = true;
+  systemd.network = {
+    enable = true;
+    config = {
+      dhcpV4Config = {
+        UseDomains = true;
+      };
+    };
+  };
 
   networking = {
     useDHCP = true;
