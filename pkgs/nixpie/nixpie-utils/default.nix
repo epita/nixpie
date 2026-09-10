@@ -7,12 +7,24 @@
 , gnused
 , inetutils
 , iproute2
+, systemd
+, jq
 }:
 
 let
   wait_for_hostname = ''
+    get_search_domain() {
+      domain=$(${systemd}/bin/resolvectl domain -j | ${jq}/bin/jq -r '.[] | select(.searchDomains != null) | .searchDomains[0] | .name')
+
+      if [ -z "$domain" ] || [ "$domain" = "null" ]; then
+        return 1
+      fi
+
+      echo "$domain"
+    }
+
     n=0
-    until [ "''${n}" -ge 15 ] || ${gnugrep}/bin/grep domain /etc/resolv.conf 2>&1 >/dev/null; do
+    until [ "''${n}" -ge 15 ] || get_search_domain 2>&1 >/dev/null; do
       n="$(( ''${n} + 1 ))"
       sleep 2
     done
@@ -35,14 +47,12 @@ let
   '';
   get_room_name = writeShellScriptBin "get_room_name.sh" ''
     ${wait_for_hostname}
-    ${gnugrep}/bin/grep domain /etc/resolv.conf \
-      | ${gawk}/bin/awk '{ print $2 }' \
+    get_search_domain \
       | ${gnused}/bin/sed 's/.sm.cri.epita.fr//' | cut -d. -f1
   '';
   get_site_name = writeShellScriptBin "get_site_name.sh" ''
     ${wait_for_hostname}
-    ${gnugrep}/bin/grep domain /etc/resolv.conf \
-      | ${gawk}/bin/awk '{ print $2 }' \
+    get_search_domain \
       | ${gnused}/bin/sed 's/.sm.cri.epita.fr//' | cut -d. -f2
   '';
 in
