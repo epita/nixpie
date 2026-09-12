@@ -44,7 +44,13 @@ in
           pref("network.negotiate-auth.trusted-uris", "cri.epita.fr,.cri.epita.fr");
           pref("network.trr.excluded-domains", "cri.epita.fr");
         '';
-        extraPolicies = cfg.firefox.extraPolicies // (optionalAttrs (builtins.length cfg.firefox.toolbarBookmarks > 0) {
+        extraPolicies = {
+          LocalNetworkAccess = {
+            SkipDomains = [
+              "*.epita.fr"
+            ];
+          };
+        } // cfg.firefox.extraPolicies // (optionalAttrs (builtins.length cfg.firefox.toolbarBookmarks > 0) {
           Bookmarks = builtins.map (bookmark: bookmark // { Placement = "toolbar"; }) cfg.firefox.toolbarBookmarks;
           DisplayBookmarksToolbar = "always";
         });
