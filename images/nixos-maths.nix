@@ -69,5 +69,6 @@ in
     sounddevice
     soundfile
     pywavelets
+    cvxopt
   ];
 }
