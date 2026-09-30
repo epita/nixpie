@@ -24,6 +24,11 @@
     args = final: prev: { inherit (prev) dumptorrent; };
   };
 
+  gns3-server = {
+    path = ../by-name/gn/gns3-server/package.nix;
+    args = final: prev: { inherit (prev) gns3-server; };
+  };
+
   salt = {
     path = ../by-name/sa/salt/package.nix;
     args = final: prev: { inherit (prev) salt; };

@@ -1,0 +1,70 @@
+diff --git a/gns3server/compute/docker/__init__.py b/gns3server/compute/docker/__init__.py
+index 696646a..9f3d76f 100644
+--- a/gns3server/compute/docker/__init__.py
++++ b/gns3server/compute/docker/__init__.py
+@@ -43,6 +43,7 @@ DOCKER_MINIMUM_API_VERSION = "1.40"
+ DOCKER_MINIMUM_VERSION = "19.03.8"
+ DOCKER_PREFERRED_API_VERSION = "1.44"
+ CHUNK_SIZE = 1024 * 8  # 8KB
++DEFAULT_DOCKER_SOCKET_PATH = "/var/run/docker.sock"
+ 
+ 
+ class Docker(BaseManager):
+@@ -52,7 +53,9 @@ class Docker(BaseManager):
+     def __init__(self):
+ 
+         super().__init__()
+-        self._server_url = '/var/run/docker.sock'
++        # resolved lazily in connector() so that a bad DOCKER_HOST value is reported
++        # when Docker is actually used and not when this manager is instantiated
++        self._server_url = None
+         self._connected = False
+         # Allow locking during ubridge operations
+         self.ubridge_lock = asyncio.Lock()
+@@ -60,6 +63,37 @@ class Docker(BaseManager):
+         self._session = None
+         self._api_version = DOCKER_MINIMUM_API_VERSION
+ 
++    @staticmethod
++    def _docker_socket_path():
++        """
++        Get the path of the Docker daemon Unix socket.
++
++        The default system-wide socket can be overridden with the DOCKER_HOST
++        environment variable, which is required to use a rootless Docker daemon
++        (its socket usually lives in $XDG_RUNTIME_DIR/docker.sock).
++
++        :returns: path to the Docker Unix socket
++        """
++
++        docker_host = os.environ.get("DOCKER_HOST", "").strip()
++        if not docker_host:
++            return DEFAULT_DOCKER_SOCKET_PATH
++
++        if docker_host.startswith("unix://"):
++            socket_path = docker_host[len("unix://"):]
++        elif docker_host.startswith("/"):
++            # tolerate a bare path, even though Docker itself requires a scheme
++            socket_path = docker_host
++        else:
++            raise DockerError(f"DOCKER_HOST is set to '{docker_host}' but only Unix sockets are "
++                              f"supported, e.g. unix:///run/user/1000/docker.sock")
++
++        if not socket_path:
++            raise DockerError(f"DOCKER_HOST is set to '{docker_host}' but contains no socket path")
++
++        log.info(f"Using Docker socket '{socket_path}' from the DOCKER_HOST environment variable")
++        return socket_path
++
+     @staticmethod
+     async def install_busybox(dst_dir):
+ 
+@@ -153,6 +187,8 @@ class Docker(BaseManager):
+         if self._connector is None or self._connector.closed:
+             if not sys.platform.startswith("linux"):
+                 raise DockerError("Docker is supported only on Linux")
++            if self._server_url is None:
++                self._server_url = self._docker_socket_path()
+             try:
+                 self._connector = aiohttp.connector.UnixConnector(self._server_url, limit=None)
+             except (aiohttp.ClientOSError, FileNotFoundError):
