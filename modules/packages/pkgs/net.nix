@@ -20,6 +20,9 @@
 
     virtualisation.virtualbox.host.enable = true;
 
+    # needed by ubridge
+    boot.kernelModules = [ "tun" ];
+
     security.wrappers.ubridge = {
       source = "${pkgs.ubridge}/bin/ubridge";
       capabilities = "cap_net_admin,cap_net_raw=ep";
