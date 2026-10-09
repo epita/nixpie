@@ -2,7 +2,7 @@
 
 {
   options = {
-    cri.packages.pkgs.docker.enable = lib.options.mkEnableOption "Docker package bundle";
+    cri.packages.pkgs.docker.enable = lib.options.mkEnableOption "rootless Docker package bundle";
   };
 
   config = lib.mkIf config.cri.packages.pkgs.docker.enable {
