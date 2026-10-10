@@ -1,12 +1,16 @@
 { config, lib, pkgs, ... }:
 
+let
+  # make SDL and SDL2 usable with -fsanitize=address
+  sdlPkgs = pkgs.extend (import ../../../pkgs/sdl-compat-dlopen-overlay.nix);
+in
 {
   options = {
     cri.packages.pkgs.sdl.enable = lib.options.mkEnableOption "dev SDL CRI package bundle";
   };
 
   config = lib.mkIf config.cri.packages.pkgs.sdl.enable {
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = with sdlPkgs; [
       # v1
       SDL
       SDL_Pango

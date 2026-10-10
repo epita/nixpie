@@ -41,6 +41,7 @@ let
     login-epita = ./login-epita.nix;
     node-exporter = ./node-exporter.nix;
     nswrappers = ./nswrappers.nix;
+    sdl = ./sdl.nix;
     spider = ./spider.nix;
   };
 in
