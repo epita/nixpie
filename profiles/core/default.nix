@@ -117,7 +117,10 @@ with lib;
 
   # HACK: this is needed to be able to compile with external libs such as
   # criterion
-  environment.pathsToLink = [ "/include" "/lib" ];
+  # NOTE: /share/pkgconfig is needed as well, some packages (zlib, systemd,
+  # the xorg protos, ...) install their .pc files there instead of
+  # /lib/pkgconfig
+  environment.pathsToLink = [ "/include" "/lib" "/share/pkgconfig" ];
   environment.extraOutputsToInstall = [ "out" "lib" "bin" "dev" ];
   environment.variables = {
     NIXPKGS_ALLOW_UNFREE = "1";
@@ -129,7 +132,10 @@ with lib;
     CMAKE_LIBRARY_PATH = "/run/current-system/sw/lib";
 
     IDEA_JDK = "/run/current-system/sw/lib/openjdk/";
-    PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig";
+    PKG_CONFIG_PATH = concatStringsSep ":" [
+      "/run/current-system/sw/lib/pkgconfig"
+      "/run/current-system/sw/share/pkgconfig"
+    ];
   };
 
   programs.ssh = {

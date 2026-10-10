@@ -27,7 +27,7 @@ let
         [
           "NIX_CFLAGS_COMPILE_x86_64_unknown_linux_gnu=-I/include"
           "NIX_CFLAGS_LINK_x86_64_unknown_linux_gnu=-L/lib"
-          "PKG_CONFIG_PATH=/lib/pkgconfig"
+          "PKG_CONFIG_PATH=/lib/pkgconfig:/share/pkgconfig"
           "OCAMLPATH=${OCAMLPATH}"
           "CAML_LD_LIBRARY_PATH=${CAML_LD_LIBRARY_PATH}"
         ];

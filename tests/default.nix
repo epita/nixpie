@@ -37,6 +37,7 @@ let
     criterion = ./criterion.nix;
     dotnet = ./dotnet.nix;
     gtest = ./gtest.nix;
+    gtk = ./gtk.nix;
     login-epita = ./login-epita.nix;
     node-exporter = ./node-exporter.nix;
     nswrappers = ./nswrappers.nix;
