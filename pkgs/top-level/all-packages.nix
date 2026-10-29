@@ -90,6 +90,11 @@
     callPackage = final: prev: final.python3Packages.callPackage;
   };
 
+  ucimlrepo = {
+    path = ../development/python-modules/ucimlrepo;
+    callPackage = final: prev: final.python3Packages.callPackage;
+  };
+
   ### DEVELOPMENT / LIBRARIES
 
   libfff = ../development/libraries/libfff;

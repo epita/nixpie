@@ -49,6 +49,7 @@ in
     #jupyter-contrib-nbextensions
     pkgs.jupyter_latex_envs
     pkgs.nbtranslate
+    pkgs.ucimlrepo
     squarify
     wikipedia
     plotly
@@ -60,7 +61,7 @@ in
     scikit-image
     scipy
     seaborn
-    seaborn
+    statsmodels
     tensorboard
     termcolor
     xarray
