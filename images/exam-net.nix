@@ -24,6 +24,12 @@ let
     finalImageName = "registry.cri.epita.fr/ing/activites/net1-appliances/computer";
     finalImageTag = "2.0";
   };
+
+  preloadedImages = map pkgs.dockerTools.pullImage [
+    serverDockerSrc
+    computerDockerSrc
+    routerDockerSrc
+  ];
 in
 {
   imports = [
@@ -34,16 +40,20 @@ in
   ];
 
   environment.systemPackages = with pkgs; [ ];
-  systemd.services.docker-preload = {
+
+  # Docker is rootless here, so every user runs its own daemon with its own
+  # image store: the images have to be loaded in the user instance, once the
+  # user daemon is up, and not system-wide.
+  systemd.user.services.docker-preload = {
+    description = "Preload NET appliance images in the rootless Docker daemon";
     after = [ "docker.service" ];
     requires = [ "docker.service" ];
-    wantedBy = [ "multi-user.target" ];
-    path = [ config.virtualisation.docker.package ];
-    script = ''
-      docker load -i ${pkgs.dockerTools.pullImage serverDockerSrc}
-      docker load -i ${pkgs.dockerTools.pullImage computerDockerSrc}
-      docker load -i ${pkgs.dockerTools.pullImage routerDockerSrc}
-    '';
+    wantedBy = [ "default.target" ];
+    path = [ config.virtualisation.docker.rootless.package ];
+    # Same condition as the rootless daemon unit, as root uses the rootful one.
+    unitConfig.ConditionUser = "!root";
+    environment.DOCKER_HOST = "unix://%t/docker.sock";
+    script = concatMapStringsSep "\n" (image: "docker load -i ${image}") preloadedImages;
     serviceConfig = {
       RemainAfterExit = true;
       Type = "oneshot";
