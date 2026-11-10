@@ -11,9 +11,7 @@
   cri.packages = {
     pkgs = {
       dev.enable = true;
-      # GNS3 talks to the system-wide Docker socket, it cannot use a rootless
-      # daemon.
-      dockerRoot.enable = true;
+      docker.enable = true;
       net.enable = true;
     };
   };
