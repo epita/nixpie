@@ -14,7 +14,7 @@ in
     systemd.services.sm-inventory-agent = {
       description = "Push SM inventory info";
       wants = [ "network-online.target" ];
-      after = [ "network-online.target" ];
+      after = [ "network-online.target" "nss-lookup.target" ];
       path = with pkgs; [
         coreutils
         gnused
@@ -23,6 +23,7 @@ in
         dmidecode
         read-edid
         curl
+        config.systemd.package # busctl, to query the hostname source
       ];
       serviceConfig = {
         Type = "oneshot";
