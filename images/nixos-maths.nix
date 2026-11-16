@@ -28,6 +28,7 @@ in
   ];
 
   cri.packages.pythonPackages.nixosMathsCustom = p: with p; [
+    anywidget
     beautifulsoup4
     dash
     folium
@@ -40,6 +41,7 @@ in
     jupyterlab
     lxml
     matplotlib
+    matplotlib-inline
     networkx
     numpy
     openpyxl
