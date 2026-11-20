@@ -131,7 +131,6 @@ with lib;
     CMAKE_INCLUDE_PATH = "/run/current-system/sw/include";
     CMAKE_LIBRARY_PATH = "/run/current-system/sw/lib";
 
-    IDEA_JDK = "/run/current-system/sw/lib/openjdk/";
     PKG_CONFIG_PATH = concatStringsSep ":" [
       "/run/current-system/sw/lib/pkgconfig"
       "/run/current-system/sw/share/pkgconfig"
