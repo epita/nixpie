@@ -140,7 +140,6 @@ in
         # SATA support
         "ahci"
         "ata_piix"
-        "sata_inic162x"
         "sata_nv"
         "sata_promise"
         "sata_qstor"
