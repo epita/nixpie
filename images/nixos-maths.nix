@@ -73,5 +73,6 @@ in
     soundfile
     pywavelets
     cvxopt
+    ipympl # Ticket #7305
   ];
 }
