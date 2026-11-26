@@ -74,9 +74,5 @@ in
     pywavelets
     cvxopt
     ipympl # Ticket #7305
-    openai
-    requests
-    tiktoken
-    transformers
   ];
 }

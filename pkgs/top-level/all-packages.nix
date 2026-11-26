@@ -135,4 +135,10 @@
   ### DATA / DOCUMENTATION
 
   numpy-doc = ../data/documentation/numpy;
+
+  ### DATA / AI
+
+  qwen2_5-models = ../data/ai/qwen2_5-models;
+
+  tiktoken-encodings = ../data/ai/tiktoken-encodings;
 }
